@@ -31,6 +31,12 @@ Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Preh_Maestro</title>
 	<link rel="stylesheet" href="assets/bootstrap.min.css" />
 	<link rel="stylesheet" href="assets/dataTables.bootstrap4.min.css" />
 	<link rel="stylesheet" href="assets/responsive.bootstrap4.min.css" />
@@ -42,11 +48,11 @@ Page_Rendering();
 	<div class="container-fluid">
 	  <div class="row">
 		<div class="col-lg-12">
-		  <table id="tableMaestro" class="table table-striped  table-sm" style="width: 100%">
-			<thead class="thead-dark">
-			  <tr class="ew-table-header">
+		  <table id="tableMaestro" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+			<thead>
+			  <tr>
 				<th>Caso</th>
-				<th >Fecha</th>
+				<th>Fecha</th>
 				<th>Tiempo</th>
 				<th>Dirección</th>
 				<th>Incidente</th>
@@ -513,6 +519,8 @@ Page_Rendering();
 	  </div>
 	</div>
 
+	
+	<script src="assets/jquery-3.6.0.min.js"></script>
 	<script src="assets/jquery.dataTables.min.js"></script>
 	<script src="assets/bootstrap.bundle.min.js"></script>
 	<script src="assets/dataTables.bootstrap4.min.js"></script>
