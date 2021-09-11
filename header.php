@@ -160,7 +160,7 @@ ew.ready("head", [
 <link rel="stylesheet" href="images/icofont/icofont.min.css">
 <link rel="stylesheet" href="images/medical/css/wfmi-style.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.min.css">
-<script src="http://code.jquery.com/jquery.js"></script>
+<!-- <script src="http://code.jquery.com/jquery.js"></script> -->
 <?php
 if (CurrentLanguageID() == "en") {
 	$nuevo = "New";
