@@ -218,10 +218,10 @@ $CONFIG = [
 
 	// Database connection info
 	"CONNECTION_INFO" => [
-		"DB" => ["id" => "DB", "type" => "POSTGRESQL", "qs" => "\"", "qe" => "\"", "host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "12345", "db" => "sismed911", "schema" => "public"]
+		"DB" => ["id" => "DB", "type" => "POSTGRESQL", "qs" => "\"", "qe" => "\"", "host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "root", "db" => "sismed911", "schema" => "public"]
 	],
 	"PRODUCTION_CONNECTION_INFO" => [
-		"DB" => ["id" => "DB", "type" => "POSTGRESQL", "qs" => "\"", "qe" => "\"", "host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "12345", "db" => "sismed911", "schema" => "public"]
+		"DB" => ["id" => "DB", "type" => "POSTGRESQL", "qs" => "\"", "qe" => "\"", "host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "root", "db" => "sismed911", "schema" => "public"]
 	],
 
 	// Database error function
