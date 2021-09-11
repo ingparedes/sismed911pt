@@ -18,6 +18,12 @@ echo $topMenu->toScript();
 // Sidebar menu
 $sideMenu = new Menu("menu", TRUE, FALSE);
 $sideMenu->addMenuItem(963, "mi_Controprehmaster", $MenuLanguage->MenuPhrase("963", "MenuText"), $MenuRelativePath . "Controprehmaster.php", -1, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}Controprehmaster.php'), FALSE, FALSE, "", "", FALSE);
+$sideMenu->addMenuItem(964, "mi_Controlintemaster", $MenuLanguage->MenuPhrase("964", "MenuText"), $MenuRelativePath . "Controlintemaster.php", -1, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}Controlintemaster.php'), FALSE, FALSE, "", "", FALSE);
+$sideMenu->addMenuItem(965, "mi_admisionhs", $MenuLanguage->MenuPhrase("965", "MenuText"), $MenuRelativePath . "admisionhs.php", -1, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}admisionhs.php'), FALSE, FALSE, "", "", FALSE);
+$sideMenu->addMenuItem(966, "mi_clasificacionh", $MenuLanguage->MenuPhrase("966", "MenuText"), $MenuRelativePath . "clasificacionh.php", -1, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}clasificacionh.php'), FALSE, FALSE, "", "", FALSE);
+$sideMenu->addMenuItem(967, "mi_urgencias", $MenuLanguage->MenuPhrase("967", "MenuText"), $MenuRelativePath . "urgencias.php", -1, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}urgencias.php'), FALSE, FALSE, "", "", FALSE);
+$sideMenu->addMenuItem(968, "mi_emergencias", $MenuLanguage->MenuPhrase("968", "MenuText"), $MenuRelativePath . "emergencias.php", -1, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}emergencias.php'), FALSE, FALSE, "", "", FALSE);
+$sideMenu->addMenuItem(969, "mi_despachoambpreh", $MenuLanguage->MenuPhrase("969", "MenuText"), $MenuRelativePath . "despachoambpreh.php", -1, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}despachoambpreh.php'), FALSE, FALSE, "", "", FALSE);
 $sideMenu->addMenuItem(37, "mi_inicio", $MenuLanguage->MenuPhrase("37", "MenuText"), $MenuRelativePath . "inicio.php", -1, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}inicio.php'), FALSE, FALSE, "icofont-ui-home", "", FALSE);
 $sideMenu->addMenuItem(119, "mci_Inter-Hospital", $MenuLanguage->MenuPhrase("119", "MenuText"), "", -1, "", TRUE, FALSE, TRUE, "icofont-medical-sign", "", FALSE);
 $sideMenu->addMenuItem(177, "mi_Dashboard1", $MenuLanguage->MenuPhrase("177", "MenuText"), $MenuRelativePath . "Dashboard1dsb.php", 119, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}Dashboard1'), FALSE, FALSE, "icofont-play", "", FALSE);

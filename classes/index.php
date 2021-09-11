@@ -501,6 +501,18 @@ class index
 			$this->terminate("webserviceslist.php");
 		if ($Security->allowList(CurrentProjectID() . 'Controprehmaster.php'))
 			$this->terminate("Controprehmaster.php");
+		if ($Security->allowList(CurrentProjectID() . 'Controlintemaster.php'))
+			$this->terminate("Controlintemaster.php");
+		if ($Security->allowList(CurrentProjectID() . 'admisionhs.php'))
+			$this->terminate("admisionhs.php");
+		if ($Security->allowList(CurrentProjectID() . 'clasificacionh.php'))
+			$this->terminate("clasificacionh.php");
+		if ($Security->allowList(CurrentProjectID() . 'urgencias.php'))
+			$this->terminate("urgencias.php");
+		if ($Security->allowList(CurrentProjectID() . 'emergencias.php'))
+			$this->terminate("emergencias.php");
+		if ($Security->allowList(CurrentProjectID() . 'despachoambpreh.php'))
+			$this->terminate("despachoambpreh.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {
