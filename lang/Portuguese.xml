@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/8/28" version="16.0.0" id="pt" name="Portuguese (Brazil)" desc="Portuguese (Brazil, PT_BR)" author="Silvio Garbes">
+<ew-language date="2021/9/11" version="16.0.0" id="pt" name="Portuguese (Brazil)" desc="Portuguese (Brazil, PT_BR)" author="Silvio Garbes">
   <!--
 *** Important Notes:
 1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -859,6 +859,24 @@
     <phrase id="footertext" value="© Organización Panamericana de la Salud. Todos los derechos reservados." />
     <menu id="963">
       <phrase id="menutext" value="Control" />
+    </menu>
+    <menu id="964">
+      <phrase id="menutext" value="Control" />
+    </menu>
+    <menu id="965">
+      <phrase id="menutext" value="Admision" />
+    </menu>
+    <menu id="966">
+      <phrase id="menutext" value="clasificacion" />
+    </menu>
+    <menu id="967">
+      <phrase id="menutext" value="urgencias" />
+    </menu>
+    <menu id="968">
+      <phrase id="menutext" value="emergencias" />
+    </menu>
+    <menu id="969">
+      <phrase id="menutext" value="despacho" />
     </menu>
     <menu id="831">
       <phrase id="menutext" value="mante amb" />
@@ -4137,6 +4155,24 @@
     </table>
     <table id="controprehmaster">
       <phrase id="tblcaption" value="Control" />
+    </table>
+    <table id="controlintemaster">
+      <phrase id="tblcaption" value="Control" />
+    </table>
+    <table id="admisionhs">
+      <phrase id="tblcaption" value="Admision" />
+    </table>
+    <table id="clasificacionh">
+      <phrase id="tblcaption" value="clasificacion" />
+    </table>
+    <table id="urgencias">
+      <phrase id="tblcaption" value="urgencias" />
+    </table>
+    <table id="emergencias">
+      <phrase id="tblcaption" value="emergencias" />
+    </table>
+    <table id="despachoambpreh">
+      <phrase id="tblcaption" value="despacho" />
     </table>
   </project>
 </ew-language>
