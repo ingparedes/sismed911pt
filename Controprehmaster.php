@@ -417,12 +417,7 @@ Page_Rendering();
 </div>
 
 <script>
-	loadjs("<?php echo $RELATIVE_PATH ?>assets/jquery.dataTables.min.js", "jqueryDataTable");
-	loadjs("<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.js", "dataTableBootstrap");
-	loadjs("<?php echo $RELATIVE_PATH ?>assets/dataTables.responsive.min.js", "dataTableResponsive");
-	loadjs("<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.js", "responsiveBootstrap");
-	loadjs("<?php echo $RELATIVE_PATH ?>assets/dataTables.select.min.js", "dataTableSelect");
-	loadjs("<?php echo $RELATIVE_PATH ?>js/prehM.js", "prehM");
+	ew.ready("dataTable", "<?php echo $RELATIVE_PATH ?>js/prehM.js", "prehM");
 </script>
 <!-- </body>
 </html> -->

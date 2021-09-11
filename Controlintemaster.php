@@ -1,4 +1,5 @@
 <?php
+
 namespace PHPMaker2020\sismed911;
 
 // Autoload
@@ -30,7 +31,8 @@ SetClientVar("login", LoginStatus());
 Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
-<!--CUSTOM_FILE_CONTENT_BEGIN--><!--CUSTOM_FILE_CONTENT_END-->
+<!--CUSTOM_FILE_CONTENT_BEGIN-->
+<!--CUSTOM_FILE_CONTENT_END-->
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>
 <?php include_once "footer.php"; ?>
 <?php

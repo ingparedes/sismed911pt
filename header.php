@@ -94,6 +94,13 @@ namespace PHPMaker2020\sismed911; ?>
 			});
 			loadjs("<?php echo $RELATIVE_PATH ?>jquery/jquery.min.js", "jquery");
 
+			ew.ready("jquery", ["<?php echo $RELATIVE_PATH ?>assets/jquery.dataTables.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/dataTables.responsive.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/dataTables.select.min.js"
+			], "dataTable");
+
 			loadjs([
 				"<?php echo $RELATIVE_PATH ?>js/mobile-detect.min.js",
 				"<?php echo $RELATIVE_PATH ?>js/purify.min.js",
