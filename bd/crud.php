@@ -11,6 +11,7 @@ $cod_ambulance = (isset($_POST['codA'])) ? $_POST['codA'] : '';
 $option = (isset($_POST['option'])) ? $_POST['option'] : '';
 $field = (isset($_POST['field'])) ? $_POST['field'] : '';
 $setField = (isset($_POST['setField'])) ? $_POST['setField'] : '';
+$reason = (isset($_POST['reason'])) ? $_POST['reason'] : '';
 
 switch ($option) {
     case 'selectPrehMaestro':
@@ -29,7 +30,7 @@ switch ($option) {
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectInterhMaestro':
-        $sql = "SELECT *, interh_maestro.cod_casointerh as cod_casointerh, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente, tipo_id.descripcion as ide_descripcion, cie10.diagnostico as cie10_diagnostico
+        $sql = "SELECT *, interh_maestro.cod_casointerh as cod_casointerh, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente, tipo_id.descripcion as ide_descripcion, cie10.diagnostico as cie10_diagnostico, servicio_ambulancia.observaciones as observacion_ambulancia
             FROM interh_maestro 
             LEFT JOIN interh_tiposervicio ON interh_maestro.tipo_serviciointerh = interh_tiposervicio.id_tiposervicion
             LEFT JOIN hospitalesgeneral ON interh_maestro.hospital_origneinterh = hospitalesgeneral.id_hospital
@@ -42,14 +43,19 @@ switch ($option) {
             LEFT JOIN cie10 ON interh_evaluacionclinica.cod_diag_cie = cie10.codigo_cie
             LEFT JOIN triage ON interh_evaluacionclinica.triage = triage.id_triage
             LEFT JOIN ambulancias ON servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
-            WHERE pacientegeneral.prehospitalario = '0' AND interh_maestro.estado=1
+            WHERE pacientegeneral.prehospitalario = '0' AND interh_maestro.estadointerh=1
             ORDER BY interh_maestro.cod_casointerh";
         $data = pg_fetch_all($connection->execute($connect, $sql));
         if ($data) {
             foreach ($data as &$valor) {
                 $sql = "SELECT nombre_hospital FROM hospitalesgeneral WHERE id_hospital='" . $valor['hospital_destinointerh'] . "'";
-                $dat = pg_fetch_array($connection->execute($connect, $sql), 0, PGSQL_NUM);
-                $valor['nombre_hospital_destino'] = $dat[0];
+                $res = $connection->execute($connect, $sql);
+                if (is_array(pg_fetch_all($res))) {
+                    $dat = pg_fetch_array($res, 0, PGSQL_NUM);
+                    $valor['nombre_hospital_destino'] = $dat[0];
+                } else {
+                    $valor['nombre_hospital_destino'] = '';
+                }
             }
         }
         print json_encode($data, JSON_UNESCAPED_UNICODE);
@@ -93,7 +99,6 @@ switch ($option) {
 
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
-    case 'insertPrehSA':
     case 'insertInterhSA':
         $option == 'insertPrehSA' ? $sql = "INSERT INTO preh_servicio_ambulancia (cod_casopreh, cod_ambulancia) VALUES (" . $id_maestro . ", '" . $setField . "');" : $sql = "INSERT INTO servicio_ambulancia (cod_casointerh, cod_ambulancia) VALUES (" . $id_maestro . ", '" . $setField . "');";
         $result = $connection->execute($connect, $sql);
@@ -134,7 +139,6 @@ switch ($option) {
         }
         echo $connection->execute($connect, $sql);
         break;
-    case 'updatePrehSA':
     case 'updateInterhSA':
         $option == 'updatePrehSA' ? $sql = "UPDATE preh_servicio_ambulancia SET " . $field . "='" . $setField . "' WHERE cod_casopreh=" . $id_maestro : $sql = "UPDATE servicio_ambulancia SET " . $field . "='" . $setField . "' WHERE cod_casointerh=" . $id_maestro;
         $result = $connection->execute($connect, $sql);
@@ -149,10 +153,14 @@ switch ($option) {
         break;
     case 'cerrarPrehCaso':
         $sql = "UPDATE preh_maestro SET estado=0, cierre=" . $setField . " WHERE cod_casopreh=" . $id_maestro;
+        $connection->execute($connect, $sql);
+        $sql = "INSERT INTO preh_cierre (nombrecierre, cod_casopreh, nota) VALUES (" . $setField . ", " . $id_maestro . ", '" . $reason . "')";
         echo $connection->execute($connect, $sql);
         break;
     case 'cerrarInterhCaso':
-        $sql = "UPDATE interh_maestro SET estado=0, cierre=" . $setField . " WHERE cod_casointerh=" . $id_maestro;
+        $sql = "UPDATE interh_maestro SET estadointerh=0, cierreinterh=" . $setField . " WHERE cod_casointerh=" . $id_maestro;
+        $connection->execute($connect, $sql);
+        $sql = "INSERT INTO interh_cierre (nombrecierre, cod_casointerh, nota) VALUES (" . $setField . ", " . $id_maestro . ", '" . $reason . "')";
         echo $connection->execute($connect, $sql);
         break;
 }

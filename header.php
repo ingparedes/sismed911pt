@@ -96,6 +96,7 @@ namespace PHPMaker2020\sismed911; ?>
 
 			ew.ready("jquery", ["<?php echo $RELATIVE_PATH ?>assets/jquery.dataTables.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/bootstrap.bundle.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/jquery.maskedinput.js",
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.responsive.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.js",
@@ -142,8 +143,7 @@ namespace PHPMaker2020\sismed911; ?>
 			ew.ready("makerjs", [cssjs, "<?php echo $RELATIVE_PATH ?>js/userfn.js"], "head");
 		</script>
 		<script>
-			loadjs(["<?php echo $RELATIVE_PATH ?>css/tempusdominus-bootstrap-4.css",
-				"<?php echo $RELATIVE_PATH ?>assets/bootstrap.min.css",
+			loadjs(["<?php echo $RELATIVE_PATH ?>css/tempusdominus-bootstrap-4.css",				
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.css",
 				"<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.css",
 				"<?php echo $RELATIVE_PATH ?>assets/select.bootstrap4.min.css"

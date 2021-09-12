@@ -1,3 +1,13 @@
+#tableMaestro_wrapper table,
+#tableMaestro_wrapper tbody,
+#tableMaestro_wrapper tfoot,
+#tableMaestro_wrapper thead,
+#tableMaestro_wrapper tr,
+#tableMaestro_wrapper th,
+#tableMaestro_wrapper td {
+  font-size: 12px !important;
+}
+
 #accordionForms
   input[type="text"]:not([size]):not([name="pageno"]):not(.cke_dialog_ui_input_text):not(.form-control-plaintext),
 input[type="password"]:not([size]) {
