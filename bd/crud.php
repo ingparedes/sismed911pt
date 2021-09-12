@@ -61,7 +61,7 @@ switch ($option) {
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'selectPrehServiceAmbulance':
-        $sql = "SELECT *, preh_maestro.cod_casopreh FROM preh_maestro
+        $sql = "SELECT *, preh_maestro.cod_casopreh, preh_servicio_ambulancia.observaciones as observacion_ambulancia FROM preh_maestro
         LEFT JOIN preh_servicio_ambulancia ON preh_maestro.cod_casopreh = preh_servicio_ambulancia.cod_casopreh
         LEFT JOIN ambulancias ON preh_servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
         ORDER BY preh_maestro.cod_casopreh";
@@ -99,6 +99,7 @@ switch ($option) {
 
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
+    case 'insertPrehSA':
     case 'insertInterhSA':
         $option == 'insertPrehSA' ? $sql = "INSERT INTO preh_servicio_ambulancia (cod_casopreh, cod_ambulancia) VALUES (" . $id_maestro . ", '" . $setField . "');" : $sql = "INSERT INTO servicio_ambulancia (cod_casointerh, cod_ambulancia) VALUES (" . $id_maestro . ", '" . $setField . "');";
         $result = $connection->execute($connect, $sql);
@@ -139,6 +140,7 @@ switch ($option) {
         }
         echo $connection->execute($connect, $sql);
         break;
+    case 'updatePrehSA':
     case 'updateInterhSA':
         $option == 'updatePrehSA' ? $sql = "UPDATE preh_servicio_ambulancia SET " . $field . "='" . $setField . "' WHERE cod_casopreh=" . $id_maestro : $sql = "UPDATE servicio_ambulancia SET " . $field . "='" . $setField . "' WHERE cod_casointerh=" . $id_maestro;
         $result = $connection->execute($connect, $sql);
