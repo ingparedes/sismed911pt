@@ -1,5 +1,5 @@
 $(function () {
-  var id_maestro, id_paciente, id_evalC, focus_value, dataSelect;
+  var id_maestro, id_patient, id_evalC, focus_value, dataSelect;
 
   var tableMaestro = $("#tableMaestro").DataTable({
     select: "single",
@@ -61,7 +61,11 @@ $(function () {
         render: function (data, type, row) {
           var diff = Math.abs(new Date() - new Date(row.fecha));
           var minutes = Math.floor(diff / 1000 / 60);
-          return '<i class="fa fa-clock-o" aria-hidden="true"></i> ' + minutes + " MIN";
+          return (
+            '<i class="fa fa-clock-o" aria-hidden="true"></i> ' +
+            minutes +
+            " MIN"
+          );
         },
         targets: 2,
       },
@@ -76,120 +80,136 @@ $(function () {
 
   tableMaestro.on("select", function (e, dt, type, indexes) {
     if (type === "row") {
-      dataSelect = tableMaestro.rows(indexes).data();
-      id_maestro = dataSelect[0].cod_casopreh;
-      id_paciente = dataSelect[0].id_paciente;
-      id_evalC = dataSelect[0].id_evaluacionclinica;
+      dataSelect = tableMaestro.rows(indexes).data()[0];
+      id_maestro = dataSelect.cod_casopreh;
+      id_patient = dataSelect.id_paciente;
+      id_evalC = dataSelect.id_evaluacionclinica;
 
       $("span.case").text(" - Caso: " + id_maestro);
 
-      //Se actualiza formulario paciente
-      $("#form_paciente").trigger("reset");
-      $("#p_number").val(dataSelect[0].num_doc);
-      $("#p_exp").val(dataSelect[0].expendiente);
-      $("#p_date").val(dataSelect[0].fecha_nacido);
-      $("#p_age").val(dataSelect[0].edad);
-      $("#p_typeage").val(dataSelect[0].nombre_edad);
-      if (dataSelect[0].genero == 1) {
-        $("#p_genM").prop("checked", true);
-      } else {
-        $("#p_genF").prop("checked", true);
-      }
-      $("#p_phone").val(dataSelect[0].telefono_paciente);
-      $("#p_name1").val(dataSelect[0].nombre1);
-      $("#p_name2").val(dataSelect[0].nombre2);
-      $("#p_lastname1").val(dataSelect[0].apellido1);
-      $("#p_lastname2").val(dataSelect[0].apellido2);
-      $("#p_segS").val(dataSelect[0].aseguradro);
-      $("#p_address").val(dataSelect[0].direccion_paciente);
-      $("#p_obs").html(dataSelect[0].observacion_paciente);
       $.ajax({
         url: "./bd/crud.php",
         method: "POST",
-        data: {
-          option: "selectIDE",
-        },
         dataType: "json",
+        data: {
+          option: "loadSelect",
+        },
       })
         .done(function (data) {
           $("#p_ide").empty();
-          $("#p_ide").append(
-            $("<option>", {
-              value: 0,
-              text: "Seleccione...",
-            })
-          );
-          $.each(data, function (index, value) {
+          $("#p_ide").append($("<option value='0'>Seleccione...</option>"));
+          $.each(data["ide"], function (index, value) {
             $("#p_ide").append(
-              $("<option>", {
-                value: index + 1,
-                text: value.descripcion,
-              })
+              $(
+                "<option value='" +
+                  value.id_tipo +
+                  "'>" +
+                  value.descripcion +
+                  "</option>"
+              )
             );
-            if (dataSelect[0].ide_descripcion == value.descripcion) {
-              $("#p_ide option[value=" + (index + 1) + "]").attr("selected", true);
+            if (dataSelect.tipo_doc == value.id_tipo) {
+              $("#p_ide option[value=" + value.id_tipo + "]").attr(
+                "selected",
+                true
+              );
+            }
+          });
+
+          $("#p_typeage").empty();
+          $("#p_typeage").append($("<option value='0'>Seleccione...</option>"));
+          $.each(data["age"], function (index, value) {
+            $("#p_typeage").append(
+              $(
+                "<option value='" +
+                  value.id_edad +
+                  "'>" +
+                  value.nombre_edad +
+                  "</option>"
+              )
+            );
+            if (dataSelect.cod_edad == value.id_edad) {
+              $("#p_typeage option[value=" + value.id_edad + "]").attr(
+                "selected",
+                true
+              );
+            }
+          });
+
+          $("#ec_triage").empty();
+          $("#ec_triage").append($("<option value='0'>Seleccione...</option>"));
+          $.each(data["triage"], function (index, value) {
+            $("#ec_triage").append(
+              $(
+                "<option value='" +
+                  value.id_triage +
+                  "'>" +
+                  value.nombre_triage_es +
+                  "</option>"
+              )
+            );
+            if (dataSelect.triage == value.id_triage) {
+              $("#ec_triage option[value=" + value.id_triage + "]").attr(
+                "selected",
+                true
+              );
             }
           });
         })
         .fail(function () {
           console.log("error");
         });
+      console.log(dataSelect);
+      //Se actualiza formulario paciente
+      $("#form_paciente").trigger("reset");
+      $("#p_number").val(dataSelect.num_doc);
+      $("#p_exp").val(dataSelect.expendiente);
+      $("#p_date").val(dataSelect.fecha_nacido);
+      $("#p_age").val(dataSelect.edad);
+      if (dataSelect.genero == 1) {
+        $("#p_genM").prop("checked", true);
+      } else if (dataSelect.genero == 2) {
+        $("#p_genF").prop("checked", true);
+      }
+      $("#p_phone").val(dataSelect.telefono_paciente);
+      $("#p_name1").val(dataSelect.nombre1);
+      $("#p_name2").val(dataSelect.nombre2);
+      $("#p_lastname1").val(dataSelect.apellido1);
+      $("#p_lastname2").val(dataSelect.apellido2);
+      $("#p_segS").val(dataSelect.aseguradro);
+      $("#p_address").val(dataSelect.direccion_paciente);
+      $("#p_obs").html(dataSelect.observacion_paciente);
 
       //Se actualiza formulario evaluación clínica
       $("#form_evalClinic").trigger("reset");
-      $.ajax({
-        url: "./bd/crud.php",
-        method: "POST",
-        data: {
-          option: "selectTriage",
-        },
-        dataType: "json",
-      })
-        .done(function (data) {
-          $("#ec_triage").empty();
-          $("#ec_triage").append(
-            $("<option>", {
-              value: 0,
-              text: "Seleccione...",
-            })
-          );
-          $.each(data, function (index, value) {
-            $("#ec_triage").append(
-              $("<option>", {
-                value: index + 1,
-                text: value.nombre_triage_es,
-              })
-            );
-            if (dataSelect[0].triage == value.id_triage) {
-              $("#ec_triage option[value=" + (index + 1) + "]").attr("selected", true);
-            }
-          });
-        })
-        .fail(function () {
-          console.log("error");
-        });
-      $("#ec_ta").val(dataSelect[0].sv_tx);
-      $("#ec_fc").val(dataSelect[0].sv_fc);
-      $("#ec_fr").val(dataSelect[0].sv_fr);
-      $("#ec_temp").val(dataSelect[0].sv_temp);
-      $("#ec_gl").val(dataSelect[0].sv_gl);
-      $("#ec_sato2").val(dataSelect[0].sv_sato2);
-      $("#ec_gli").val(dataSelect[0].sv_gli);
-      $("#ec_talla").val(dataSelect[0].talla);
-      $("#ec_peso").val(dataSelect[0].peso);
-      $("#ec_cie10").val(dataSelect[0].cod_diag_cie + " " + dataSelect[0].cie10_diagnostico);
-      $("#ec_cuadro").html(dataSelect[0].c_clinico);
-      $("#ec_examen").html(dataSelect[0].examen_fisico);
-      $("#ec_antec").html(dataSelect[0].antecedentes);
-      $("#ec_parac").html(dataSelect[0].paraclinicos);
-      $("#ec_tratam").html(dataSelect[0].tratamiento);
-      $("#ec_inform").html(dataSelect[0].diagnos_txt);
+      $("#ec_ta").val(dataSelect.sv_tx);
+      $("#ec_fc").val(dataSelect.sv_fc);
+      $("#ec_fr").val(dataSelect.sv_fr);
+      $("#ec_temp").val(dataSelect.sv_temp);
+      $("#ec_gl").val(dataSelect.sv_gl);
+      $("#ec_sato2").val(dataSelect.sv_sato2);
+      $("#ec_gli").val(dataSelect.sv_gli);
+      $("#ec_talla").val(dataSelect.talla);
+      $("#ec_peso").val(dataSelect.peso);
+      if (dataSelect.cod_diag_cie)
+        $("#ec_cie10").val(
+          dataSelect.cod_diag_cie + " " + dataSelect.cie10_diagnostico
+        );
+      $("#ec_cuadro").html(dataSelect.c_clinico);
+      $("#ec_examen").html(dataSelect.examen_fisico);
+      $("#ec_antec").html(dataSelect.antecedentes);
+      $("#ec_parac").html(dataSelect.paraclinicos);
+      $("#ec_tratam").html(dataSelect.tratamiento);
+      $("#ec_inform").html(dataSelect.diagnos_txt);
 
       //Se actualiza formulario hospital
       $("#form_hospital").trigger("reset");
-      $("#hosp_dest").val(dataSelect[0].hospital_destino + " " + dataSelect[0].nombre_hospital);
-      $("#hosp_nomMed").val(dataSelect[0].nombre_medico);
-      $("#hosp_telMed").val(dataSelect[0].telefono_maestro);
+      if (dataSelect.hospital_destino)
+        $("#hosp_dest").val(
+          dataSelect.hospital_destino + " " + dataSelect.nombre_hospital
+        );
+      $("#hosp_nomMed").val(dataSelect.nombre_medico);
+      $("#hosp_telMed").val(dataSelect.telefono_maestro);
 
       $("#collapseOne").collapse("show");
     }
@@ -203,7 +223,7 @@ $(function () {
         data: {
           option: option,
           idM: id_maestro,
-          idP: id_paciente,
+          idP: id_patient,
           idEC: id_evalC,
           setField: val,
           field: field,
@@ -268,7 +288,13 @@ $(function () {
   });
 
   $("#p_ide").on("change", function () {
-    crud_ajax("tipo_doc", $("#p_ide option:selected").text(), "updateP");
+    if ($("#p_ide option:selected").val() != 0)
+      crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+  });
+
+  $("#p_typeage").on("change", function () {
+    if ($("#p_typeage option:selected").val() != 0)
+      crud_ajax("cod_edad", $("#p_typeage option:selected").val(), "updateP");
   });
 
   $("#p_number").focusout(function () {
@@ -288,10 +314,12 @@ $(function () {
   });
 
   $(".gender").on("click", function () {
-    val = $("input:checked").val();
-    if ((dataSelect[0].genero == 1 && val == "f") || (dataSelect[0].genero == 2 && val == "m")) {
-      dataSelect[0].genero == 1 ? crud_ajax("genero", 2, "updateP") : crud_ajax("genero", 1, "updateP");
-    }
+    if (
+      !dataSelect.genero ||
+      (dataSelect.genero == 1 && $("input:checked").val() == 2) ||
+      (dataSelect.genero == 2 && $("input:checked").val() == 1)
+    )
+      crud_ajax("genero", $("input:checked").val(), "updateP");
   });
 
   $("#p_phone").focusout(function () {
@@ -389,7 +417,12 @@ $(function () {
   });
 
   $("#ec_triage").on("change", function () {
-    crud_ajax("triage", $("#ec_triage option:selected").text(), "updatePrehEC");
+    if ($("#ec_triage option:selected").val() != 0)
+      crud_ajax(
+        "triage",
+        $("#ec_triage option:selected").val(),
+        "updatePrehEC"
+      );
   });
 
   $("#ec_ta").focusout(function () {
@@ -523,7 +556,9 @@ $(function () {
 
   $(".btnCIE10").on("click", function () {
     var dataSelectCIE10 = tableCIE10.rows(".selected").data();
-    $("#ec_cie10").val(dataSelectCIE10[0].codigo_cie + " " + dataSelectCIE10[0].diagnostico);
+    $("#ec_cie10").val(
+      dataSelectCIE10[0].codigo_cie + " " + dataSelectCIE10[0].diagnostico
+    );
     crud_ajax("cod_diag_cie", dataSelectCIE10[0].codigo_cie, "updatePrehEC");
   });
 
@@ -579,8 +614,42 @@ $(function () {
 
   $(".btnHosp").on("click", function () {
     var dataSelectHosp = tableHosp.rows(".selected").data();
-    $("#hosp_dest").val(dataSelectHosp[0].id_hospital + " " + dataSelectHosp[0].nombre_hospital);
+    $("#hosp_dest").val(
+      dataSelectHosp[0].id_hospital + " " + dataSelectHosp[0].nombre_hospital
+    );
     crud_ajax("hospital_destino", dataSelectHosp[0].id_hospital, "updatePrehM");
+  });
+
+  $("#modalSeg").on("show.bs.modal", function () {
+    $("#noteInput").val("");
+    $.ajax({
+      url: "./bd/crud.php",
+      method: "POST",
+      dataType: "json",
+      data: {
+        option: "selectSeguimPreh",
+        idM: id_maestro,
+      },
+    })
+      .done(function (data) {
+        $("#segNote").empty();
+        $.each(data, function (index, value) {
+          $("#segNote").append("<li>" + value.seguimento + "</li>");
+        });
+      })
+      .fail(function () {
+        console.log("error");
+      });
+  });
+
+  $("#noteInput").keyup(function () {
+    $(this).val().length > 0
+      ? $(".btnNote").prop("disabled", false)
+      : $(".btnNote").prop("disabled", true);
+  });
+
+  $(".btnNote").on("click", function () {
+    crud_ajax("seguimento", $("#noteInput").val(), "updatePrehSeguim");
   });
 
   $("#modalR").on("show.bs.modal", function () {
@@ -588,25 +657,23 @@ $(function () {
     $.ajax({
       url: "./bd/crud.php",
       method: "POST",
+      dataType: "json",
       data: {
         option: "selectCierre",
       },
-      dataType: "json",
     })
       .done(function (data) {
         $("#selectRazon").empty();
-        $("#selectRazon").append(
-          $("<option>", {
-            value: 0,
-            text: "Seleccione...",
-          })
-        );
+        $("#selectRazon").append($("<option value='0'>Seleccione...</option>"));
         $.each(data, function (index, value) {
           $("#selectRazon").append(
-            $("<option>", {
-              value: value.id_tranlado_fallido,
-              text: value.tipo_cierrecaso_es,
-            })
+            $(
+              "<option value='" +
+                value.id_tranlado_fallido +
+                "'>" +
+                value.tipo_cierrecaso_es +
+                "</option>"
+            )
           );
         });
       })
@@ -643,35 +710,6 @@ $(function () {
       .fail(function () {
         console.log("error");
       });
-  });
-
-  $("#modalSeg").on("show.bs.modal", function () {
-    $("#noteInput").val("");
-    $.ajax({
-      url: "./bd/crud.php",
-      method: "POST",
-      data: {
-        option: "selectSeguim",
-      },
-      dataType: "json",
-    })
-      .done(function (data) {
-        $("#segNote").empty();
-        $.each(data, function (index, value) {
-          $("#segNote").append("<li>" + value.seguimento + "</li>");
-        });
-      })
-      .fail(function () {
-        console.log("error");
-      });
-  });
-
-  $("#noteInput").keyup(function () {
-    $(this).val().length > 0 ? $(".btnNote").prop("disabled", false) : $(".btnNote").prop("disabled", true);
-  });
-
-  $(".btnNote").on("click", function () {
-    crud_ajax("seguimento", $("#noteInput").val(), "updatePrehSeguim");
   });
 
   setInterval(function () {

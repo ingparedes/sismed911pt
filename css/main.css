@@ -1,0 +1,22 @@
+#accordionForms
+  input[type="text"]:not([size]):not([name="pageno"]):not(.cke_dialog_ui_input_text):not(.form-control-plaintext),
+input[type="password"]:not([size]) {
+  min-width: auto !important;
+}
+
+#accordionForms .form-control:not(textarea) {
+  width: inherit !important;
+}
+
+#accordionForms .input-group > .form-control,
+.input-group > .form-control-plaintext,
+.input-group > .custom-select,
+.input-group > .custom-file {
+  flex: 1 1 auto !important;
+  width: 1% !important;
+  min-width: 0 !important;
+}
+
+.modal ul#segNote {
+  padding: 0 30px;
+}

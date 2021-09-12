@@ -32,12 +32,8 @@ Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
 
-<link rel="stylesheet" href="assets/dataTables.bootstrap4.min.css" />
-<link rel="stylesheet" href="assets/responsive.bootstrap4.min.css" />
-<link rel="stylesheet" href="assets/select.bootstrap4.min.css" />
-
 <div class="container-fluid">
-	<div class="row">
+	<div class="row mb-3">
 		<div class="col-lg-12">
 			<table id="tableMaestro" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
 				<thead>
@@ -89,10 +85,10 @@ Page_Rendering();
 										<div class="tab-pane fade show active" id="paciente" role="tabpanel" aria-labelledby="paciente-tab">
 											<form id="form_paciente">
 												<div class="form-row">
-													<div class="form-group col-lg-1">
+													<div class="form-group col-lg-2">
 														<label for="p_ide">IDE:</label>
 														<select class="form-control" id="p_ide">
-															<option>Seleccione...</option>
+															<option value="0">Seleccione...</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
@@ -103,7 +99,7 @@ Page_Rendering();
 														<label for="p_exp">Expediente:</label>
 														<input type="text" class="form-control" id="p_exp" placeholder="Expediente" />
 													</div>
-													<div class="form-group col-lg-2">
+													<div class="form-group col-lg-3">
 														<label for="p_date">Fecha de nacimiento:</label>
 														<input type="date" class="form-control" id="p_date" />
 													</div>
@@ -111,54 +107,59 @@ Page_Rendering();
 														<label for="p_age">Edad:</label>
 														<input type="text" class="form-control" id="p_age" placeholder="Edad" />
 													</div>
-													<div class="form-group col-lg-1">
-														<label for="p_typeage">Tipo edad:</label>
-														<input type="text" class="form-control" id="p_typeage" placeholder="Tipo edad" />
+													<div class="form-group col-lg-2">
+														<label for="p_typeage">Tipo de edad:</label>
+														<select class="form-control" id="p_typeage">
+															<option>Seleccione...</option>
+														</select>
 													</div>
+												</div>
+												<div class="form-row">
+													<div class="form-group col-lg-3">
+														<label for="p_name1">Nombre 1:</label>
+														<input type="text" class="form-control" id="p_name1" placeholder="Nombre 1" />
+													</div>
+													<div class="form-group col-lg-3">
+														<label for="p_name2">Nombre 2:</label>
+														<input type="text" class="form-control" id="p_name2" placeholder="Nombre 2" />
+													</div>
+													<div class="form-group col-lg-3">
+														<label for="p_lastname1">Apellido 1:</label>
+														<input type="text" class="form-control" id="p_lastname1" placeholder="Apellido 1" />
+													</div>
+													<div class="form-group col-lg-3">
+														<label for="p_lastname2">Apellido 2:</label>
+														<input type="text" class="form-control" id="p_lastname2" placeholder="Apellido 2" />
+													</div>
+												</div>
+												<div class="form-row">
 													<div class="form-group col-lg-1">
-														<legend class="col-form-label pt-0">Género:</legend>
+														<label class="col-form-label pt-0">Género:</label>
 														<div class="form-check">
-															<input class="form-check-input gender" type="radio" name="gender" id="p_genM" value="m" />
+															<input class="form-check-input gender" type="radio" name="gender" id="p_genM" value="1" />
 															<label class="form-check-label" for="p_genM">M</label>
 														</div>
 														<div class="form-check">
-															<input class="form-check-input gender" type="radio" name="gender" id="p_genF" value="f" />
+															<input class="form-check-input gender" type="radio" name="gender" id="p_genF" value="2" />
 															<label class="form-check-label" for="p_genF">F</label>
 														</div>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="p_phone">Teléfono:</label>
-														<input type="text" class="form-control" id="p_phone" placeholder="Número de teléfono" />
-													</div>
-												</div>
-												<div class="form-row">
-													<div class="form-group col-lg-2">
-														<label for="p_name1">Nombre 1:</label>
-														<input type="text" class="form-control" id="p_name1" placeholder="Nombre 1" />
-													</div>
-													<div class="form-group col-lg-2">
-														<label for="p_name2">Nombre 2:</label>
-														<input type="text" class="form-control" id="p_name2" placeholder="Nombre 2" />
-													</div>
-													<div class="form-group col-lg-2">
-														<label for="p_lastname1">Apellido 1:</label>
-														<input type="text" class="form-control" id="p_lastname1" placeholder="Apellido 1" />
-													</div>
-													<div class="form-group col-lg-2">
-														<label for="p_lastname2">Apellido 2:</label>
-														<input type="text" class="form-control" id="p_lastname2" placeholder="Apellido 2" />
+														<input type="text" class="form-control" id="p_phone" placeholder="No. de teléfono" />
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="p_segS">No. seguro social:</label>
 														<input type="text" class="form-control" id="p_segS" placeholder="No. seguro social" />
 													</div>
-												</div>
-												<div class="form-row">
-													<div class="form-group col-lg-4">
+													<div class="form-group col-lg-7">
 														<label for="p_address">Dirección:</label>
 														<input type="text" class="form-control" id="p_address" placeholder="Dirección particular" />
 													</div>
-													<div class="form-group col-lg-6">
+												</div>
+												<div class="form-row">
+
+													<div class="form-group col-lg-12">
 														<label for="p_obs">Observaciones:</label>
 														<textarea class="form-control" id="p_obs" placeholder="Observaciones"></textarea>
 													</div>
@@ -196,23 +197,23 @@ Page_Rendering();
 													</div>
 												</div>
 												<div class="form-row">
-													<div class="form-group col-lg-1">
+													<div class="form-group col-lg-2">
 														<label for="ec_gl">Glasgow:</label>
 														<input type="text" class="form-control" id="ec_gl" placeholder="Glasgow" />
 													</div>
-													<div class="form-group col-lg-1">
+													<div class="form-group col-lg-2">
 														<label for="ec_sato2">sv sat 02:</label>
 														<input type="text" class="form-control" id="ec_sato2" placeholder="sv sat O2" />
 													</div>
-													<div class="form-group col-lg-1">
+													<div class="form-group col-lg-2">
 														<label for="ec_gli">Glicemia:</label>
 														<input type="text" class="form-control" id="ec_gli" placeholder="Glicemia" />
 													</div>
-													<div class="form-group col-lg-1">
+													<div class="form-group col-lg-2">
 														<label for="ec_talla">Talla:</label>
 														<input type="text" class="form-control" id="ec_talla" placeholder="Talla" />
 													</div>
-													<div class="form-group col-lg-1">
+													<div class="form-group col-lg-2">
 														<label for="ec_peso">Peso:</label>
 														<input type="text" class="form-control" id="ec_peso" placeholder="Peso" />
 													</div>
@@ -401,11 +402,11 @@ Page_Rendering();
 				</button>
 			</div>
 			<div class="modal-body">
-				<label>Notas:</label>
-				<ul id="segNote"></ul>
-				<br />
 				<label for="noteInput">Por favor, escriba la nota:</label>
 				<input type="text" class="form-control" id="noteInput" placeholder="Nota" />
+				<br />
+				<label>Notas:</label>
+				<ul id="segNote"></ul>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary not-allowed btnNote" data-dismiss="modal" disabled>
@@ -417,7 +418,7 @@ Page_Rendering();
 </div>
 
 <script>
-	ew.ready("dataTable", "<?php echo $RELATIVE_PATH ?>js/prehM.js", "prehM");
+	ew.ready("makerjs", "<?php echo $RELATIVE_PATH ?>js/prehM.js", "prehM");
 </script>
 <!-- </body>
 </html> -->

@@ -92,9 +92,10 @@ namespace PHPMaker2020\sismed911; ?>
 				SEARCH_FILTER_OPTION: "<?php echo Config("SEARCH_FILTER_OPTION") ?>",
 				OPTION_HTML_TEMPLATE: <?php echo JsonEncode(Config("OPTION_HTML_TEMPLATE")) ?>
 			});
-			loadjs("<?php echo $RELATIVE_PATH ?>jquery/jquery.min.js", "jquery");
+			loadjs("<?php echo $RELATIVE_PATH ?>assets/jquery-3.6.0.min.js", "jquery");
 
 			ew.ready("jquery", ["<?php echo $RELATIVE_PATH ?>assets/jquery.dataTables.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/bootstrap.bundle.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.responsive.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.js",
@@ -118,9 +119,10 @@ namespace PHPMaker2020\sismed911; ?>
 			var cssfiles = [
 				"<?php echo $RELATIVE_PATH ?>css/Chart.min.css",
 				"<?php echo $RELATIVE_PATH ?>css/jquery.fileupload.css",
-				"<?php echo $RELATIVE_PATH ?>css/jquery.fileupload-ui.css"
+				"<?php echo $RELATIVE_PATH ?>css/jquery.fileupload-ui.css",
+				"<?php echo $RELATIVE_PATH ?>colorbox/colorbox.css",
+				"<?php echo $RELATIVE_PATH ?>css/main.css"
 			];
-			cssfiles.push("<?php echo $RELATIVE_PATH ?>colorbox/colorbox.css");
 			loadjs(cssfiles, "css");
 			var cssjs = [];
 			<?php foreach (array_merge(Config("STYLESHEET_FILES"), Config("JAVASCRIPT_FILES")) as $file) { // External Stylesheets and JavaScripts 
@@ -129,19 +131,23 @@ namespace PHPMaker2020\sismed911; ?>
 			<?php } ?>
 			var jqueryjs = [
 				"<?php echo $RELATIVE_PATH ?>adminlte3/js/adminlte.js",
-				"<?php echo $RELATIVE_PATH ?>bootstrap4/js/bootstrap.bundle.min.js",
 				"<?php echo $RELATIVE_PATH ?>jquery/jquery.fileDownload.min.js",
 				"<?php echo $RELATIVE_PATH ?>jquery/jqueryfileupload.min.js",
-				"<?php echo $RELATIVE_PATH ?>jquery/typeahead.jquery.min.js"
+				"<?php echo $RELATIVE_PATH ?>jquery/typeahead.jquery.min.js",
+				"<?php echo $RELATIVE_PATH ?>colorbox/jquery.colorbox-min.js",
+				"<?php echo $RELATIVE_PATH ?>js/pdfobject.min.js",
+				"<?php echo $RELATIVE_PATH ?>jquery/jquery.ewjtable.min.js"
 			];
-			jqueryjs.push("<?php echo $RELATIVE_PATH ?>colorbox/jquery.colorbox-min.js");
-			jqueryjs.push("<?php echo $RELATIVE_PATH ?>js/pdfobject.min.js");
-			jqueryjs.push("<?php echo $RELATIVE_PATH ?>jquery/jquery.ewjtable.min.js");
-			ew.ready(["jquery", "widget", "scrollbars", "moment", "others"], [jqueryjs, "<?php echo $RELATIVE_PATH ?>js/ew.js"], "makerjs");
+			ew.ready(["jquery", "dataTable", "widget", "scrollbars", "moment", "others"], [jqueryjs, "<?php echo $RELATIVE_PATH ?>js/ew.js"], "makerjs");
 			ew.ready("makerjs", [cssjs, "<?php echo $RELATIVE_PATH ?>js/userfn.js"], "head");
 		</script>
 		<script>
-			loadjs("<?php echo $RELATIVE_PATH ?>css/tempusdominus-bootstrap-4.css");
+			loadjs(["<?php echo $RELATIVE_PATH ?>css/tempusdominus-bootstrap-4.css",
+				"<?php echo $RELATIVE_PATH ?>assets/bootstrap.min.css",
+				"<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.css",
+				"<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.css",
+				"<?php echo $RELATIVE_PATH ?>assets/select.bootstrap4.min.css"
+			]);
 			ew.ready("head", ["<?php echo $RELATIVE_PATH ?>js/tempusdominus-bootstrap-4.js", "<?php echo $RELATIVE_PATH ?>js/ewdatetimepicker.js"], "datetimepicker");
 			loadjs.ready("datetimepicker", function() {
 				var $ = jQuery;
