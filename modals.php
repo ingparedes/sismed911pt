@@ -141,3 +141,34 @@
     </div>
 </div>
 <!-- end modal ambulance -->
+
+<!-- Modal Paciente -->
+<div class="modal fade" id="patient" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Seleccione el paciente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="tablePatient" class="table table-striped table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary not-allowed btnPatient" data-dismiss="modal" disabled>
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

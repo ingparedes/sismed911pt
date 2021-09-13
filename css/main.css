@@ -30,3 +30,7 @@ input[type="password"]:not([size]) {
 .modal ul#segNote {
   padding: 0 30px;
 }
+
+form#form_admission .form-control {
+  display: block;
+}

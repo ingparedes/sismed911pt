@@ -11,8 +11,8 @@ $setField = (isset($_POST['setField'])) ? $_POST['setField'] : '';
 $id_patient = (isset($_POST['idP'])) ? $_POST['idP'] : '';
 $patient = (isset($_POST['patient'])) ? $_POST['patient'] : '';
 $id_ingress = (isset($_POST['ingress'])) ? $_POST['ingress'] : '';
-$companion = (isset($_POST['acompañante'])) ? $_POST['acompañante'] : null;
-$phone_companion = (isset($_POST['phone_acompañante'])) ? $_POST['phone_acompañante'] : null;
+$companion = (isset($_POST['companion'])) ? $_POST['companion'] : null;
+$phone_companion = (isset($_POST['phone_companion'])) ? $_POST['phone_companion'] : null;
 $cod911 = (isset($_POST['cod911'])) ? $_POST['cod911'] : null;
 $dataAdmission = (isset($_POST['data'])) ? $_POST['data'] : null;
 $id_medicalAttention = (isset($_POST['idMA'])) ? $_POST['idMA'] : null;
@@ -42,10 +42,10 @@ switch ($option) {
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectAdmission':
-        $sql = "SELECT * FROM sala_admision
-                INNER JOIN pacientegeneral ON sala_admision.id_paciente=pacientegeneral.id_paciente
-                INNER JOIN tipo_ingreso ON sala_admision.id_ingreso=tipo_ingreso.id_ingreso
-                LEFT JOIN sala_signos ON sala_admision.id_signos=sala_signos.id_signos
+        $sql = "SELECT * FROM sala_admission
+                INNER JOIN pacientegeneral ON sala_admission.id_paciente=pacientegeneral.id_paciente
+                INNER JOIN tipo_ingreso ON sala_admission.id_ingreso=tipo_ingreso.id_ingreso
+                LEFT JOIN sala_signos ON sala_admission.id_signos=sala_signos.id_signos
                 ORDER BY id_admision";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
@@ -55,10 +55,10 @@ switch ($option) {
         break;
     case 'selectUrgency':
     case 'selectEmergency':
-        $sql = "SELECT * FROM sala_admision
-                INNER JOIN pacientegeneral ON sala_admision.id_paciente=pacientegeneral.id_paciente
-                INNER JOIN sala_motivoatencion ON sala_admision.id_motivoatencion=sala_motivoatencion.id_motivoatencion
-                LEFT JOIN sala_atencionmedica ON sala_admision.id_admision=sala_atencionmedica.id_admision
+        $sql = "SELECT * FROM sala_admission
+                INNER JOIN pacientegeneral ON sala_admission.id_paciente=pacientegeneral.id_paciente
+                INNER JOIN sala_motivoatencion ON sala_admission.id_motivoatencion=sala_motivoatencion.id_motivoatencion
+                LEFT JOIN sala_atencionmedica ON sala_admission.id_admision=sala_atencionmedica.id_admision
                 LEFT JOIN cuerpo_general ON sala_atencionmedica.id_general=cuerpo_general.id_general
                 LEFT JOIN cuerpo_cabeza ON sala_atencionmedica.id_cabeza=cuerpo_cabeza.id_cabeza
                 LEFT JOIN cuerpo_ojo ON sala_atencionmedica.id_ojo=cuerpo_ojo.id_ojo
@@ -78,9 +78,9 @@ switch ($option) {
                 LEFT JOIN cie10 ON sala_atencionmedica.cod_cie10=cie10.codigo_cie
                 LEFT JOIN tipo_edad ON pacientegeneral.cod_edad=tipo_edad.id_edad";
         $sql .= $option == 'selectUrgency'
-            ? " WHERE sala_atencionmedica.id_estadoalta IS NULL AND (sala_admision.clasificacion_admision='Verde' OR sala_admision.clasificacion_admision='Azul')"
-            : " WHERE sala_atencionmedica.id_estadoalta IS NULL AND (sala_admision.clasificacion_admision='Rojo' OR sala_admision.clasificacion_admision='Naranja' OR sala_admision.clasificacion_admision='Amarillo')";
-        $sql .= " ORDER BY sala_admision.id_admision";
+            ? " WHERE sala_atencionmedica.id_estadoalta IS NULL AND (sala_admission.clasificacion_admision='Verde' OR sala_admission.clasificacion_admision='Azul')"
+            : " WHERE sala_atencionmedica.id_estadoalta IS NULL AND (sala_admission.clasificacion_admision='Rojo' OR sala_admission.clasificacion_admision='Naranja' OR sala_admission.clasificacion_admision='Amarillo')";
+        $sql .= " ORDER BY sala_admission.id_admision";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectCIE10':
@@ -209,7 +209,7 @@ switch ($option) {
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'insertAdmission':
-        $sql = "INSERT INTO sala_admision (id_ingreso, id_paciente, acompañante, telefono_acompañante, fecha_admision, cod911)
+        $sql = "INSERT INTO sala_admission (id_ingreso, id_paciente, acompañante, telefono_acompañante, fecha_admision, cod911)
                 VALUES (" . $id_ingress . ", " . $id_patient . ", " . $companion . ", " . $phone_companion . ", '" . date('d-m-Y H:i:s') . "'," . $cod911 . ")";
         echo $connection->execute($connect, $sql);
         break;
@@ -240,7 +240,7 @@ switch ($option) {
         echo $connection->execute($connect, $sql);
         break;
     case 'updateAdmission':
-        $sql = "UPDATE sala_admision SET id_motivoatencion=" . $dataAdmission['id_attention']
+        $sql = "UPDATE sala_admission SET id_motivoatencion=" . $dataAdmission['id_attention']
             . ",id_localizaciontrauma=" . $dataAdmission['id_locationTrauma']
             . ",id_causatrauma=" . $dataAdmission['id_causeTrauma']
             . ",id_sistema=" . $dataAdmission['id_system']
