@@ -27,6 +27,7 @@
         </div>
     </div>
 </div>
+<!-- end modal CIE10-->
 
 <!-- Modal Hospital -->
 <div class="modal fade" id="hosp" tabindex="-1" aria-labelledby="hospit" aria-hidden="true">
@@ -57,6 +58,7 @@
         </div>
     </div>
 </div>
+<!-- end modal Hospital -->
 
 <!-- Modal Seguimiento -->
 <div class="modal fade" id="modalSeg" tabindex="-1" aria-labelledby="seguim" aria-hidden="true">
@@ -83,6 +85,7 @@
         </div>
     </div>
 </div>
+<!-- end modal Seguimiento -->
 
 <!-- Modal Cerrar Caso -->
 <div class="modal fade" id="modalR" tabindex="-1" aria-labelledby="razonM" aria-hidden="true">
@@ -110,6 +113,7 @@
         </div>
     </div>
 </div>
+<!-- end modal Cerrar Caso -->
 
 <!-- Modal ambulance -->
 <div class="modal fade" id="modalAmbulance" tabindex="-1" aria-labelledby="ambulancia" aria-hidden="true">
@@ -172,3 +176,35 @@
         </div>
     </div>
 </div>
+<!-- end modal paciente-->
+
+<!-- Modal signal-->
+<div class="modal fade" id="modalSignal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Seleccione un signo y síntoma</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="tableSignal" class="table table-striped table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Nivel</th>
+                            <th>Signos y síntomas</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary not-allowed btnSignal" data-dismiss="modal" disabled>
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal signal-->
