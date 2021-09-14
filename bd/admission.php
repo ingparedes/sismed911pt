@@ -4,6 +4,8 @@ include_once 'connection.php';
 $connection = new connection();
 $connect = $connection->connect();
 
+date_default_timezone_set('America/Asuncion');
+
 $option = (isset($_POST['option'])) ? $_POST['option'] : '';
 $reason = (isset($_POST['reason'])) ? $_POST['reason'] : '';
 $field = (isset($_POST['field'])) ? $_POST['field'] : '';
@@ -56,11 +58,13 @@ switch ($option) {
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectAdmission':
-        $sql = "SELECT * FROM sala_admission
+        $sql = "SELECT *,sala_admission.id_admision FROM sala_admission
                 INNER JOIN pacientegeneral ON sala_admission.id_paciente=pacientegeneral.id_paciente
                 INNER JOIN tipo_ingreso ON sala_admission.id_ingreso=tipo_ingreso.id_ingreso
                 LEFT JOIN sala_signos ON sala_admission.id_signos=sala_signos.id_signos
-                ORDER BY id_admision";
+                LEFT JOIN sala_atencionmedica ON sala_admission.id_admision=sala_atencionmedica.id_admision
+                WHERE sala_atencionmedica.id_estadoalta IS NULL
+                ORDER BY sala_admission.id_admision";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectSignal':
@@ -94,7 +98,7 @@ switch ($option) {
         $sql .= $option == 'selectUrgency'
             ? " WHERE sala_atencionmedica.id_estadoalta IS NULL AND (sala_admission.clasificacion_admision='Verde' OR sala_admission.clasificacion_admision='Azul')"
             : " WHERE sala_atencionmedica.id_estadoalta IS NULL AND (sala_admission.clasificacion_admision='Rojo' OR sala_admission.clasificacion_admision='Naranja' OR sala_admission.clasificacion_admision='Amarillo')";
-        $sql .= " ORDER BY sala_admission.id_admision";
+        $sql .= " ORDER BY sala_admission.clasificacion_admision DESC";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectCIE10':

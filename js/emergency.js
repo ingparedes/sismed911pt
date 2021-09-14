@@ -4,6 +4,7 @@ $(function () {
   var tableEmergency = $("#tableEmergency").DataTable({
     select: "single",
     pageLength: 5,
+    order: [[0, "desc"]],
     language: {
       select: {
         rows: {
@@ -100,47 +101,71 @@ $(function () {
     dom: "Bfrtip",
     initComplete: function () {
       $("#tableEmergency tr").each(function (index, value) {
-        switch ($(this).find("td .card-classification").text()) {
-          case "Amarillo":
-            var _this = this;
-            var min_yellow = 15;
-            var seg_yellow = 60;
-            setInterval(function () {
-              if (min_yellow > 0) {
-                seg_yellow--;
-                if (seg_yellow == 0) {
-                  seg_yellow = 60;
-                  min_yellow--;
+        if (index > 0) {
+          var date = new Date();
+          var date_classification = new Date(
+            tableEmergency.rows(index - 1).data()[0].fecha_clasificacion
+          );
+          var diff = Math.abs(date - date_classification);
+          var minutes = Math.floor(diff / 1000 / 60);          
+          switch ($(this).find("td .card-classification").text()) {
+            case "Amarillo":
+              var _this = this;
+              var min_yellow = 9 - minutes;
+              var seg_yellow = 60 - date_classification.getSeconds();
+              setInterval(function () {
+                if (min_yellow >= 0) {
+                  $(_this)
+                    .find(".countdown .min")
+                    .html(
+                      min_yellow > 0 && min_yellow < 10
+                        ? "0" + min_yellow
+                        : min_yellow
+                    );
+                  seg_yellow--;
+                  if (seg_yellow == 0) {
+                    seg_yellow = min_yellow == 0 ? 0 : 60;
+                    min_yellow--;
+                  }
+                  $(_this)
+                    .find(".countdown .sec")
+                    .html(
+                      seg_yellow > 0 && seg_yellow < 10
+                        ? "0" + seg_yellow
+                        : seg_yellow
+                    );
                 }
-                $(_this)
-                  .find(".countdown .min")
-                  .html(min_yellow > 9 ? min_yellow : "0" + min_yellow);
-                $(_this)
-                  .find(".countdown .sec")
-                  .html(seg_yellow > 9 ? seg_yellow : "0" + seg_yellow);
-              }
-            }, 1000);
-            break;
-          case "Naranja":
-            var _this = this;
-            var min_orange = 10;
-            var seg_orange = 60;
-            setInterval(function () {
-              if (min_orange > 0) {
-                seg_orange--;
-                if (seg_orange == 0) {
-                  seg_orange = 60;
-                  min_orange--;
+              }, 1000);
+              break;
+            case "Naranja":
+              var _this = this;
+              var min_orange = 14 - minutes;
+              var seg_orange = 60 - date_classification.getSeconds();
+              setInterval(function () {
+                if (min_orange >= 0) {
+                  $(_this)
+                    .find(".countdown .min")
+                    .html(
+                      min_orange > 0 && min_orange < 10
+                        ? "0" + min_orange
+                        : min_orange
+                    );
+                  seg_orange--;
+                  if (seg_orange == 0) {
+                    seg_orange = min_orange == 0 ? 0 : 60;
+                    min_orange--;
+                  }
+                  $(_this)
+                    .find(".countdown .sec")
+                    .html(
+                      seg_orange > 0 && seg_orange < 10
+                        ? "0" + seg_orange
+                        : seg_orange
+                    );
                 }
-                $(_this)
-                  .find(".countdown .min")
-                  .html(min_orange > 9 ? min_orange : "0" + min_orange);
-                $(_this)
-                  .find(".countdown .sec")
-                  .html(seg_orange > 9 ? seg_orange : "0" + seg_orange);
-              }
-            }, 1000);
-            break;
+              }, 1000);
+              break;
+          }
         }
       });
     },

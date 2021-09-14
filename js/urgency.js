@@ -4,6 +4,7 @@ $(function () {
   var tableUrgency = $("#tableUrgency").DataTable({
     select: "single",
     pageLength: 5,
+    order: [[0, "desc"]],
     language: {
       select: {
         rows: {
@@ -92,47 +93,66 @@ $(function () {
     dom: "Bfrtip",
     initComplete: function () {
       $("#tableUrgency tr").each(function (index, value) {
-        switch ($(this).find("td .card-classification").text()) {
-          case "Azul":
-            var _this = this;
-            var min_blue = 45;
-            var seg_blue = 60;
-            setInterval(function () {
-              if (min_blue > 0) {
-                seg_blue--;
-                if (seg_blue == 0) {
-                  seg_blue = 60;
-                  min_blue--;
+        if (index > 0) {
+          var date_classification = new Date(
+            tableUrgency.rows(index - 1).data()[0].fecha_clasificacion
+          );
+          var diff = Math.abs(new Date() - date_classification);
+          var minutes = Math.floor(diff / 1000 / 60);
+          switch ($(this).find("td .card-classification").text()) {
+            case "Azul":
+              var _this = this;
+              var min_blue = 45 - minutes;
+              var seg_blue = 60 - date_classification.getSeconds();
+              setInterval(function () {
+                if (min_blue >= 0) {
+                  $(_this)
+                    .find(".countdown .min")
+                    .html(
+                      min_blue > 0 && min_blue < 10 ? "0" + min_blue : min_blue
+                    );
+                  seg_blue--;
+                  if (seg_blue == 0) {
+                    seg_blue = min_blue == 0 ? 0 : 60;
+                    min_blue--;
+                  }
+                  $(_this)
+                    .find(".countdown .sec")
+                    .html(
+                      seg_blue > 0 && seg_blue < 10 ? "0" + seg_blue : seg_blue
+                    );
                 }
-                $(_this)
-                  .find(".countdown .min")
-                  .html(min_blue > 9 ? min_blue : "0" + min_blue);
-                $(_this)
-                  .find(".countdown .sec")
-                  .html(seg_blue > 9 ? seg_blue : "0" + seg_blue);
-              }
-            }, 1000);
-            break;
-          case "Verde":
-            var _this = this;
-            var min_green = 30;
-            var seg_green = 60;
-            setInterval(function () {
-              if (min_green > 0) {
-                seg_green--;
-                if (seg_green == 0) {
-                  seg_green = 60;
-                  min_green--;
+              }, 1000);
+              break;
+            case "Verde":
+              var _this = this;
+              var min_green = 30 - minutes;
+              var seg_green = 60 - date_classification.getSeconds();
+              setInterval(function () {
+                if (min_green >= 0) {
+                  $(_this)
+                    .find(".countdown .min")
+                    .html(
+                      min_green > 0 && min_green < 10
+                        ? "0" + min_green
+                        : min_green
+                    );
+                  seg_green--;
+                  if (seg_green == 0) {
+                    seg_green = min_green == 0 ? 0 : 60;
+                    min_green--;
+                  }
+                  $(_this)
+                    .find(".countdown .sec")
+                    .html(
+                      seg_green > 0 && seg_green < 10
+                        ? "0" + seg_green
+                        : seg_green
+                    );
                 }
-                $(_this)
-                  .find(".countdown .min")
-                  .html(min_green > 9 ? min_green : "0" + min_green);
-                $(_this)
-                  .find(".countdown .sec")
-                  .html(seg_green > 9 ? seg_green : "0" + seg_green);
-              }
-            }, 1000);
-            break;
+              }, 1000);
+              break;
+          }
         }
       });
     },
