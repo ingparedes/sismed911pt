@@ -55,7 +55,7 @@ $(function () {
               ? "text-white bg-blue"
               : "text-white bg-green";
           return (
-            "<div class='card mb-0 " +
+            "<div class='card card-classification mb-0 " +
             fond +
             "'><div class='card-body'>" +
             row.clasificacion_admision +
@@ -67,13 +67,13 @@ $(function () {
       {
         render: function (data, type, row) {
           return (
-            "<div id='timer'><div class='row'><div class='col countdown-wrapper text-center'><div class='card mb-0 bg-light'><div class='card-block'><div id='countdown' class='text-center d-flex justify-content-center'><span class='countdown-section'><span id='hour_" +
+            "<div class='timer_parent'><div class='row'><div class='col countdown-wrapper text-center'><div class='card mb-0 bg-light'><div class='card-block'><div class='countdown text-center d-flex justify-content-center'><span class='countdown-section'><span id='hour_" +
             row.id_admision +
             "' class='timer'>0</span><span class='countdown-period d-block'>Horas</span></span><span class='countdown-section'><span id='min_" +
             row.id_admision +
-            "' class='timer'>0</span><span class='countdown-period d-block'>Minutos</span></span><span class='countdown-section'><span id='sec_" +
+            "' class='timer min'>0</span><span class='countdown-period d-block'>Minutos</span></span><span class='countdown-section'><span id='sec_" +
             row.id_admision +
-            "' class='timer'>0</span><span class='countdown-period d-block'>Segundos</span></span></div></div></div></div></div></div>"
+            "' class='timer sec'>0</span><span class='countdown-period d-block'>Segundos</span></span></div></div></div></div></div></div>"
           );
         },
         targets: 1,
@@ -91,17 +91,47 @@ $(function () {
     ],
     dom: "Bfrtip",
     initComplete: function () {
-      /*console.log(tableUrgency.rows().data());
-      console.log(tableUrgency.rows()[0]);
-      console.log(tableUrgency.rows(0));*/
-      $.each(tableUrgency.rows()[0], function (index, value) {
-        var row = tableUrgency.rows(value).data()[0];
-        switch (row.clasificacion_admision) {
+      $("#tableUrgency tr").each(function (index, value) {
+        switch ($(this).find("td .card-classification").text()) {
           case "Azul":
-            console.log(tableUrgency.rows(value));
+            var _this = this;
+            var min_blue = 45;
+            var seg_blue = 60;
+            setInterval(function () {
+              if (min_blue > 0) {
+                seg_blue--;
+                if (seg_blue == 0) {
+                  seg_blue = 60;
+                  min_blue--;
+                }
+                $(_this)
+                  .find(".countdown .min")
+                  .html(min_blue > 9 ? min_blue : "0" + min_blue);
+                $(_this)
+                  .find(".countdown .sec")
+                  .html(seg_blue > 9 ? seg_blue : "0" + seg_blue);
+              }
+            }, 1000);
             break;
           case "Verde":
-            console.log(tableUrgency.rows(value));
+            var _this = this;
+            var min_green = 30;
+            var seg_green = 60;
+            setInterval(function () {
+              if (min_green > 0) {
+                seg_green--;
+                if (seg_green == 0) {
+                  seg_green = 60;
+                  min_green--;
+                }
+                $(_this)
+                  .find(".countdown .min")
+                  .html(min_green > 9 ? min_green : "0" + min_green);
+                $(_this)
+                  .find(".countdown .sec")
+                  .html(seg_green > 9 ? seg_green : "0" + seg_green);
+              }
+            }, 1000);
             break;
         }
       });
@@ -1014,16 +1044,4 @@ $(function () {
 
     doc.save("orden_examenes.pdf");
   });
-
-  setInterval(function time() {
-    var d = new Date();
-    var hours = 24 - d.getHours();
-    var min = 60 - d.getMinutes();
-    //if ((min + "").length == 1) min = "0" + min;
-    var sec = 60 - d.getSeconds();
-    //if ((sec + "").length == 1) sec = "0" + min;
-    $("#countdown #hour").html(hours);
-    $("#countdown #min").html(min);
-    $("#countdown #sec").html(sec);
-  }, 1000);
 });

@@ -45,27 +45,27 @@ form#form_admission .form-control {
   padding: 0.7rem;
 }
 
-#timer .countdown-wrapper {
+.timer_parent .countdown-wrapper {
   margin: 0 auto;
 }
 
-#timer #countdown {
+.timer_parent .countdown-wrapper .countdown {
   text-shadow: 1px 1px 5px black;
 }
 
-#timer .countdown-wrapper #countdown .timer {
+.timer_parent .countdown-wrapper .countdown .timer {
   padding: 0 20px;
   border-radius: 50%;
   font-size: 20px;
 }
 
-#timer .countdown-wrapper #countdown .countdown-section {
+.timer_parent .countdown-wrapper .countdown .countdown-section {
   float: left;
   font-size: 70%;
   text-align: center;
 }
 
-#timer .countdown-wrapper #countdown .countdown-section .countdown-period {
+.timer_parent .countdown-wrapper .countdown .countdown-section .countdown-period {
   color: black;
   text-shadow: none;
 }
