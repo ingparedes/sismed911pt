@@ -106,6 +106,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $usuarios_edit->acode->caption(), $usuarios_edit->acode->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($usuarios_edit->hospital->Required) { ?>
+				elm = this.getElements("x" + infix + "_hospital");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $usuarios_edit->hospital->caption(), $usuarios_edit->hospital->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -140,6 +145,8 @@ loadjs.ready("head", function() {
 	fusuariosedit.lists["x_sede"].options = <?php echo JsonEncode($usuarios_edit->sede->lookupOptions()) ?>;
 	fusuariosedit.lists["x_acode"] = <?php echo $usuarios_edit->acode->Lookup->toClientList($usuarios_edit) ?>;
 	fusuariosedit.lists["x_acode"].options = <?php echo JsonEncode($usuarios_edit->acode->lookupOptions()) ?>;
+	fusuariosedit.lists["x_hospital"] = <?php echo $usuarios_edit->hospital->Lookup->toClientList($usuarios_edit) ?>;
+	fusuariosedit.lists["x_hospital"].options = <?php echo JsonEncode($usuarios_edit->hospital->lookupOptions()) ?>;
 	loadjs.done("fusuariosedit");
 });
 </script>
@@ -273,6 +280,23 @@ $usuarios_edit->showMessage();
 <?php echo $usuarios_edit->acode->Lookup->getParamTag($usuarios_edit, "p_x_acode") ?>
 </span>
 <?php echo $usuarios_edit->acode->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($usuarios_edit->hospital->Visible) { // hospital ?>
+	<div id="r_hospital" class="form-group row">
+		<label id="elh_usuarios_hospital" for="x_hospital" class="<?php echo $usuarios_edit->LeftColumnClass ?>"><?php echo $usuarios_edit->hospital->caption() ?><?php echo $usuarios_edit->hospital->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $usuarios_edit->RightColumnClass ?>"><div <?php echo $usuarios_edit->hospital->cellAttributes() ?>>
+<span id="el_usuarios_hospital">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_hospital"><?php echo EmptyValue(strval($usuarios_edit->hospital->ViewValue)) ? $Language->phrase("PleaseSelect") : $usuarios_edit->hospital->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($usuarios_edit->hospital->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($usuarios_edit->hospital->ReadOnly || $usuarios_edit->hospital->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_hospital',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $usuarios_edit->hospital->Lookup->getParamTag($usuarios_edit, "p_x_hospital") ?>
+<input type="hidden" data-table="usuarios" data-field="x_hospital" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $usuarios_edit->hospital->displayValueSeparatorAttribute() ?>" name="x_hospital" id="x_hospital" value="<?php echo $usuarios_edit->hospital->CurrentValue ?>"<?php echo $usuarios_edit->hospital->editAttributes() ?>>
+</span>
+<?php echo $usuarios_edit->hospital->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

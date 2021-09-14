@@ -11,7 +11,7 @@ class usuarios_delete extends usuarios
 	public $PageID = "delete";
 
 	// Project ID
-	public $ProjectID = "{17BEB368-DB80-46DC-8EC5-730EB11B94E5}";
+	public $ProjectID = "{4E339F5D-7A0C-4550-99C0-1CC44C54B665}";
 
 	// Table name
 	public $TableName = 'usuarios';
@@ -582,6 +582,7 @@ class usuarios_delete extends usuarios
 		$this->perfil->setVisibility();
 		$this->sede->setVisibility();
 		$this->acode->setVisibility();
+		$this->hospital->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -606,6 +607,7 @@ class usuarios_delete extends usuarios
 		$this->setupLookupOptions($this->perfil);
 		$this->setupLookupOptions($this->sede);
 		$this->setupLookupOptions($this->acode);
+		$this->setupLookupOptions($this->hospital);
 
 		// Check permission
 		if (!$Security->canDelete()) {
@@ -740,6 +742,7 @@ class usuarios_delete extends usuarios
 		$this->perfil->setDbValue($row['perfil']);
 		$this->sede->setDbValue($row['sede']);
 		$this->acode->setDbValue($row['acode']);
+		$this->hospital->setDbValue($row['hospital']);
 	}
 
 	// Return a row with default values
@@ -756,6 +759,7 @@ class usuarios_delete extends usuarios
 		$row['perfil'] = NULL;
 		$row['sede'] = NULL;
 		$row['acode'] = NULL;
+		$row['hospital'] = NULL;
 		return $row;
 	}
 
@@ -780,6 +784,7 @@ class usuarios_delete extends usuarios
 		// perfil
 		// sede
 		// acode
+		// hospital
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -882,6 +887,28 @@ class usuarios_delete extends usuarios
 			}
 			$this->acode->ViewCustomAttributes = "";
 
+			// hospital
+			$curVal = strval($this->hospital->CurrentValue);
+			if ($curVal != "") {
+				$this->hospital->ViewValue = $this->hospital->lookupCacheOption($curVal);
+				if ($this->hospital->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "\"id_hospital\"" . SearchString("=", $curVal, DATATYPE_STRING, "");
+					$sqlWrk = $this->hospital->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->hospital->ViewValue = $this->hospital->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->hospital->ViewValue = $this->hospital->CurrentValue;
+					}
+				}
+			} else {
+				$this->hospital->ViewValue = NULL;
+			}
+			$this->hospital->ViewCustomAttributes = "";
+
 			// id_user
 			$this->id_user->LinkCustomAttributes = "";
 			$this->id_user->HrefValue = "";
@@ -931,6 +958,11 @@ class usuarios_delete extends usuarios
 			$this->acode->LinkCustomAttributes = "";
 			$this->acode->HrefValue = "";
 			$this->acode->TooltipValue = "";
+
+			// hospital
+			$this->hospital->LinkCustomAttributes = "";
+			$this->hospital->HrefValue = "";
+			$this->hospital->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -1059,6 +1091,8 @@ class usuarios_delete extends usuarios
 					break;
 				case "x_acode":
 					break;
+				case "x_hospital":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1084,6 +1118,8 @@ class usuarios_delete extends usuarios
 						case "x_sede":
 							break;
 						case "x_acode":
+							break;
+						case "x_hospital":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

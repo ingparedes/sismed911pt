@@ -171,6 +171,16 @@ $usuarios_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($usuarios_view->hospital->Visible) { // hospital ?>
+	<tr id="r_hospital">
+		<td class="<?php echo $usuarios_view->TableLeftColumnClass ?>"><span id="elh_usuarios_hospital"><?php echo $usuarios_view->hospital->caption() ?></span></td>
+		<td data-name="hospital" <?php echo $usuarios_view->hospital->cellAttributes() ?>>
+<span id="el_usuarios_hospital">
+<span<?php echo $usuarios_view->hospital->viewAttributes() ?>><?php echo $usuarios_view->hospital->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 </table>
 </form>
 <?php

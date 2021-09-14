@@ -35,6 +35,7 @@ class usuarios extends DbTable
 	public $perfil;
 	public $sede;
 	public $acode;
+	public $hospital;
 
 	// Constructor
 	public function __construct()
@@ -184,6 +185,30 @@ class usuarios extends DbTable
 				break;
 		}
 		$this->fields['acode'] = &$this->acode;
+
+		// hospital
+		$this->hospital = new DbField('usuarios', 'usuarios', 'x_hospital', 'hospital', '"hospital"', '"hospital"', 200, 16, -1, FALSE, '"hospital"', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->hospital->Sortable = TRUE; // Allow sort
+		$this->hospital->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->hospital->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		switch ($CurrentLanguage) {
+			case "en":
+				$this->hospital->Lookup = new Lookup('hospital', 'hospitalesgeneral', FALSE, 'id_hospital', ["nombre_hospital","","",""], [], [], [], [], [], [], '', '');
+				break;
+			case "fr":
+				$this->hospital->Lookup = new Lookup('hospital', 'hospitalesgeneral', FALSE, 'id_hospital', ["nombre_hospital","","",""], [], [], [], [], [], [], '', '');
+				break;
+			case "pt":
+				$this->hospital->Lookup = new Lookup('hospital', 'hospitalesgeneral', FALSE, 'id_hospital', ["nombre_hospital","","",""], [], [], [], [], [], [], '', '');
+				break;
+			case "es":
+				$this->hospital->Lookup = new Lookup('hospital', 'hospitalesgeneral', FALSE, 'id_hospital', ["nombre_hospital","","",""], [], [], [], [], [], [], '', '');
+				break;
+			default:
+				$this->hospital->Lookup = new Lookup('hospital', 'hospitalesgeneral', FALSE, 'id_hospital', ["nombre_hospital","","",""], [], [], [], [], [], [], '', '');
+				break;
+		}
+		$this->fields['hospital'] = &$this->hospital;
 	}
 
 	// Field Visibility
@@ -556,6 +581,7 @@ class usuarios extends DbTable
 		$this->perfil->DbValue = $row['perfil'];
 		$this->sede->DbValue = $row['sede'];
 		$this->acode->DbValue = $row['acode'];
+		$this->hospital->DbValue = $row['hospital'];
 	}
 
 	// Delete uploaded files
@@ -796,6 +822,7 @@ class usuarios extends DbTable
 		$this->perfil->setDbValue($rs->fields('perfil'));
 		$this->sede->setDbValue($rs->fields('sede'));
 		$this->acode->setDbValue($rs->fields('acode'));
+		$this->hospital->setDbValue($rs->fields('hospital'));
 	}
 
 	// Render list row values
@@ -817,6 +844,7 @@ class usuarios extends DbTable
 		// perfil
 		// sede
 		// acode
+		// hospital
 		// id_user
 
 		$this->id_user->ViewValue = $this->id_user->CurrentValue;
@@ -917,6 +945,28 @@ class usuarios extends DbTable
 		}
 		$this->acode->ViewCustomAttributes = "";
 
+		// hospital
+		$curVal = strval($this->hospital->CurrentValue);
+		if ($curVal != "") {
+			$this->hospital->ViewValue = $this->hospital->lookupCacheOption($curVal);
+			if ($this->hospital->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "\"id_hospital\"" . SearchString("=", $curVal, DATATYPE_STRING, "");
+				$sqlWrk = $this->hospital->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->hospital->ViewValue = $this->hospital->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->hospital->ViewValue = $this->hospital->CurrentValue;
+				}
+			}
+		} else {
+			$this->hospital->ViewValue = NULL;
+		}
+		$this->hospital->ViewCustomAttributes = "";
+
 		// id_user
 		$this->id_user->LinkCustomAttributes = "";
 		$this->id_user->HrefValue = "";
@@ -966,6 +1016,11 @@ class usuarios extends DbTable
 		$this->acode->LinkCustomAttributes = "";
 		$this->acode->HrefValue = "";
 		$this->acode->TooltipValue = "";
+
+		// hospital
+		$this->hospital->LinkCustomAttributes = "";
+		$this->hospital->HrefValue = "";
+		$this->hospital->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1044,6 +1099,10 @@ class usuarios extends DbTable
 		$this->acode->EditAttrs["class"] = "form-control";
 		$this->acode->EditCustomAttributes = "";
 
+		// hospital
+		$this->hospital->EditAttrs["class"] = "form-control";
+		$this->hospital->EditCustomAttributes = "";
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -1083,6 +1142,7 @@ class usuarios extends DbTable
 					$doc->exportCaption($this->perfil);
 					$doc->exportCaption($this->sede);
 					$doc->exportCaption($this->acode);
+					$doc->exportCaption($this->hospital);
 				} else {
 					$doc->exportCaption($this->id_user);
 					$doc->exportCaption($this->fecha_creacion);
@@ -1094,6 +1154,7 @@ class usuarios extends DbTable
 					$doc->exportCaption($this->perfil);
 					$doc->exportCaption($this->sede);
 					$doc->exportCaption($this->acode);
+					$doc->exportCaption($this->hospital);
 				}
 				$doc->endExportRow();
 			}
@@ -1135,6 +1196,7 @@ class usuarios extends DbTable
 						$doc->exportField($this->perfil);
 						$doc->exportField($this->sede);
 						$doc->exportField($this->acode);
+						$doc->exportField($this->hospital);
 					} else {
 						$doc->exportField($this->id_user);
 						$doc->exportField($this->fecha_creacion);
@@ -1146,6 +1208,7 @@ class usuarios extends DbTable
 						$doc->exportField($this->perfil);
 						$doc->exportField($this->sede);
 						$doc->exportField($this->acode);
+						$doc->exportField($this->hospital);
 					}
 					$doc->endExportRow($rowCnt);
 				}

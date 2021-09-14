@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/9/11" version="16.0.0" id="pt" name="Portuguese (Brazil)" desc="Portuguese (Brazil, PT_BR)" author="Silvio Garbes">
+<ew-language date="2021/9/14" version="16.0.0" id="pt" name="Portuguese (Brazil)" desc="Portuguese (Brazil, PT_BR)" author="Silvio Garbes">
   <!--
 *** Important Notes:
 1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -1724,6 +1724,15 @@
       <field id="nom_causa">
         <phrase id="fldcaption" value="nom causa" />
       </field>
+      <field id="nom_causa_en">
+        <phrase id="fldcaption" value="nom causa en" />
+      </field>
+      <field id="nom_causa_fr">
+        <phrase id="fldcaption" value="nom causa fr" />
+      </field>
+      <field id="nom_causa_pt">
+        <phrase id="fldcaption" value="nom causa pt" />
+      </field>
     </table>
     <table id="causa_registro">
       <phrase id="tblcaption" value="causa registro" />
@@ -1745,6 +1754,15 @@
       <field id="causa_trauma">
         <phrase id="fldcaption" value="causa trauma" />
       </field>
+      <field id="causa_trauma_en">
+        <phrase id="fldcaption" value="causa trauma en" />
+      </field>
+      <field id="causa_trauma_fr">
+        <phrase id="fldcaption" value="causa trauma fr" />
+      </field>
+      <field id="causa_trauma_pt">
+        <phrase id="fldcaption" value="causa trauma pt" />
+      </field>
     </table>
     <table id="causa_trauma_situacion">
       <phrase id="tblcaption" value="causa trauma situacion" />
@@ -1756,6 +1774,15 @@
       </field>
       <field id="nombre">
         <phrase id="fldcaption" value="nombre" />
+      </field>
+      <field id="nombre_en">
+        <phrase id="fldcaption" value="nombre en" />
+      </field>
+      <field id="nombre_fr">
+        <phrase id="fldcaption" value="nombre fr" />
+      </field>
+      <field id="nombre_pt">
+        <phrase id="fldcaption" value="nombre pt" />
       </field>
     </table>
     <table id="censo_camas">
@@ -2162,6 +2189,15 @@
       <field id="nombre">
         <phrase id="fldcaption" value="nombre" />
       </field>
+      <field id="nombre_en">
+        <phrase id="fldcaption" value="nombre en" />
+      </field>
+      <field id="nombre_fr">
+        <phrase id="fldcaption" value="nombre fr" />
+      </field>
+      <field id="nombre_pt">
+        <phrase id="fldcaption" value="nombre pt" />
+      </field>
     </table>
     <table id="explo_fisica_registro">
       <phrase id="tblcaption" value="explo fisica registro" />
@@ -2195,6 +2231,15 @@
       <field id="descripcion">
         <phrase id="fldcaption" value="descripcion" />
       </field>
+      <field id="descripcion_en">
+        <phrase id="fldcaption" value="descripcion en" />
+      </field>
+      <field id="descripcion_fr">
+        <phrase id="fldcaption" value="descripcion fr" />
+      </field>
+      <field id="descripcion_pt">
+        <phrase id="fldcaption" value="descripcion pt" />
+      </field>
     </table>
     <table id="explo_general_cat">
       <phrase id="tblcaption" value="explo general cat" />
@@ -2203,6 +2248,15 @@
       </field>
       <field id="descripcion">
         <phrase id="fldcaption" value="descripcion" />
+      </field>
+      <field id="descripcion_en">
+        <phrase id="fldcaption" value="descripcion en" />
+      </field>
+      <field id="descripcion_fr">
+        <phrase id="fldcaption" value="descripcion fr" />
+      </field>
+      <field id="descripcion_pt">
+        <phrase id="fldcaption" value="descripcion pt" />
       </field>
     </table>
     <table id="explo_general_registro">
@@ -4118,6 +4172,9 @@
       </field>
       <field id="acode">
         <phrase id="fldcaption" value="acode" />
+      </field>
+      <field id="hospital">
+        <phrase id="fldcaption" value="hospital" />
       </field>
     </table>
     <table id="valida_pge">
