@@ -1,6 +1,6 @@
 $(function () {
   window.jsPDF = window.jspdf.jsPDF;
-  var dataSelect, idMedical, idMA, focus_value;
+  var dataSelect, idMedical, idMA, focus_value, name_hospital;
   var tableUrgency = $("#tableUrgency").DataTable({
     select: "single",
     pageLength: 5,
@@ -352,12 +352,15 @@ $(function () {
   $.ajax({
     url: "bd/admission.php",
     method: "POST",
+    dataType: "json",
     data: {
       option: "loadSelectMedicalAttention",
+      idH: $("#data-user").data("hospital"),
     },
-    dataType: "json",
   })
     .done(function (data) {
+      if (data["name_hospital"])
+        name_hospital = data["name_hospital"][0].nombre_hospital;
       $("#general").empty();
       $("#general").append($("<option>-- Seleccione una opción --</option>"));
 
@@ -802,7 +805,7 @@ $(function () {
 
     doc.autoTable({
       head: [["Nombre hospital", "Fecha expedición"]],
-      body: [["Hospital", dateNow]],
+      body: [[name_hospital, dateNow]],
       startY: 30,
     });
 
@@ -975,7 +978,7 @@ $(function () {
 
     doc.autoTable({
       head: [["Nombre hospital", "Fecha expedición"]],
-      body: [["Hospital", dateNow]],
+      body: [[name_hospital, dateNow]],
       startY: 30,
     });
 

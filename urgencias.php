@@ -32,7 +32,7 @@ Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
 
-<div id="data-user" data-user="<?php echo CurrentUserInfo('nombres') . ' ' . CurrentUserInfo('apellidos') ?>" hidden></div>
+<div id="data-user" data-user="<?php echo CurrentUserInfo('nombres') . ' ' . CurrentUserInfo('apellidos') ?>" data-hospital="<?php echo CurrentUserInfo('hospital') ?>" hidden></div>
 
 <div class="row mb-3">
 	<div class="col-lg-12" id="tableMaestro_wrapper">

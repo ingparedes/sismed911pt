@@ -1,6 +1,6 @@
 $(function () {
   window.jsPDF = window.jspdf.jsPDF;
-  var dataSelect, idMedical, idMA, focus_value;
+  var dataSelect, idMedical, idMA, focus_value, name_hospital;
   var tableEmergency = $("#tableEmergency").DataTable({
     select: "single",
     pageLength: 5,
@@ -102,7 +102,7 @@ $(function () {
       /*console.log(tableEmergency.rows().data());
       console.log(tableEmergency.rows()[0]);
       console.log(tableEmergency.rows(0));*/
-      console.log(tableEmergency.rows(1).column(1));
+      console.log(tableEmergency.rows(1));
       $.each(tableEmergency.rows()[0], function (index, value) {
         var row = tableEmergency.rows(value).data()[0];
         switch (row.clasificacion_admision) {
@@ -360,12 +360,15 @@ $(function () {
   $.ajax({
     url: "bd/admission.php",
     method: "POST",
+    dataType: "json",
     data: {
       option: "loadSelectMedicalAttention",
+      idH: $("#data-user").data("hospital"),
     },
-    dataType: "json",
   })
     .done(function (data) {
+      if (data["name_hospital"])
+        name_hospital = data["name_hospital"][0].nombre_hospital;
       $("#general").empty();
       $("#general").append($("<option>-- Seleccione una opción --</option>"));
 
@@ -773,11 +776,6 @@ $(function () {
             dosis: $("#dosis").val(),
           },
         ]);
-        //appendTableMedical
-        /*var array = [];
-        array.push({
-
-        });*/
       })
       .fail(function () {
         console.log("error");
@@ -785,7 +783,6 @@ $(function () {
   });
 
   $("#print-medical").on("click", function () {
-    //console.log(dataSelect);
     var doc = new jsPDF();
     doc.setFontSize(18);
     doc.text("Orden de medicamentos", 14, 22);
@@ -810,7 +807,7 @@ $(function () {
 
     doc.autoTable({
       head: [["Nombre hospital", "Fecha expedición"]],
-      body: [["Hospital", dateNow]],
+      body: [[name_hospital, dateNow]],
       startY: 30,
     });
 
@@ -983,7 +980,7 @@ $(function () {
 
     doc.autoTable({
       head: [["Nombre hospital", "Fecha expedición"]],
-      body: [["Hospital", dateNow]],
+      body: [[name_hospital, dateNow]],
       startY: 30,
     });
 

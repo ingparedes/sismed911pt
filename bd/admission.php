@@ -20,14 +20,28 @@ $dataExamen = (isset($_POST['dataExamen'])) ? $_POST['dataExamen'] : null;
 $id_medicalAttentionExamen = (isset($_POST['idMAE'])) ? $_POST['idMAE'] : null;
 $id_medicalAttentionMedical = (isset($_POST['idMAM'])) ? $_POST['idMAM'] : null;
 $dosis = (isset($_POST['dosis'])) ? $_POST['dosis'] : null;
+$id_hospital = (isset($_POST['idH'])) ? $_POST['idH'] : null;
 
 switch ($option) {
     case 'selectPatient':
         $sql = "SELECT * FROM pacientegeneral
+                INNER JOIN preh_maestro ON pacientegeneral.cod_casointerh=preh_maestro.cod_casopreh
                 LEFT JOIN tipo_id ON pacientegeneral.tipo_doc = tipo_id.id_tipo
-                LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad";
-        if ($id_patient) $sql .= " WHERE id_paciente=" . $id_patient;
-        print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
+                LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
+                WHERE preh_maestro.hospital_destino='" . $id_hospital . "'";
+        $data = pg_fetch_all($connection->execute($connect, $sql));
+        if (!$data) $data = [];
+        $sql = "SELECT * FROM pacientegeneral
+                INNER JOIN interh_maestro ON pacientegeneral.cod_casointerh=interh_maestro.cod_casointerh
+                LEFT JOIN tipo_id ON pacientegeneral.tipo_doc = tipo_id.id_tipo
+                LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
+                WHERE interh_maestro.hospital_destinointerh='" . $id_hospital . "'";
+        $interH = pg_fetch_all($connection->execute($connect, $sql));
+        if ($interH)
+            foreach ($interH as $valor) {
+                array_push($data, $valor);
+            }
+        print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'selectIngress':
         $sql = "SELECT * FROM tipo_ingreso";
@@ -157,6 +171,9 @@ switch ($option) {
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'loadSelectMedicalAttention':
+        $sql = "SELECT nombre_hospital FROM hospitalesgeneral WHERE id_hospital='" . $id_hospital . "'";
+        $data['name_hospital'] = pg_fetch_all($connection->execute($connect, $sql));
+
         $sql = "SELECT * FROM cuerpo_general";
         $data['general'] = pg_fetch_all($connection->execute($connect, $sql));
 

@@ -3,6 +3,7 @@ $(function () {
     focus_value,
     dataSelect,
     updatePatient = false;
+  id_hospital = $("#data-user").data("hospital");
 
   var tablePatient = $("#tablePatient").DataTable({
     select: "single",
@@ -34,7 +35,7 @@ $(function () {
     ajax: {
       url: "bd/admission.php",
       method: "POST",
-      data: { option: "selectPatient" },
+      data: { option: "selectPatient", idH: id_hospital },
       dataSrc: "",
     },
     deferRender: true,
@@ -220,6 +221,7 @@ $(function () {
   });
 
   $(".showModal").on("click", function () {
+    tablePatient.ajax.reload();
     $("#patient").modal();
   });
 
@@ -245,61 +247,47 @@ $(function () {
   });
 
   $(".btnPatient").on("click", function () {
-    var dataSelectPatient = tablePatient.rows(".selected").data();
+    var dataSelectPatient = tablePatient.rows(".selected").data()[0];
     $("#btnAddPatient").prop("hidden", true);
     updatePatient = true;
     $("#idP").val(
-      dataSelectPatient[0].id_paciente +
+      dataSelectPatient.id_paciente +
         "-" +
-        (dataSelectPatient[0].nombre1 ? dataSelectPatient[0].nombre1 : "") +
+        (dataSelectPatient.nombre1 ? dataSelectPatient.nombre1 : "") +
         " " +
-        (dataSelectPatient[0].apellido1 ? dataSelectPatient[0].apellido1 : "")
+        (dataSelectPatient.apellido1 ? dataSelectPatient.apellido1 : "")
     );
-    $.ajax({
-      url: "bd/admission.php",
-      method: "POST",
-      data: {
-        option: "selectPatient",
-        idP: id_patient,
-      },
-      dataType: "json",
-    })
-      .done(function (data) {
-        //Se actualiza formulario paciente
-        $("#form_paciente").trigger("reset");
-        loadIde(true);
-        $("#p_number").val(data[0].num_doc);
-        $("#p_exp").val(data[0].expendiente);
-        $("#p_date").val(data[0].fecha_nacido);
-        $("#p_age").val(data[0].edad);
-        loadTypeAge(true);
-        if (data[0].genero == 1) {
-          $("#p_genM").prop("checked", true);
-        } else if (data[0].genero == 2) {
-          $("#p_genF").prop("checked", true);
-        }
-        $("#p_phone").val(data[0].telefono);
-        $("#p_name1").val(data[0].nombre1);
-        $("#p_name2").val(data[0].nombre2);
-        $("#p_lastname1").val(data[0].apellido1);
-        $("#p_lastname2").val(data[0].apellido2);
-        $("#p_segS").val(data[0].aseguradro);
-        $("#p_address").val(data[0].direccion);
-        $("#p_obs").html(data[0].observacion);
-        $("#collapseOne").collapse("show");
-        if ($("#ingress option:selected").text() == "Ambulancia 911") {
-          $.trim($("#code").val()) != ""
-            ? $("#btnSaveAdmission").prop("disabled", false)
-            : $("#btnSaveAdmission").prop("disabled", true);
-        } else if ($("#ingress option:selected").val() != 0) {
-          $("#btnSaveAdmission").prop("disabled", false);
-        } else {
-          $("#btnSaveAdmission").prop("disabled", true);
-        }
-      })
-      .fail(function (error) {
-        console.log(error);
-      });
+    //Se actualiza formulario paciente
+    $("#form_paciente").trigger("reset");
+    loadIde(true);
+    $("#p_number").val(dataSelectPatient.num_doc);
+    $("#p_exp").val(dataSelectPatient.expendiente);
+    $("#p_date").val(dataSelectPatient.fecha_nacido);
+    $("#p_age").val(dataSelectPatient.edad);
+    loadTypeAge(true);
+    if (dataSelectPatient.genero == 1) {
+      $("#p_genM").prop("checked", true);
+    } else if (dataSelectPatient.genero == 2) {
+      $("#p_genF").prop("checked", true);
+    }
+    $("#p_phone").val(dataSelectPatient.telefono);
+    $("#p_name1").val(dataSelectPatient.nombre1);
+    $("#p_name2").val(dataSelectPatient.nombre2);
+    $("#p_lastname1").val(dataSelectPatient.apellido1);
+    $("#p_lastname2").val(dataSelectPatient.apellido2);
+    $("#p_segS").val(dataSelectPatient.aseguradro);
+    $("#p_address").val(dataSelectPatient.direccion);
+    $("#p_obs").html(dataSelectPatient.observacion);
+    $("#collapseOne").collapse("show");
+    if ($("#ingress option:selected").text() == "Ambulancia 911") {
+      $.trim($("#code").val()) != ""
+        ? $("#btnSaveAdmission").prop("disabled", false)
+        : $("#btnSaveAdmission").prop("disabled", true);
+    } else if ($("#ingress option:selected").val() != 0) {
+      $("#btnSaveAdmission").prop("disabled", false);
+    } else {
+      $("#btnSaveAdmission").prop("disabled", true);
+    }
   });
 
   $("#btnAddPatient").on("click", function (e) {
