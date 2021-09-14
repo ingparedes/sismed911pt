@@ -97,11 +97,11 @@ $(function () {
     $("#attention").trigger("change");
     $("#glasgow").val(dataSelect.glasgow_admision);
     $("#pas").val(dataSelect.pas_admision);
-    $("#pad").val(dataSelect.pas_admision);
-    $("#fc").val(dataSelect.pas_admision);
-    $("#so2").val(dataSelect.pas_admision);
-    $("#fr").val(dataSelect.pas_admision);
-    $("#temp").val(dataSelect.pas_admision);
+    $("#pad").val(dataSelect.pad_admision);
+    $("#fc").val(dataSelect.fc_admision);
+    $("#so2").val(dataSelect.so2_admision);
+    $("#fr").val(dataSelect.fr_admision);
+    $("#temp").val(dataSelect.temp_admision);
     if (dataSelect.clasificacion_admision)
       $(
         "#classification option[value=" +

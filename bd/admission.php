@@ -89,12 +89,13 @@ switch ($option) {
         break;
     case 'selectMedical':
         $sql = "SELECT * FROM sala_medicamentos ORDER BY producto";
-        $medical = pg_fetch_all($connection->execute($connect, $sql));
+        $data = pg_fetch_all($connection->execute($connect, $sql));
+        $medical = $data;
         if ($id_medicalAttention) {
             $medical = [];
-            $sql = "SELECT sala_medicamentos.id, sala_medicamentos.producto, sala_medicamentos.costo
+            $sql = "SELECT sala_medicamentos.id_medicamento, sala_medicamentos.producto, sala_medicamentos.costo
                     FROM sala_atencionmedica_medicamentos
-                    INNER JOIN sala_medicamentos ON sala_atencionmedica_medicamentos.id_medicamentos=sala_medicamentos.id
+                    INNER JOIN sala_medicamentos ON sala_atencionmedica_medicamentos.id_medicamentos=sala_medicamentos.id_medicamento
                     WHERE sala_atencionmedica_medicamentos.id_atencionmedica=" . $id_medicalAttention;
             $id = pg_fetch_all($connection->execute($connect, $sql));
             foreach ($data as $valor) {
@@ -109,12 +110,13 @@ switch ($option) {
         break;
     case 'selectExamen':
         $sql = "SELECT * FROM sala_examen ORDER BY nombre_examen";
-        $examen = pg_fetch_all($connection->execute($connect, $sql));
+        $data = pg_fetch_all($connection->execute($connect, $sql));
+        $examen = $data;
         if ($id_medicalAttention) {
             $examen = [];
             $sql = "SELECT sala_examen.id_examen, sala_examen.nombre_examen FROM sala_atencionmedica_examen
-                    INNER JOIN sala_examen ON sala_atencionmedica_examen.id_examen=sala_examen.id_examen
-                    WHERE sala_atencionmedica_examen.id_atencionmedica=" . $id_medicalAttention;
+                        INNER JOIN sala_examen ON sala_atencionmedica_examen.id_examen=sala_examen.id_examen
+                        WHERE sala_atencionmedica_examen.id_atencionmedica=" . $id_medicalAttention;
             $id = pg_fetch_all($connection->execute($connect, $sql));
             foreach ($data as $valor) {
                 if ($id) {
@@ -134,9 +136,9 @@ switch ($option) {
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectAttentionMedical':
-        $sql = "SELECT sala_atencionmedica_medicamentos.id_atencionmedica_medicamentos, sala_medicamentos.id AS id_medicamentos, sala_medicamentos.producto, sala_atencionmedica_medicamentos.dosis FROM sala_atencionmedica
+        $sql = "SELECT * FROM sala_atencionmedica
                 INNER JOIN sala_atencionmedica_medicamentos ON sala_atencionmedica.id_atencionmedica=sala_atencionmedica_medicamentos.id_atencionmedica
-                INNER JOIN sala_medicamentos ON sala_atencionmedica_medicamentos.id_medicamentos=sala_medicamentos.id
+                INNER JOIN sala_medicamentos ON sala_atencionmedica_medicamentos.id_medicamentos=sala_medicamentos.id_medicamento
                 WHERE sala_atencionmedica.id_atencionmedica=" . $id_medicalAttention;
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;

@@ -103,6 +103,10 @@ namespace PHPMaker2020\sismed911; ?>
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.select.min.js"
 			], "dataTable");
 
+			ew.ready("jquery", ["<?php echo $RELATIVE_PATH ?>assets/jspdf.umd.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/jspdf.plugin.autotable.min.js",
+			], "jspdf");
+
 			loadjs([
 				"<?php echo $RELATIVE_PATH ?>js/mobile-detect.min.js",
 				"<?php echo $RELATIVE_PATH ?>js/purify.min.js",
