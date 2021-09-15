@@ -65,6 +65,18 @@ $(function () {
     ],
     //rowId: 'extn',
     dom: "Bfrtip",
+    buttons: [
+      {
+        text: "<i class='fa fa-clinic-medical'> Nuevo caso</i>",
+        action: function (e, dt, button, config) {
+          ew.modalDialogShow({
+            lnk: this,
+            btn: "AddBtn",
+            url: "interh_maestroadd.php",
+          });
+        },
+      },
+    ],
   });
 
   tableMaestro.on("draw", function () {

@@ -100,7 +100,10 @@ namespace PHPMaker2020\sismed911; ?>
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.responsive.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.js",
-				"<?php echo $RELATIVE_PATH ?>assets/dataTables.select.min.js"
+				"<?php echo $RELATIVE_PATH ?>assets/dataTables.select.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/dataTables.buttons.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/buttons.bootstrap4.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/buttons.html5.min.js"
 			], "dataTable");
 
 			ew.ready("jquery", ["<?php echo $RELATIVE_PATH ?>assets/jspdf.umd.min.js",
@@ -150,7 +153,8 @@ namespace PHPMaker2020\sismed911; ?>
 			loadjs(["<?php echo $RELATIVE_PATH ?>css/tempusdominus-bootstrap-4.css",				
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.css",
 				"<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.css",
-				"<?php echo $RELATIVE_PATH ?>assets/select.bootstrap4.min.css"
+				"<?php echo $RELATIVE_PATH ?>assets/select.bootstrap4.min.css",
+				"<?php echo $RELATIVE_PATH ?>assets/buttons.dataTables.min.css"
 			]);
 			ew.ready("head", ["<?php echo $RELATIVE_PATH ?>js/tempusdominus-bootstrap-4.js", "<?php echo $RELATIVE_PATH ?>js/ewdatetimepicker.js"], "datetimepicker");
 			loadjs.ready("datetimepicker", function() {
