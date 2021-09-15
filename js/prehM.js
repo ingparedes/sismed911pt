@@ -53,6 +53,10 @@ $(function () {
       },
       {
         defaultContent:
+          '<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-dispatch"><i class="fa fa-ambulance" aria-hidden="true"></i></button>',
+      },
+      {
+        defaultContent:
           '<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modalR"><i class="fa fa-times-circle" aria-hidden="true"></i></button>',
       },
     ],
@@ -165,7 +169,6 @@ $(function () {
         .fail(function () {
           console.log("error");
         });
-      console.log(dataSelect);
       //Se actualiza formulario paciente
       $("#form_paciente").trigger("reset");
       $("#p_number").val(dataSelect.num_doc);
@@ -764,6 +767,11 @@ $(function () {
 
   $("#p_phone").mask("(999) 999-9999");
   $("#hosp_telMed").mask("(999) 999-9999");
+
+  $(".btn-dispatch").on("click", function () {
+    focus_value = 0;
+    crud_ajax("accion", 2, "updatePrehM");
+  });
 
   setInterval(function () {
     tableMaestro.ajax.reload();

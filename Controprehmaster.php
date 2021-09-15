@@ -49,6 +49,7 @@ Page_Rendering();
 					<th>Teléfono</th>
 					<th>Reporta</th>
 					<th>Seguimiento</th>
+					<th>Despacho</th>
 					<th>Cerrar</th>
 				</tr>
 			</thead>
