@@ -8,6 +8,10 @@
   font-size: 12px !important;
 }
 
+#tableMaestro_wrapper .btn.new-case {
+  float: left;
+}
+
 .accordionForms
   input[type="text"]:not([size]):not([name="pageno"]):not(.cke_dialog_ui_input_text):not(.form-control-plaintext),
 input[type="password"]:not([size]) {

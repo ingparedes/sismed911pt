@@ -53,7 +53,11 @@ $(function () {
         render: function (data, type, row) {
           var diff = Math.abs(new Date() - new Date(row.fecha));
           var minutes = Math.floor(diff / 1000 / 60);
-          return '<i class="fa fa-clock-o" aria-hidden="true"></i> ' + minutes + " MIN";
+          return (
+            '<i class="fa fa-clock-o" aria-hidden="true"></i> ' +
+            minutes +
+            " MIN"
+          );
         },
         targets: 3,
       },
@@ -76,17 +80,24 @@ $(function () {
 
       //Se actualiza formulario ambulancia
       $("#form_ambulance").trigger("reset");
-      if (dataSelect.hora_asigna) $("#date_asig").val(dataSelect.hora_asigna.replace(" ", "T"));
-      if (dataSelect.hora_llegada) $("#date_lleg").val(dataSelect.hora_llegada.replace(" ", "T"));
-      if (dataSelect.hora_inicio) $("#date_ini").val(dataSelect.hora_inicio.replace(" ", "T"));
-      if (dataSelect.hora_destino) $("#date_dest").val(dataSelect.hora_destino.replace(" ", "T"));
-      if (dataSelect.hora_preposicion) $("#date_base").val(dataSelect.hora_preposicion.replace(" ", "T"));
+      if (dataSelect.hora_asigna)
+        $("#date_asig").val(dataSelect.hora_asigna.replace(" ", "T"));
+      if (dataSelect.hora_llegada)
+        $("#date_lleg").val(dataSelect.hora_llegada.replace(" ", "T"));
+      if (dataSelect.hora_inicio)
+        $("#date_ini").val(dataSelect.hora_inicio.replace(" ", "T"));
+      if (dataSelect.hora_destino)
+        $("#date_dest").val(dataSelect.hora_destino.replace(" ", "T"));
+      if (dataSelect.hora_preposicion)
+        $("#date_base").val(dataSelect.hora_preposicion.replace(" ", "T"));
       $("#conductor").val(dataSelect.conductor);
       $("#medico").val(dataSelect.medico);
       $("#paramedico").val(dataSelect.paramedico);
       $("#obs").html(dataSelect.observacion_ambulancia);
       if (dataSelect.cod_ambulancia) {
-        $("#serviceAmbulance").val(dataSelect.cod_ambulancias + " - " + dataSelect.placas);
+        $("#serviceAmbulance").val(
+          dataSelect.cod_ambulancias + " - " + dataSelect.placas
+        );
         $(".change").prop("disabled", false);
       } else {
         $(".change").prop("disabled", true);
@@ -172,7 +183,11 @@ $(function () {
   });
 
   $("#date_base").focusout(function () {
-    crud_ajax("hora_preposicion", $(this).val().replace("T", " "), "updatePrehSA");
+    crud_ajax(
+      "hora_preposicion",
+      $(this).val().replace("T", " "),
+      "updatePrehSA"
+    );
   });
 
   $("#conductor").focusout(function () {
@@ -245,7 +260,9 @@ $(function () {
   $(".btnAmbulance").on("click", function () {
     var dataSelectAmbulance = tableAmbulance.rows(".selected").data()[0];
     var option = dataSelect.cod_ambulancia ? "updatePrehSA" : "insertPrehSA";
-    $("#serviceAmbulance").val(dataSelectAmbulance.cod_ambulancias + " - " + dataSelectAmbulance.placas);
+    $("#serviceAmbulance").val(
+      dataSelectAmbulance.cod_ambulancias + " - " + dataSelectAmbulance.placas
+    );
     crud_ajax("cod_ambulancia", dataSelectAmbulance.cod_ambulancias, option);
     $(".change").prop("disabled", false);
   });

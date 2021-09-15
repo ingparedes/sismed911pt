@@ -65,18 +65,18 @@ $(function () {
     ],
     //rowId: 'extn',
     dom: "Bfrtip",
-    buttons: [
-      {
-        text: "<i class='fa fa-clinic-medical'> Nuevo caso</i>",
-        action: function (e, dt, button, config) {
-          ew.modalDialogShow({
-            lnk: this,
-            btn: "AddBtn",
-            url: "interh_maestroadd.php",
-          });
-        },
-      },
-    ],
+    initComplete: function () {
+      $("#tableMaestro_wrapper").prepend(
+        "<a class='btn btn-secondary new-case' href='#' role='button'><i class='fa fa-clinic-medical'> Nuevo caso</i></a>"
+      );
+      $("#tableMaestro_wrapper .btn.new-case").on("click", function () {
+        return ew.modalDialogShow({
+          lnk: this,
+          btn: "AddBtn",
+          url: "interh_maestroadd.php",
+        });
+      });
+    },
   });
 
   tableMaestro.on("draw", function () {
