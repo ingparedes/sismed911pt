@@ -51,10 +51,7 @@ $(function () {
         defaultContent:
           '<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modalSeg"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></button>',
       },
-      {
-        defaultContent:
-          '<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-dispatch"><i class="fa fa-ambulance" aria-hidden="true"></i></button>',
-      },
+      { defaultContent: "" },
       {
         defaultContent:
           '<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modalR"><i class="fa fa-times-circle" aria-hidden="true"></i></button>',
@@ -72,6 +69,16 @@ $(function () {
           );
         },
         targets: 2,
+      },
+      {
+        render: function (data, type, row) {
+          return (
+            "<button " +
+            (row.accion == 2 ? "hidden" : "") +
+            ' type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-dispatch"><i class="fa fa-ambulance" aria-hidden="true"></i></button>'
+          );
+        },
+        targets: 12,
       },
     ],
     //rowId: 'extn',
