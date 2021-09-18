@@ -155,6 +155,28 @@
     <phrase id="clasif_pain10" value="Escala 10" />
     <!-- Emergencia -->
     <phrase id="em_dateclasification" value="Fecha Clasificación" />
+    <phrase id="em_general" value="Genral" />
+    <phrase id="em_cabeza" value="Cabeza" />
+    <phrase id="em_ojo" value="Ojos" />
+    <phrase id="em_otorrino" value="Otorrino" />
+    <phrase id="em_boca" value="Boca" />
+    <phrase id="em_cuello" value="Cuello" />
+    <phrase id="em_torax" value="Tórax" />
+    <phrase id="em_corazon" value="Corazón" />
+    <phrase id="em_pulmon" value="Pulmón" />
+    <phrase id="em_abdomen" value="Abdomen" />
+    <phrase id="em_pelvis" value="Pelvis" />
+    <phrase id="em_rectal" value="Rectal" />
+    <phrase id="em_genital" value="Genital" />
+    <phrase id="em_extremidad" value="Extremidad" />
+    <phrase id="em_neuro" value="Neuro" />
+    <phrase id="em_piel" value="Piel" />
+    <phrase id="em_sign" value="Síntomas" />
+    <phrase id="em_description" value="Descripción diagnóstico" />
+    <phrase id="em_other" value="Otros" />
+    <phrase id="em_ordenmedical" value="Orden Medicamentos" />
+    <phrase id="em_ordentest" value="Orden Exámenes" />
+    <phrase id="em_option" value="Opción" />
 
     <phrase id="accept" value="Accepter" />
     <!-- v2019 -->
