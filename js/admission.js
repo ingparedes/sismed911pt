@@ -41,8 +41,22 @@ $(function () {
     deferRender: true,
     columns: [
       { data: "id_paciente" },
-      { data: "nombre1" },
-      { data: "apellido1" },
+      { defaultContent: "" },
+      { defaultContent: "" },
+    ],
+    columnDefs: [
+      {
+        render: function (data, type, row) {
+          return row.nombre1 + " " + row.nombre2;
+        },
+        targets: 1,
+      },
+      {
+        render: function (data, type, row) {
+          return row.apellido1 + " " + row.apellido2;
+        },
+        targets: 2,
+      },
     ],
     //dom: 'Bfrtip'
   });
@@ -323,6 +337,7 @@ $(function () {
       },
     })
       .done(function (data) {
+        updatePatient = true;
         $("#btnAddPatient").prop("hidden", true);
         $("#idP").val(
           data[0].id_paciente +

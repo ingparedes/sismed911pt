@@ -12,8 +12,8 @@
                 <table id="tableCIE10" class="table table-striped table-bordered" style="width: 100%">
                     <thead>
                         <tr>
-                            <th>Código</th>
-                            <th>Diagnóstico</th>
+                            <th><?php echo $Language->Phrase('m_cie10code'); ?></th>
+                            <th><?php echo $Language->Phrase('m_cie10diag'); ?></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -21,7 +21,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btnCIE10" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
@@ -34,7 +34,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="hospit">Seleccione el hospital</h5>
+                <h5 class="modal-title" id="hospit"><?php echo $Language->Phrase('m_hosptitle'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -43,8 +43,8 @@
                 <table id="tableHosp" class="table table-striped table-bordered" style="width: 100%">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Nombre</th>
+                            <th><?php echo $Language->Phrase('m_hospid'); ?></th>
+                            <th><?php echo $Language->Phrase('m_hospname'); ?></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -52,7 +52,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btnHosp" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
@@ -60,26 +60,58 @@
 </div>
 <!-- end modal Hospital -->
 
-<!-- Modal Seguimiento -->
-<div class="modal fade" id="modalSeg" tabindex="-1" aria-labelledby="seguim" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
+<!-- Modal ambulance -->
+<div class="modal fade" id="modalAmbulance" tabindex="-1" aria-labelledby="ambulancia" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="seguim">Seguimiento</h5>
+                <h5 class="modal-title"><?php echo $Language->Phrase('m_ambulancetitle'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <label for="noteInput">Por favor, escriba la nota:</label>
-                <input type="text" class="form-control" id="noteInput" placeholder="Nota" />
-                <br />
-                <label>Notas:</label>
+                <table id="tableAmbulance" class="table table-striped table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th><?php echo $Language->Phrase('m_cie10code'); ?></th>
+                            <th><?php echo $Language->Phrase('m_ambulanceplaca'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary not-allowed btnAmbulance" data-dismiss="modal" disabled>
+                    <?php echo $Language->Phrase('accept'); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal ambulance -->
+
+<!-- Modal Seguimiento -->
+<div class="modal fade" id="modalSeg" tabindex="-1" aria-labelledby="seguim" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seguim"><?php echo $Language->Phrase('m_segtitle'); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="noteInput"><?php echo $Language->Phrase('m_seglabel1'); ?>:</label>
+                    <textarea class="form-control" id="noteInput" rows="3" placeholder="<?php echo $Language->Phrase('m_segtextarea'); ?>"></textarea>
+                </div>
+                <label><?php echo $Language->Phrase('m_seglabel2'); ?>:</label>
                 <ul id="segNote"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btnNote" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
@@ -92,22 +124,24 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="razonM">Cerrar el caso</h5>
+                <h5 class="modal-title" id="razonM"><?php echo $Language->Phrase('dt_close'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <label for="selectRazon">Seleccione el tipo de cierre</label>
-                <select class="form-control mb-3" id="selectRazon">
-                    <option>Seleccione...</option>
-                </select>
-                <label for="razon">Por favor, escriba la razón por la cual cierra el caso:</label>
-                <textarea class="form-control" id="razon" rows="5" placeholder="Razón"></textarea>
+                <div class="form-group">
+                    <label for="selectRazon"><?php echo $Language->Phrase('m_closelabel1'); ?>:</label>
+                    <select class="form-control mb-3" id="selectRazon">
+                        <option><?php echo $Language->Phrase('fp_select'); ?></option>
+                    </select>
+                </div>
+                <label for="razon"><?php echo $Language->Phrase('m_closelabel2'); ?>:</label>
+                <textarea class="form-control" id="razon" rows="5" placeholder="<?php echo $Language->Phrase('m_closetextarea'); ?>"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btnRazon" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
@@ -115,43 +149,36 @@
 </div>
 <!-- end modal Cerrar Caso -->
 
-<!-- Modal ambulance -->
-<div class="modal fade" id="modalAmbulance" tabindex="-1" aria-labelledby="ambulancia" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+<!-- Modal despacho-->
+<div class="modal fade" id="modal-dispatch" tabindex="-1" aria-labelledby="dispatch" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Seleccione la ambulancia</h5>
+                <h5 class="modal-title" id="dispatch"><?php echo $Language->Phrase('m_desptitle'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <table id="tableAmbulance" class="table table-striped table-bordered" style="width: 100%">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Placa</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <?php echo $Language->Phrase('m_desptext'); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary not-allowed btnAmbulance" data-dismiss="modal" disabled>
-                    Aceptar
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $Language->Phrase('cancelbtn'); ?></button>
+                <button type="button" class="btn btn-primary not-allowed btn-dispatch" data-dismiss="modal">
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
     </div>
 </div>
-<!-- end modal ambulance -->
+<!-- end modal despacho -->
 
 <!-- Modal Paciente -->
 <div class="modal fade" id="patient" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Seleccione el paciente</h5>
+                <h5 class="modal-title"><?php echo $Language->Phrase('m_patienttitle'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -160,9 +187,9 @@
                 <table id="tablePatient" class="table table-striped table-bordered" style="width: 100%">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
+                            <th><?php echo $Language->Phrase('m_hospid'); ?></th>
+                            <th><?php echo $Language->Phrase('m_patientname'); ?></th>
+                            <th><?php echo $Language->Phrase('m_patientlastname'); ?></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -170,7 +197,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btnPatient" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
@@ -183,7 +210,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Seleccione un signo y síntoma</h5>
+                <h5 class="modal-title"><?php echo $Language->Phrase('m_signaltitle'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -192,8 +219,7 @@
                 <table id="tableSignal" class="table table-striped table-bordered" style="width: 100%">
                     <thead>
                         <tr>
-                            <th>Nivel</th>
-                            <th>Signos y síntomas</th>
+                            <th><?php echo $Language->Phrase('m_signal'); ?></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -201,7 +227,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btnSignal" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
@@ -214,7 +240,7 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="medic">Seleccione el medicamento</h5>
+                <h5 class="modal-title" id="medic"><?php echo $Language->Phrase('m_medicaltitle'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -222,9 +248,9 @@
             <div class="modal-body accordionForms">
                 <div class="form-row">
                     <div class="form-group col-lg-9">
-                        <label for="input-medical">Medicamento:</label>
+                        <label for="input-medical"><?php echo $Language->Phrase('m_medicallabel1'); ?>:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="input-medical" placeholder="Medicamento" disabled />
+                            <input type="text" class="form-control" id="input-medical" placeholder="<?php echo $Language->Phrase('m_medicallabel1'); ?>" disabled />
                             <div class="input-group-append">
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-outline-secondary medical-search" data-toggle="modal" data-target="#modal-medical-search">
@@ -234,14 +260,14 @@
                         </div>
                     </div>
                     <div class="form-group col-lg-3">
-                        <label for="dosis">Dosis:</label>
-                        <input class="form-control" id="dosis" placeholder="Dosis" />
+                        <label for="dosis"><?php echo $Language->Phrase('m_medicallabel2'); ?>:</label>
+                        <input class="form-control" id="dosis" placeholder="<?php echo $Language->Phrase('m_medicallabel2'); ?>" />
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btn-medical" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
@@ -249,43 +275,13 @@
 </div>
 <!-- end modal medicamento -->
 
-<!-- Modal examen-->
-<div class="modal fade" id="modal-examen" tabindex="-1" aria-labelledby="exam" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exam">Seleccione el examen</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table id="table-examen" class="table table-striped table-bordered" style="width: 100%">
-                    <thead>
-                        <tr>
-                            <th>Examen</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary not-allowed btn-examen" data-dismiss="modal" disabled>
-                    Aceptar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end modal examen -->
-
 <!-- Modal buscar medicamento-->
 <div class="modal fade" id="modal-medical-search" tabindex="-1" aria-labelledby="medic-search" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="medic-search">
-                    Seleccione el medicamento
+                    <?php echo $Language->Phrase('m_medicalsearchtitle'); ?>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -295,7 +291,7 @@
                 <table id="table-medical" class="table table-striped table-bordered" style="width: 100%">
                     <thead>
                         <tr>
-                            <th>Medicamentos</th>
+                            <th><?php echo $Language->Phrase('m_medicalsearch'); ?></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -303,7 +299,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btn-medical-search" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
@@ -311,12 +307,42 @@
 </div>
 <!-- end modal buscar medicamento -->
 
+<!-- Modal examen-->
+<div class="modal fade" id="modal-examen" tabindex="-1" aria-labelledby="exam" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exam"><?php echo $Language->Phrase('m_testtitle'); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="table-examen" class="table table-striped table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th><?php echo $Language->Phrase('m_test'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary not-allowed btn-examen" data-dismiss="modal" disabled>
+                    <?php echo $Language->Phrase('accept'); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal examen -->
+
 <!-- Modal egreso-->
 <div class="modal fade" id="modal-egress" tabindex="-1" aria-labelledby="egress" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="egress">Egreso</h5>
+                <h5 class="modal-title" id="egress"><?php echo $Language->Phrase('m_agresstitle'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -324,43 +350,19 @@
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group col-auto">
-                        <label for="disposal">Disposición:</label>
+                        <label for="disposal"><?php echo $Language->Phrase('m_agresslabel'); ?>:</label>
                         <select class="form-control" id="disposal">
-                            <option>-- Seleccione una opción --</option>
+                            <option><?php echo $Language->Phrase('fp_select'); ?></option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary not-allowed btn-egress" data-dismiss="modal" disabled>
-                    Aceptar
+                    <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
     </div>
 </div>
 <!-- end modal egreso -->
-
-<!-- Modal despacho-->
-<div class="modal fade" id="modal-dispatch" tabindex="-1" aria-labelledby="dispatch" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="dispatch">Despacho</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ¿Desea enviar a despacho de ambulancia?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary not-allowed btn-dispatch" data-dismiss="modal">
-                    Aceptar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end modal despacho -->

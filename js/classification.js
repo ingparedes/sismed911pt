@@ -289,7 +289,7 @@ $(function () {
         dataSrc: "",
       },
       deferRender: true,
-      columns: [{ data: "nivel" }, { data: "sintomas_signos" }],
+      columns: [{ data: "sintomas_signos" }],
       //dom: 'Bfrtip'
     });
   }

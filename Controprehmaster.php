@@ -167,7 +167,6 @@ global $Language;
 												</div>
 											</div>
 											<div class="form-row">
-
 												<div class="form-group col-lg-12">
 													<label for="p_obs"><?php echo $Language->Phrase("fp_observation"); ?>:</label>
 													<textarea class="form-control" id="p_obs" placeholder="<?php echo $Language->Phrase("fp_observation"); ?>"></textarea>

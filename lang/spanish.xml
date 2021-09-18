@@ -28,9 +28,16 @@
     <phrase id="dt_service" value="Servicio" />
     <phrase id="dt_originhospital" value="Hospital origen" />
     <phrase id="dt_action" value="Acción" />
+    <phrase id="dt_base" value="Base" />
+    <phrase id="dt_hc" value="No. HC" />
+    <phrase id="dt_911" value="No. caso 911" />
+    <phrase id="dt_emergency" value="Emergencia" />
+    <phrase id="dt_daralta" value="Dar de alta" />
+    <phrase id="dt_urgency" value="Urgencia" />
     <!-- Formularios -->
     <phrase id="f_title" value="Formulario" />
     <phrase id="f_titlecase" value="Caso: " />
+    <phrase id="f_select" value="-- Seleccione una opción --" />
     <!-- Formulario paciente -->
     <phrase id="fp_title" value="Paciente" />
     <phrase id="fp_select" value="-- Seleccione --" />
@@ -81,11 +88,95 @@
     <phrase id="fa_driver" value="Conductor" />
     <phrase id="fa_doctor" value="Médico" />
     <phrase id="fa_paramedic" value="Paramédico" />
-    <phrase id="fa_paramedic" value="Paramédico" />
     <!-- Modals -->
-    <phrase id="m_cie10title" value="Seleccione el CIE10" />
+    <phrase id="m_cie10title" value="Por favor, seleccione el CIE10" />
     <phrase id="m_cie10code" value="Código" />
     <phrase id="m_cie10diag" value="Diagnóstico" />
+    <phrase id="m_hosptitle" value="Por favor, seleccione el hospital" />
+    <phrase id="m_hospid" value="Id" />
+    <phrase id="m_hospname" value="Nombre" />
+    <phrase id="m_ambulancetitle" value="Por favor, seleccione la ambulancia" />
+    <phrase id="m_segtitle" value="Seguimiento" />
+    <phrase id="m_seglabel1" value="Por favor, escriba la nota" />
+    <phrase id="m_segtextarea" value="Nota" />
+    <phrase id="m_seglabel2" value="Notas" />
+    <phrase id="m_closelabel1" value="Por favor, seleccione el tipo de cierre" />
+    <phrase id="m_closelabel2" value="Por favor, escriba la razón por la cual cierra el caso" />
+    <phrase id="m_closetextarea" value="Razón" />
+    <phrase id="m_desptitle" value="Enviar a despacho" />
+    <phrase id="m_desptext" value="¿Desea enviar a despacho de ambulancia?" />
+    <phrase id="m_patienttitle" value="Por favor, seleccione el paciente" />
+    <phrase id="m_patientname" value="Nombre(s)" />
+    <phrase id="m_patientlastname" value="Apellido(s)" />
+    <phrase id="m_signaltitle" value="Por favor, seleccione un signo y síntoma" />
+    <phrase id="m_signal" value="Signos y síntomas" />
+    <phrase id="m_medicaltitle" value="Medicamento y dosis" />
+    <phrase id="m_medicallabel1" value="Medicamento" />
+    <phrase id="m_medicallabel2" value="Dosis" />
+    <phrase id="m_medicalsearchtitle" value="Por favor, seleccione el medicamento" />
+    <phrase id="m_medicalsearch" value="Medicamentos" />
+    <phrase id="m_testtitle" value="Por favor, seleccione el examen" />
+    <phrase id="m_test" value="Exámenes" />
+    <phrase id="m_agresstitle" value="Egreso" />
+    <phrase id="m_agresslabel" value="Disposición" />
+    <!-- Admission -->
+    <phrase id="adm_egress" value="Tipo de ingreso" />
+    <phrase id="adm_companion" value="Acompañante" />
+    <phrase id="adm_phonecompanion" value="Teléf. del acompañante" />
+    <!-- Clasificación -->
+    <phrase id="clasif_motivation" value="Motivo de la atención" />
+    <phrase id="clasif_location" value="Localización trauma" />
+    <phrase id="clasif_cause" value="Causa trauma" />
+    <phrase id="clasif_system" value="Sistema" />
+    <phrase id="clasif_pas" value="PAS(mmHg)" />
+    <phrase id="clasif_pad" value="PAD(mmHg)" />
+    <phrase id="clasif_fc" value="FC(bpm)" />
+    <phrase id="clasif_so2" value="SO2(%)" />
+    <phrase id="clasif_fr" value="FR(rpm)" />
+    <phrase id="clasif_temp" value="Temperatura(c)" />
+    <phrase id="clasif_clasif" value="Clasificación" />
+    <phrase id="clasif_pain" value="Dolor" />
+    <phrase id="clasif_motivation" value="Motivo de la consulta" />
+    <phrase id="clasif_descrip" value="Signos y síntomas descripción" />
+    <phrase id="clasif_red" value="Rojo" />
+    <phrase id="clasif_orange" value="Naranja" />
+    <phrase id="clasif_yellow" value="Amarillo" />
+    <phrase id="clasif_blue" value="Azul" />
+    <phrase id="clasif_green" value="Verde" />
+    <phrase id="clasif_pain1" value="Escala 1" />
+    <phrase id="clasif_pain2" value="Escala 2" />
+    <phrase id="clasif_pain3" value="Escala 3" />
+    <phrase id="clasif_pain4" value="Escala 4" />
+    <phrase id="clasif_pain5" value="Escala 5" />
+    <phrase id="clasif_pain6" value="Escala 6" />
+    <phrase id="clasif_pain7" value="Escala 7" />
+    <phrase id="clasif_pain8" value="Escala 8" />
+    <phrase id="clasif_pain9" value="Escala 9" />
+    <phrase id="clasif_pain10" value="Escala 10" />
+    <!-- Emergencia -->
+    <phrase id="em_dateclasification" value="Fecha Clasificación" />
+    <phrase id="em_general" value="Genral" />
+    <phrase id="em_cabeza" value="Cabeza" />
+    <phrase id="em_ojo" value="Ojos" />
+    <phrase id="em_otorrino" value="Otorrino" />
+    <phrase id="em_boca" value="Boca" />
+    <phrase id="em_cuello" value="Cuello" />
+    <phrase id="em_torax" value="Tórax" />
+    <phrase id="em_corazon" value="Corazón" />
+    <phrase id="em_pulmon" value="Pulmón" />
+    <phrase id="em_abdomen" value="Abdomen" />
+    <phrase id="em_pelvis" value="Pelvis" />
+    <phrase id="em_rectal" value="Rectal" />
+    <phrase id="em_genital" value="Genital" />
+    <phrase id="em_extremidad" value="Extremidad" />
+    <phrase id="em_neuro" value="Neuro" />
+    <phrase id="em_piel" value="Piel" />
+    <phrase id="em_sign" value="Síntomas" />
+    <phrase id="em_description" value="Descripción diagnóstico" />
+    <phrase id="em_other" value="Otros" />
+    <phrase id="em_ordenmedical" value="Orden Medicamentos" />
+    <phrase id="em_ordentest" value="Orden Exámenes" />
+    <phrase id="em_option" value="Opción" />
 
     <phrase id="accept" value="Aceptar" />
     <!-- v2019 -->
