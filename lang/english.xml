@@ -8,6 +8,85 @@
 	4. Locale files are ALWAYS used, regardless of whether the project is single language or multiple language.
 -->
   <global>
+    <!-- Datatable -->
+    <phrase id="dt_newcase" value="Nuevo Caso" />
+    <phrase id="dt_map" value="Mapa" />
+    <phrase id="dt_case" value="No. Caso" />
+    <phrase id="dt_date" value="Fecha" />
+    <phrase id="dt_time" value="Tiempo" />
+    <phrase id="dt_address" value="Dirección" />
+    <phrase id="dt_incident" value="Incidente" />
+    <phrase id="dt_priority" value="Prioridad" />
+    <phrase id="dt_patient" value="Paciente" />
+    <phrase id="dt_destinationhospital" value="Hospital destino" />
+    <phrase id="dt_medicalname" value="Nombre del médico" />
+    <phrase id="dt_phone" value="Teléfono del médico" />
+    <phrase id="dt_report" value="Reporta" />
+    <phrase id="dt_followup" value="Seguimiento" />
+    <phrase id="dt_dispatch" value="Despacho" />
+    <phrase id="dt_close" value="Cerrar caso" />
+    <phrase id="dt_service" value="Servicio" />
+    <phrase id="dt_originhospital" value="Hospital origen" />
+    <phrase id="dt_action" value="Acción" />
+    <!-- Formularios -->
+    <phrase id="f_title" value="Formulario" />
+    <phrase id="f_titlecase" value="Caso: " />
+    <!-- Formulario paciente -->
+    <phrase id="fp_title" value="Paciente" />
+    <phrase id="fp_select" value="-- Seleccione --" />
+    <phrase id="fp_invalidfeedback" value="Por favor, ingrese un número válido" />
+    <phrase id="fp_ide" value="IDE" />
+    <phrase id="fp_number" value="Número" />
+    <phrase id="fp_record" value="Expediente" />
+    <phrase id="fp_datebirth" value="Fecha de nacimiento" />
+    <phrase id="fp_age" value="Edad" />
+    <phrase id="fp_typeage" value="Tipo de edad" />
+    <phrase id="fp_name1" value="Nombre 1" />
+    <phrase id="fp_name2" value="Nombre 2" />
+    <phrase id="fp_lastname1" value="Apellido 1" />
+    <phrase id="fp_lastname2" value="Apellido 2" />
+    <phrase id="fp_gender" value="Género" />
+    <phrase id="fp_phone" value="Teléfono" />
+    <phrase id="fp_social" value="No. seguro social" />
+    <phrase id="fp_address" value="Dirección" />
+    <phrase id="fp_observation" value="Observaciones" />
+    <!-- Formulario evaluación clínica -->
+    <phrase id="fec_title" value="Evaluación clínica" />
+    <phrase id="fec_triage" value="Triage" />
+    <phrase id="fec_ta" value="T.A" />
+    <phrase id="fec_fc" value="F.C" />
+    <phrase id="fec_fr" value="F.R" />
+    <phrase id="fec_temp" value="T°" />
+    <phrase id="fec_glasgow" value="Glasgow" />
+    <phrase id="fec_svsat" value="sv sat 02" />
+    <phrase id="fec_glycemia" value="Glicemia" />
+    <phrase id="fec_size" value="Talla" />
+    <phrase id="fec_weight" value="Peso" />
+    <phrase id="fec_cie10" value="CIE10" />
+    <phrase id="fec_clinical" value="Cuadro clínico" />
+    <phrase id="fec_test" value="Examen físico" />
+    <phrase id="fec_past" value="Antecedentes" />
+    <phrase id="fec_parac" value="Paraclínicos" />
+    <phrase id="fec_treatment" value="Tratamiento" />
+    <phrase id="fec_information" value="Información DX" />
+    <!-- Formulario hospital -->
+    <phrase id="fh_title" value="Hospital" />
+    <!-- Formulario ambulancia -->
+    <phrase id="fa_ambulance" value="Ambulancia" />
+    <phrase id="fa_assignment" value="H. Asignación" />
+    <phrase id="fa_arrival" value="H. Llegada" />
+    <phrase id="fa_start" value="H. Inicia" />
+    <phrase id="fa_destiny" value="H. Destino" />
+    <phrase id="fa_base" value="H. Base" />
+    <phrase id="fa_driver" value="Conductor" />
+    <phrase id="fa_doctor" value="Médico" />
+    <phrase id="fa_paramedic" value="Paramédico" />
+    <phrase id="fa_paramedic" value="Paramédico" />
+    <!-- Modals -->
+    <phrase id="m_cie10title" value="Seleccione el CIE10" />
+    <phrase id="m_cie10code" value="Código" />
+    <phrase id="m_cie10diag" value="Diagnóstico" />
+
     <phrase id="accept" value="Accept" />
     <!-- v2019 -->
     <phrase id="actiondeleted" value="Deleted" />

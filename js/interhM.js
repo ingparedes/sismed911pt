@@ -1,5 +1,15 @@
 $(function () {
-  var id_maestro, id_patient, id_evalC, focus_value, dataSelect, cod_ambulance;
+  var id_maestro,
+    id_patient,
+    id_evalC,
+    focus_value,
+    dataSelect,
+    cod_ambulance,
+    language = {
+      language: localStorage.getItem("language"),
+      new_case: localStorage.getItem("language_new_case"),
+      map: localStorage.getItem("language_map"),
+    };
 
   var tableMaestro = $("#tableMaestro").DataTable({
     select: "single",
@@ -67,7 +77,11 @@ $(function () {
     dom: "Bfrtip",
     initComplete: function () {
       $("#tableMaestro_wrapper").prepend(
-        "<a class='btn btn-secondary new-case' href='#' role='button'><i class='fa fa-clinic-medical'> Nuevo caso</i></a>"
+        "<div class='btn-dataTable d-flex'><a class='btn btn-secondary mr-3 new-case' href='preh_maestroadd.php' role='button'><i class='fa fa-clinic-medical'> " +
+          language["new_case"] +
+          "</i></a><a class='btn btn-secondary map' href='#' role='button'><i class='fa fa-map-marked-alt'> " +
+          language["map"] +
+          "</i></a></div>"
       );
       $("#tableMaestro_wrapper .btn.new-case").on("click", function () {
         return ew.modalDialogShow({

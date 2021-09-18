@@ -107,12 +107,15 @@ $(function () {
             tableEmergency.rows(index - 1).data()[0].fecha_clasificacion
           );
           var diff = Math.abs(date - date_classification);
-          var minutes = Math.floor(diff / 1000 / 60);          
+          var minutes = Math.floor(diff / 1000 / 60);
           switch ($(this).find("td .card-classification").text()) {
             case "Amarillo":
               var _this = this;
               var min_yellow = 9 - minutes;
-              var seg_yellow = 60 - date_classification.getSeconds();
+              var seg_yellow =
+                date.getSeconds() - date_classification.getSeconds() < 0
+                  ? 60 - date_classification.getSeconds() + date.getSeconds()
+                  : date.getSeconds() - date_classification.getSeconds();
               setInterval(function () {
                 if (min_yellow >= 0) {
                   $(_this)
@@ -140,7 +143,10 @@ $(function () {
             case "Naranja":
               var _this = this;
               var min_orange = 14 - minutes;
-              var seg_orange = 60 - date_classification.getSeconds();
+              var seg_orange =
+                date.getSeconds() - date_classification.getSeconds() < 0
+                  ? 60 - date_classification.getSeconds() + date.getSeconds()
+                  : date.getSeconds() - date_classification.getSeconds();
               setInterval(function () {
                 if (min_orange >= 0) {
                   $(_this)

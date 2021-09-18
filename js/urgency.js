@@ -94,16 +94,20 @@ $(function () {
     initComplete: function () {
       $("#tableUrgency tr").each(function (index, value) {
         if (index > 0) {
+          var date = new Date();
           var date_classification = new Date(
             tableUrgency.rows(index - 1).data()[0].fecha_clasificacion
           );
-          var diff = Math.abs(new Date() - date_classification);
+          var diff = Math.abs(date - date_classification);
           var minutes = Math.floor(diff / 1000 / 60);
           switch ($(this).find("td .card-classification").text()) {
             case "Azul":
               var _this = this;
               var min_blue = 45 - minutes;
-              var seg_blue = 60 - date_classification.getSeconds();
+              var seg_blue =
+                date.getSeconds() - date_classification.getSeconds() < 0
+                  ? 60 - date_classification.getSeconds() + date.getSeconds()
+                  : date.getSeconds() - date_classification.getSeconds();
               setInterval(function () {
                 if (min_blue >= 0) {
                   $(_this)
@@ -111,23 +115,27 @@ $(function () {
                     .html(
                       min_blue > 0 && min_blue < 10 ? "0" + min_blue : min_blue
                     );
-                  seg_blue--;
-                  if (seg_blue == 0) {
-                    seg_blue = min_blue == 0 ? 0 : 60;
-                    min_blue--;
-                  }
-                  $(_this)
+                    $(_this)
                     .find(".countdown .sec")
                     .html(
                       seg_blue > 0 && seg_blue < 10 ? "0" + seg_blue : seg_blue
                     );
+                  seg_blue--;
+                  if (seg_blue == 0) {
+                    seg_blue = min_blue == 0 ? 0 : 59;
+                    min_blue--;
+                  }
+                  
                 }
               }, 1000);
               break;
             case "Verde":
               var _this = this;
               var min_green = 30 - minutes;
-              var seg_green = 60 - date_classification.getSeconds();
+              var seg_green =
+                date.getSeconds() - date_classification.getSeconds() < 0
+                  ? 60 - date_classification.getSeconds() + date.getSeconds()
+                  : date.getSeconds() - date_classification.getSeconds();
               setInterval(function () {
                 if (min_green >= 0) {
                   $(_this)
