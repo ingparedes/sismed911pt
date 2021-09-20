@@ -72,6 +72,24 @@ $(function () {
         },
         targets: 2,
       },
+      {
+        render: function (data, type, row) {
+          var name = row.nombre_tiposervicion_es;
+          switch (language["language"]) {
+            case "en":
+              name = row.nombre_tiposervicion_en;
+              break;
+            case "pt":
+              name = row.nombre_tiposervicion_pr;
+              break;
+            case "fr":
+              name = row.nombre_tiposervicion_fr;
+              break;
+          }
+          return name;
+        },
+        targets: 3,
+      },
     ],
     //rowId: 'extn',
     dom: "Bfrtip",
@@ -117,17 +135,26 @@ $(function () {
         },
       })
         .done(function (data) {
+          var name = "";
           $("#p_ide").empty();
           $("#p_ide").append($("<option value='0'>Seleccione...</option>"));
           $.each(data["ide"], function (index, value) {
+            switch (language["language"]) {
+              case "es":
+                name = value.descripcion;
+                break;
+              case "en":
+                name = value.descripcion_en;
+                break;
+              case "pt":
+                name = value.descripcion_pr;
+                break;
+              case "fr":
+                name = value.descripcion_fr;
+                break;
+            }
             $("#p_ide").append(
-              $(
-                "<option value='" +
-                  value.id_tipo +
-                  "'>" +
-                  value.descripcion +
-                  "</option>"
-              )
+              $("<option value='" + value.id_tipo + "'>" + name + "</option>")
             );
             if (dataSelect.tipo_doc == value.id_tipo) {
               $("#p_ide option[value=" + value.id_tipo + "]").attr(
@@ -140,14 +167,22 @@ $(function () {
           $("#p_typeage").empty();
           $("#p_typeage").append($("<option value='0'>Seleccione...</option>"));
           $.each(data["age"], function (index, value) {
+            switch (language["language"]) {
+              case "es":
+                name = value.nombre_edad;
+                break;
+              case "en":
+                name = value.nombre_edad_en;
+                break;
+              case "pt":
+                name = value.nombre_edad_pr;
+                break;
+              case "fr":
+                name = value.nombre_edad_fr;
+                break;
+            }
             $("#p_typeage").append(
-              $(
-                "<option value='" +
-                  value.id_edad +
-                  "'>" +
-                  value.nombre_edad +
-                  "</option>"
-              )
+              $("<option value='" + value.id_edad + "'>" + name + "</option>")
             );
             if (dataSelect.cod_edad == value.id_edad) {
               $("#p_typeage option[value=" + value.id_edad + "]").attr(
@@ -160,14 +195,22 @@ $(function () {
           $("#ec_triage").empty();
           $("#ec_triage").append($("<option value='0'>Seleccione...</option>"));
           $.each(data["triage"], function (index, value) {
+            switch (language["language"]) {
+              case "es":
+                name = value.nombre_triage_es;
+                break;
+              case "en":
+                name = value.nombre_triage_en;
+                break;
+              case "pt":
+                name = value.nombre_triage_pr;
+                break;
+              case "fr":
+                name = value.nombre_triage_fr;
+                break;
+            }
             $("#ec_triage").append(
-              $(
-                "<option value='" +
-                  value.id_triage +
-                  "'>" +
-                  value.nombre_triage_es +
-                  "</option>"
-              )
+              $("<option value='" + value.id_triage + "'>" + name + "</option>")
             );
             if (dataSelect.triage == value.id_triage) {
               $("#ec_triage option[value=" + value.id_triage + "]").attr(
@@ -212,10 +255,21 @@ $(function () {
       $("#ec_gli").val(dataSelect.sv_gli);
       $("#ec_talla").val(dataSelect.talla);
       $("#ec_peso").val(dataSelect.peso);
-      if (dataSelect.cod_diag_cie)
-        $("#ec_cie10").val(
-          dataSelect.cod_diag_cie + " " + dataSelect.cie10_diagnostico
-        );
+      if (dataSelect.cod_diag_cie) {
+        var name = dataSelect.cie10_diagnostico;
+        switch (language["language"]) {
+          case "en":
+            name = dataSelect.cie10_diagnostico_en;
+            break;
+          case "pt":
+            name = dataSelect.cie10_diagnostico_pr;
+            break;
+          case "fr":
+            name = dataSelect.cie10_diagnostico_fr;
+            break;
+        }
+        $("#ec_cie10").val(dataSelect.cod_diag_cie + " " + name);
+      }
       $("#ec_cuadro").html(dataSelect.c_clinico);
       $("#ec_examen").html(dataSelect.examen_fisico);
       $("#ec_antec").html(dataSelect.antecedentes);
@@ -683,7 +737,27 @@ $(function () {
       dataSrc: "",
     },
     deferRender: true,
-    columns: [{ data: "codigo_cie" }, { data: "diagnostico" }],
+    columns: [{ data: "codigo_cie" }, { defaultContent: "" }],
+    columnDefs: [
+      {
+        render: function (data, type, row) {
+          var diag = row.diagnostico;
+          switch (language["language"]) {
+            case "en":
+              diag = row.diagnostico_en;
+              break;
+            case "pt":
+              diag = row.diagnostico_pr;
+              break;
+            case "fr":
+              diag = row.diagnostico_fr;
+              break;
+          }
+          return diag;
+        },
+        targets: 1,
+      },
+    ],
     //dom: 'Bfrtip'
   });
 

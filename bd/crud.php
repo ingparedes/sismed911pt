@@ -15,7 +15,7 @@ $reason = (isset($_POST['reason'])) ? $_POST['reason'] : '';
 
 switch ($option) {
     case 'selectPrehMaestro':
-        $sql = "SELECT *, preh_maestro.cod_casopreh as cod_casopreh, preh_maestro.direccion as direccion_maestro, preh_maestro.telefono as telefono_maestro, preh_maestro.observacion as observacion_maestro, incidentes.nombre_es as nombre_incidente, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente, tipo_id.descripcion as ide_descripcion, cie10.diagnostico as cie10_diagnostico
+        $sql = "SELECT *, preh_maestro.cod_casopreh as cod_casopreh, preh_maestro.direccion as direccion_maestro, preh_maestro.telefono as telefono_maestro, preh_maestro.observacion as observacion_maestro, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente, cie10.diagnostico as cie10_diagnostico, cie10.diagnostico_en as cie10_diagnostico_en, cie10.diagnostico_pr as cie10_diagnostico_pr, cie10.diagnostico_fr as cie10_diagnostico_fr
         FROM preh_maestro
         LEFT JOIN pacientegeneral ON preh_maestro.cod_casopreh = pacientegeneral.cod_casointerh
         LEFT JOIN hospitalesgeneral ON preh_maestro.hospital_destino = hospitalesgeneral.id_hospital
@@ -30,7 +30,7 @@ switch ($option) {
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectInterhMaestro':
-        $sql = "SELECT *, interh_maestro.cod_casointerh as cod_casointerh, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente, tipo_id.descripcion as ide_descripcion, cie10.diagnostico as cie10_diagnostico, servicio_ambulancia.observaciones as observacion_ambulancia
+        $sql = "SELECT *, interh_maestro.cod_casointerh as cod_casointerh, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente, cie10.diagnostico as cie10_diagnostico, cie10.diagnostico_en as cie10_diagnostico_en, cie10.diagnostico_pr as cie10_diagnostico_pr, cie10.diagnostico_fr as cie10_diagnostico_fr, servicio_ambulancia.observaciones as observacion_ambulancia
             FROM interh_maestro 
             LEFT JOIN interh_tiposervicio ON interh_maestro.tipo_serviciointerh = interh_tiposervicio.id_tiposervicion
             LEFT JOIN hospitalesgeneral ON interh_maestro.hospital_origneinterh = hospitalesgeneral.id_hospital
