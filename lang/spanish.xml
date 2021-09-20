@@ -177,6 +177,15 @@
     <phrase id="em_ordenmedical" value="Orden Medicamentos" />
     <phrase id="em_ordentest" value="Orden Exámenes" />
     <phrase id="em_option" value="Opción" />
+    <!-- Imprimir pdf -->
+    <phrase id="pdf_medicalorden" value="Orden de medicamentos" />
+    <phrase id="pdf_testorden" value="Orden de exámenes" />
+    <phrase id="pdf_hospitalname" value="Nombre del hospital" />
+    <phrase id="pdf_expiredate" value="Fecha de expedición" />
+    <phrase id="pdf_patientname" value="Nombre del paciente" />
+    <phrase id="pdf_identity" value="Identificación" />
+    <phrase id="pdf_code" value="Código del diagnóstico" />
+    <phrase id="pdf_doctor" value="Preescribe (médico)" />    
 
     <phrase id="accept" value="Aceptar" />
     <!-- v2019 -->

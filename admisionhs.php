@@ -32,6 +32,10 @@ Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
 
+<script>
+	localStorage.setItem("language", "<?php echo CurrentLanguageID(); ?>");
+</script>
+
 <div id="data-user" data-hospital="<?php echo CurrentUserInfo('hospital') ?>" hidden></div>
 
 <div class="row">

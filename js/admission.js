@@ -3,7 +3,10 @@ $(function () {
     focus_value,
     dataSelect,
     updatePatient = false;
-  id_hospital = $("#data-user").data("hospital");
+  (id_hospital = $("#data-user").data("hospital")),
+    (language = {
+      language: localStorage.getItem("language"),
+    });
 
   var tablePatient = $("#tablePatient").DataTable({
     select: "single",
@@ -95,13 +98,21 @@ $(function () {
         $("#p_ide").empty();
         $("#p_ide").append($("<option value='0'>Seleccione...</option>"));
         $.each(data, function (index, value) {
+          var description = value.descripcion;
+          switch (language["language"]) {
+            case "en":
+              description = value.descripcion_en;
+              break;
+            case "pt":
+              description = value.descripcion_pr;
+              break;
+            case "fr":
+              description = value.descripcion_fr;
+              break;
+          }
           $("#p_ide").append(
             $(
-              "<option value=" +
-                value.id_tipo +
-                ">" +
-                value.descripcion +
-                "</option>"
+              "<option value=" + value.id_tipo + ">" + description + "</option>"
             )
           );
           if (update) {
@@ -132,14 +143,20 @@ $(function () {
         $("#p_typeage").empty();
         $("#p_typeage").append($("<option value='0'>Seleccione...</option>"));
         $.each(data, function (index, value) {
+          var name = value.descripcion;
+          switch (language["language"]) {
+            case "en":
+              name = value.nombre_edad_en;
+              break;
+            case "pt":
+              name = value.nombre_edad_pr;
+              break;
+            case "fr":
+              name = value.nombre_edad_fr;
+              break;
+          }
           $("#p_typeage").append(
-            $(
-              "<option value=" +
-                value.id_edad +
-                ">" +
-                value.nombre_edad +
-                "</option>"
-            )
+            $("<option value=" + value.id_edad + ">" + name + "</option>")
           );
           if (update) {
             if (dataSelect[0].cod_edad == value.id_edad) {
@@ -170,14 +187,20 @@ $(function () {
         $("<option value='0'>-- Seleccione una opción --</option>")
       );
       $.each(data, function (index, value) {
+        var name = value.nombre_ingreso;
+        switch (language["language"]) {
+          case "en":
+            name = value.nombre_ingreso_en;
+            break;
+          case "pt":
+            name = value.nombre_ingreso_pt;
+            break;
+          case "fr":
+            name = value.nombre_ingreso_fr;
+            break;
+        }
         $("#ingress").append(
-          $(
-            "<option value=" +
-              value.id_ingreso +
-              ">" +
-              value.nombre_ingreso +
-              "</option>"
-          )
+          $("<option value=" + value.id_ingreso + ">" + name + "</option>")
         );
       });
     })

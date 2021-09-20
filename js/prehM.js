@@ -96,7 +96,7 @@ $(function () {
       $("#tableMaestro_wrapper").prepend(
         "<div class='btn-dataTable d-flex'><a class='btn btn-secondary mr-3' href='preh_maestroadd.php' role='button'><i class='fa fa-clinic-medical'> " +
           language["new_case"] +
-          "</i></a><a class='btn btn-secondary map' href='#' role='button'><i class='fa fa-map-marked-alt'> " +
+          "</i></a><a class='btn btn-secondary map' href='http://144.126.134.106:8082/' role='button'><i class='fa fa-map-marked-alt'> " +
           language["map"] +
           "</i></a></div>"
       );

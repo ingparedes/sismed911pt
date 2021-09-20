@@ -1,5 +1,8 @@
 $(function () {
-  var dataSelect;
+  var dataSelect,
+    language = {
+      language: localStorage.getItem("language"),
+    };
   var tableAdmission = $("#tableAdmission").DataTable({
     select: "single",
     pageLength: 5,
@@ -38,7 +41,7 @@ $(function () {
       { data: "expendiente" },
       { defaultContent: "" },
       { data: "fecha_admision" },
-      { data: "nombre_ingreso" },
+      { defaultContent: "" },
       { data: "cod911" },
       { data: "genero" },
       { data: "acompañante" },
@@ -53,6 +56,24 @@ $(function () {
           return patient;
         },
         targets: 1,
+      },
+      {
+        render: function (data, type, row) {
+          var name = row.nombre_ingreso;
+          switch (language["language"]) {
+            case "en":
+              name = row.nombre_ingreso_en;
+              break;
+            case "pt":
+              name = row.nombre_ingreso_pt;
+              break;
+            case "fr":
+              name = row.nombre_ingreso_fr;
+              break;
+          }
+          return name;
+        },
+        targets: 3,
       },
       {
         render: function (data, type, row) {
@@ -111,7 +132,20 @@ $(function () {
     $("#classification").trigger("change");
     if (dataSelect.dolor)
       $("#dolor option[value=" + dataSelect.dolor + "]").attr("selected", true);
-    $("#signal").val(dataSelect.sintomas_signos);
+    switch (language["language"]) {
+      case "es":
+        $("#signal").val(dataSelect.sintomas_signos);
+        break;
+      case "en":
+        $("#signal").val(dataSelect.sintomas_signos_en);
+        break;
+      case "pt":
+        $("#signal").val(dataSelect.sintomas_signos_pt);
+        break;
+      case "fr":
+        $("#signal").val(dataSelect.sintomas_signos_fr);
+        break;
+    }
     $("#id_signal").val(dataSelect.id_signos);
     $("#motivation").html(dataSelect.motivo_consulta);
     $("#signalDescription").html(dataSelect.signos_sintomas);
@@ -163,38 +197,62 @@ $(function () {
       });
 
       $.each(data["locationTrauma"], function (index, value) {
+        var name = value.nombre_localizaciontrauma;
+        switch (language["language"]) {
+          case "en":
+            name = value.nombre_localizaciontrauma_en;
+            break;
+          case "pt":
+            name = value.nombre_localizaciontrauma_pt;
+            break;
+          case "fr":
+            name = value.nombre_localizaciontrauma_fr;
+            break;
+        }
         $("#locationTrauma").append(
           $(
             "<option value=" +
               value.id_localizaciontrauma +
               ">" +
-              value.nombre_localizaciontrauma +
+              name +
               "</option>"
           )
         );
       });
 
       $.each(data["causeTrauma"], function (index, value) {
+        var name = value.nombre_causaTrauma;
+        switch (language["language"]) {
+          case "en":
+            name = value.nombre_causaTrauma_en;
+            break;
+          case "pt":
+            name = value.nombre_causaTrauma_pt;
+            break;
+          case "fr":
+            name = value.nombre_causaTrauma_fr;
+            break;
+        }
         $("#causeTrauma").append(
-          $(
-            "<option value=" +
-              value.id_salaCausa +
-              ">" +
-              value.nombre_causaTrauma +
-              "</option>"
-          )
+          $("<option value=" + value.id_salaCausa + ">" + name + "</option>")
         );
       });
 
       $.each(data["system"], function (index, value) {
+        var name = value.nombre_sistema;
+        switch (language["language"]) {
+          case "en":
+            name = value.nombre_sistema;
+            break;
+          case "pt":
+            name = value.nombre_sistema_pt;
+            break;
+          case "fr":
+            name = value.nombre_sistema_fr;
+            break;
+        }
         $("#system").append(
-          $(
-            "<option value=" +
-              value.id_sistema +
-              ">" +
-              value.nombre_sistema +
-              "</option>"
-          )
+          $("<option value=" + value.id_sistema + ">" + name + "</option>")
         );
       });
     })
@@ -289,7 +347,27 @@ $(function () {
         dataSrc: "",
       },
       deferRender: true,
-      columns: [{ data: "sintomas_signos" }],
+      columns: [{ defaultContent: "" }],
+      columnDefs: [
+        {
+          render: function (data, type, row) {
+            var name = row.sintomas_signos;
+            switch (language["language"]) {
+              case "en":
+                name = row.sintomas_signos_en;
+                break;
+              case "pt":
+                name = row.sintomas_signos_pt;
+                break;
+              case "fr":
+                name = row.sintomas_signos_fr;
+                break;
+            }
+            return name;
+          },
+          targets: 0,
+        },
+      ],
       //dom: 'Bfrtip'
     });
   }

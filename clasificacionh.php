@@ -32,6 +32,10 @@ Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
 
+<script>
+	localStorage.setItem("language", "<?php echo CurrentLanguageID(); ?>");
+</script>
+
 <div class="row mb-3">
 	<div class="col-lg-12">
 		<table id="tableAdmission" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">

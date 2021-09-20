@@ -1,6 +1,25 @@
 $(function () {
   window.jsPDF = window.jspdf.jsPDF;
-  var dataSelect, idMedical, idMA, focus_value, name_hospital;
+  var dataSelect,
+    idMedical,
+    idMA,
+    focus_value,
+    name_hospital,
+    language = {
+      language: localStorage.getItem("language"),
+      MedicalOrden: localStorage.getItem("pdf_medicalorden"),
+      testOrden: localStorage.getItem("pdf_testorden"),
+      hospitalName: localStorage.getItem("pdf_hospitalname"),
+      expireDate: localStorage.getItem("pdf_expiredate"),
+      patientName: localStorage.getItem("pdf_patientname"),
+      identity: localStorage.getItem("pdf_identity"),
+      code: localStorage.getItem("pdf_code"),
+      doctor: localStorage.getItem("pdf_doctor"),
+      age: localStorage.getItem("fp_age"),
+      medical: localStorage.getItem("m_medicalsearch"),
+      dosis: localStorage.getItem("m_medicallabel2"),
+      test: localStorage.getItem("m_test"),
+    };
   var tableEmergency = $("#tableEmergency").DataTable({
     select: "single",
     pageLength: 5,
@@ -42,7 +61,7 @@ $(function () {
       { data: "fecha_clasificacion" },
       { data: "expendiente" },
       { defaultContent: "" },
-      { data: "nombre_motivoatencion" },
+      { defaultContent: "" },
       {
         defaultContent:
           '<button type="button" class="btn btn-secondary egress-btn" data-toggle="modal" data-target="#modal-egress">Egreso</button>',
@@ -96,6 +115,24 @@ $(function () {
           return patient;
         },
         targets: 4,
+      },
+      {
+        render: function (data, type, row) {
+          var name = row.nombre_motivoatencion;
+          switch (language["language"]) {
+            case "en":
+              name = row.nombre_motivoatencion_en;
+              break;
+            case "pt":
+              name = row.nombre_motivoatencion_pt;
+              break;
+            case "fr":
+              name = row.nombre_motivoatencion_fr;
+              break;
+          }
+          return name;
+        },
+        targets: 5,
       },
     ],
     dom: "Bfrtip",
@@ -280,9 +317,23 @@ $(function () {
       true
     );
     $("#piel option[value=" + dataSelect.id_piel + "]").attr("selected", true);
-    dataSelect.cod_cie10
-      ? $("#ec_cie10").val(dataSelect.cod_cie10 + " " + dataSelect.diagnostico)
-      : $("#ec_cie10").val("");
+    if (dataSelect.cod_cie10) {
+      var name = dataSelect.diagnostico;
+      switch (language["language"]) {
+        case "en":
+          name = dataSelect.diagnostico_en;
+          break;
+        case "pt":
+          name = dataSelect.diagnostico_pt;
+          break;
+        case "fr":
+          name = dataSelect.diagnostico_fr;
+          break;
+      }
+      $("#ec_cie10").val(dataSelect.cod_cie10 + " " + name);
+    } else {
+      $("#ec_cie10").val("");
+    }
     $("#sign").html(dataSelect.sintomas);
     $("#description").html(dataSelect.descripcion_diagnostico);
     $("#other").html(dataSelect.otros);
@@ -312,11 +363,23 @@ $(function () {
   function appendTableMedical(data) {
     if (data)
       $.each(data, function (index, value) {
+        var name = value.producto;
+        switch (language["language"]) {
+          case "en":
+            name = value.producto_en;
+            break;
+          case "pt":
+            name = value.producto_pt;
+            break;
+          case "fr":
+            name = value.producto_fr;
+            break;
+        }
         $("#tableMedical>tbody").append(
           "<tr id='" +
             value.id_atencionmedica_medicamentos +
             "'><td class='name'>" +
-            value.producto +
+            name +
             "</td><td class='dosis'>" +
             value.dosis +
             "</td><td><button type='button' class='btn btn-danger delete-medical'><i class='fa fa-trash'></i> Eliminar</button></td></tr>"
@@ -327,11 +390,23 @@ $(function () {
   function appendTableExamen(data) {
     if (data)
       $.each(data, function (index, value) {
+        var name = value.nombre_examen;
+        switch (language["language"]) {
+          case "en":
+            name = value.nombre_examen_en;
+            break;
+          case "pt":
+            name = value.nombre_examen_pt;
+            break;
+          case "fr":
+            name = value.nombre_examen_fr;
+            break;
+        }
         $("#tableExamen>tbody").append(
           "<tr id='" +
             value.id_atencionmedica_examen +
             "'><td class='name'>" +
-            value.nombre_examen +
+            name +
             "</td><td><button type='button' class='btn btn-danger delete-examen'><i class='fa fa-trash'></i> Eliminar</button></td></tr>"
         );
       });
@@ -372,7 +447,27 @@ $(function () {
         dataSrc: "",
       },
       deferRender: true,
-      columns: [{ data: "producto" }],
+      columns: [{ defaultContent: "" }],
+      columnDefs: [
+        {
+          render: function (data, type, row) {
+            var name = row.producto;
+            switch (language["language"]) {
+              case "en":
+                name = row.producto_en;
+                break;
+              case "pt":
+                name = row.producto_pt;
+                break;
+              case "fr":
+                name = row.producto_fr;
+                break;
+            }
+            return name;
+          },
+          targets: 0,
+        },
+      ],
       //dom: 'Bfrtip'
     });
   }
@@ -412,7 +507,27 @@ $(function () {
         dataSrc: "",
       },
       deferRender: true,
-      columns: [{ data: "nombre_examen" }],
+      columns: [{ defaulContent: "" }],
+      columnDefs: [
+        {
+          render: function (data, type, row) {
+            var name = row.nombre_examen;
+            switch (language["language"]) {
+              case "en":
+                name = row.nombre_examen_en;
+                break;
+              case "pt":
+                name = row.nombre_examen_pt;
+                break;
+              case "fr":
+                name = row.nombre_examen_fr;
+                break;
+            }
+            return name;
+          },
+          targets: 0,
+        },
+      ],
       //dom: 'Bfrtip'
     });
   }
@@ -482,207 +597,345 @@ $(function () {
       $("#disposal").empty();
       $("#disposal").append($("<option>-- Seleccione una opción --</option>"));
 
+      var name = "";
+
       $.each(data["general"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_general;
+            break;
+          case "en":
+            name = value.nombre_general_en;
+            break;
+          case "pt":
+            name = value.nombre_general_pt;
+            break;
+          case "fr":
+            name = value.nombre_general_fr;
+            break;
+        }
         $("#general").append(
-          $(
-            "<option value=" +
-              value.id_general +
-              ">" +
-              value.nombre_general +
-              "</option>"
-          )
+          $("<option value=" + value.id_general + ">" + name + "</option>")
         );
       });
 
       $.each(data["cabeza"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_cabeza;
+            break;
+          case "en":
+            name = value.nombre_cabeza_en;
+            break;
+          case "pt":
+            name = value.nombre_cabeza_pt;
+            break;
+          case "fr":
+            name = value.nombre_cabeza_fr;
+            break;
+        }
         $("#cabeza").append(
-          $(
-            "<option value=" +
-              value.id_cabeza +
-              ">" +
-              value.nombre_cabeza +
-              "</option>"
-          )
+          $("<option value=" + value.id_cabeza + ">" + name + "</option>")
         );
       });
 
       $.each(data["ojo"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_ojo;
+            break;
+          case "en":
+            name = value.nombre_ojo_en;
+            break;
+          case "pt":
+            name = value.nombre_ojo_pt;
+            break;
+          case "fr":
+            name = value.nombre_ojo_fr;
+            break;
+        }
         $("#ojo").append(
-          $(
-            "<option value=" +
-              value.id_ojo +
-              ">" +
-              value.nombre_ojo +
-              "</option>"
-          )
+          $("<option value=" + value.id_ojo + ">" + name + "</option>")
         );
       });
 
       $.each(data["otorrino"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_otorrino;
+            break;
+          case "en":
+            name = value.nombre_otorrino_en;
+            break;
+          case "pt":
+            name = value.nombre_otorrino_pt;
+            break;
+          case "fr":
+            name = value.nombre_otorrino_fr;
+            break;
+        }
         $("#otorrino").append(
-          $(
-            "<option value=" +
-              value.id_otorrino +
-              ">" +
-              value.nombre_otorrino +
-              "</option>"
-          )
+          $("<option value=" + value.id_otorrino + ">" + name + "</option>")
         );
       });
 
       $.each(data["boca"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_boca;
+            break;
+          case "en":
+            name = value.nombre_boca_en;
+            break;
+          case "pt":
+            name = value.nombre_boca_pt;
+            break;
+          case "fr":
+            name = value.nombre_boca_fr;
+            break;
+        }
         $("#boca").append(
-          $(
-            "<option value=" +
-              value.id_boca +
-              ">" +
-              value.nombre_boca +
-              "</option>"
-          )
+          $("<option value=" + value.id_boca + ">" + name + "</option>")
         );
       });
 
       $.each(data["cuello"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_cuello;
+            break;
+          case "en":
+            name = value.nombre_cuello_en;
+            break;
+          case "pt":
+            name = value.nombre_cuello_pt;
+            break;
+          case "fr":
+            name = value.nombre_cuello_fr;
+            break;
+        }
         $("#cuello").append(
-          $(
-            "<option value=" +
-              value.id_cuello +
-              ">" +
-              value.nombre_cuello +
-              "</option>"
-          )
+          $("<option value=" + value.id_cuello + ">" + name + "</option>")
         );
       });
 
       $.each(data["torax"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_torax;
+            break;
+          case "en":
+            name = value.nombre_torax_en;
+            break;
+          case "pt":
+            name = value.nombre_torax_pt;
+            break;
+          case "fr":
+            name = value.nombre_torax_fr;
+            break;
+        }
         $("#torax").append(
-          $(
-            "<option value=" +
-              value.id_torax +
-              ">" +
-              value.nombre_torax +
-              "</option>"
-          )
+          $("<option value=" + value.id_torax + ">" + name + "</option>")
         );
       });
 
       $.each(data["corazon"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_corazon;
+            break;
+          case "en":
+            name = value.nombre_corazon_en;
+            break;
+          case "pt":
+            name = value.nombre_corazon_pt;
+            break;
+          case "fr":
+            name = value.nombre_corazon_fr;
+            break;
+        }
         $("#corazon").append(
-          $(
-            "<option value=" +
-              value.id_corazon +
-              ">" +
-              value.nombre_corazon +
-              "</option>"
-          )
+          $("<option value=" + value.id_corazon + ">" + name + "</option>")
         );
       });
 
       $.each(data["pulmon"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_pulmon;
+            break;
+          case "en":
+            name = value.nombre_pulmon_en;
+            break;
+          case "pt":
+            name = value.nombre_pulmon_pt;
+            break;
+          case "fr":
+            name = value.nombre_pulmon_fr;
+            break;
+        }
         $("#pulmon").append(
-          $(
-            "<option value=" +
-              value.id_pulmon +
-              ">" +
-              value.nombre_pulmon +
-              "</option>"
-          )
+          $("<option value=" + value.id_pulmon + ">" + name + "</option>")
         );
       });
 
       $.each(data["abdomen"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_abdomen;
+            break;
+          case "en":
+            name = value.nombre_abdomen_en;
+            break;
+          case "pt":
+            name = value.nombre_abdomen_pt;
+            break;
+          case "fr":
+            name = value.nombre_abdomen_fr;
+            break;
+        }
         $("#abdomen").append(
-          $(
-            "<option value=" +
-              value.id_abdomen +
-              ">" +
-              value.nombre_abdomen +
-              "</option>"
-          )
+          $("<option value=" + value.id_abdomen + ">" + name + "</option>")
         );
       });
 
       $.each(data["pelvis"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_pelvis;
+            break;
+          case "en":
+            name = value.nombre_pelvis_en;
+            break;
+          case "pt":
+            name = value.nombre_pelvis_pt;
+            break;
+          case "fr":
+            name = value.nombre_pelvis_fr;
+            break;
+        }
         $("#pelvis").append(
-          $(
-            "<option value=" +
-              value.id_pelvis +
-              ">" +
-              value.nombre_pelvis +
-              "</option>"
-          )
+          $("<option value=" + value.id_pelvis + ">" + name + "</option>")
         );
       });
 
       $.each(data["rectal"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_rectal;
+            break;
+          case "en":
+            name = value.nombre_rectal_en;
+            break;
+          case "pt":
+            name = value.nombre_rectal_pt;
+            break;
+          case "fr":
+            name = value.nombre_rectal_fr;
+            break;
+        }
         $("#rectal").append(
-          $(
-            "<option value=" +
-              value.id_rectal +
-              ">" +
-              value.nombre_rectal +
-              "</option>"
-          )
+          $("<option value=" + value.id_rectal + ">" + name + "</option>")
         );
       });
 
       $.each(data["genital"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_genital;
+            break;
+          case "en":
+            name = value.nombre_genital_en;
+            break;
+          case "pt":
+            name = value.nombre_genital_pt;
+            break;
+          case "fr":
+            name = value.nombre_genital_fr;
+            break;
+        }
         $("#genital").append(
-          $(
-            "<option value=" +
-              value.id_genital +
-              ">" +
-              value.nombre_genital +
-              "</option>"
-          )
+          $("<option value=" + value.id_genital + ">" + name + "</option>")
         );
       });
 
       $.each(data["extremidad"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_extremidad;
+            break;
+          case "en":
+            name = value.nombre_extremidad_en;
+            break;
+          case "pt":
+            name = value.nombre_extremidad_pt;
+            break;
+          case "fr":
+            name = value.nombre_extremidad_fr;
+            break;
+        }
         $("#extremidad").append(
-          $(
-            "<option value=" +
-              value.id_extremidad +
-              ">" +
-              value.nombre_extremidad +
-              "</option>"
-          )
+          $("<option value=" + value.id_extremidad + ">" + name + "</option>")
         );
       });
 
       $.each(data["neuro"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_neuro;
+            break;
+          case "en":
+            name = value.nombre_neuro_en;
+            break;
+          case "pt":
+            name = value.nombre_neuro_pt;
+            break;
+          case "fr":
+            name = value.nombre_neuro_fr;
+            break;
+        }
         $("#neuro").append(
-          $(
-            "<option value=" +
-              value.id_neuro +
-              ">" +
-              value.nombre_neuro +
-              "</option>"
-          )
+          $("<option value=" + value.id_neuro + ">" + name + "</option>")
         );
       });
 
       $.each(data["piel"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.nombre_piel;
+            break;
+          case "en":
+            name = value.nombre_piel_en;
+            break;
+          case "pt":
+            name = value.nombre_piel_pt;
+            break;
+          case "fr":
+            name = value.nombre_piel_fr;
+            break;
+        }
         $("#piel").append(
-          $(
-            "<option value=" +
-              value.id_piel +
-              ">" +
-              value.nombre_piel +
-              "</option>"
-          )
+          $("<option value=" + value.id_piel + ">" + name + "</option>")
         );
       });
 
       $.each(data["disposal"], function (index, value) {
+        switch (language["language"]) {
+          case "es":
+            name = value.estado_alta;
+            break;
+          case "en":
+            name = value.estado_alta_en;
+            break;
+          case "pt":
+            name = value.estado_alta_pt;
+            break;
+          case "fr":
+            name = value.estado_alta_fr;
+            break;
+        }
         $("#disposal").append(
-          $(
-            "<option value=" +
-              value.id_estadoalta +
-              ">" +
-              value.estado_alta +
-              "</option>"
-          )
+          $("<option value=" + value.id_estadoalta + ">" + name + "</option>")
         );
       });
     })
@@ -777,7 +1030,27 @@ $(function () {
       dataSrc: "",
     },
     deferRender: true,
-    columns: [{ data: "codigo_cie" }, { data: "diagnostico" }],
+    columns: [{ data: "codigo_cie" }, { defaultContent: "" }],
+    columnDefs: [
+      {
+        render: function (data, type, row) {
+          var name = row.diagnostico;
+          switch (language["language"]) {
+            case "en":
+              name = row.diagnostico_en;
+              break;
+            case "pt":
+              name = row.diagnostico_pr;
+              break;
+            case "fr":
+              name = row.diagnostico_fr;
+              break;
+          }
+          return name;
+        },
+        targets: 1,
+      },
+    ],
     //dom: 'Bfrtip'
   });
 
@@ -794,13 +1067,23 @@ $(function () {
   });
 
   $(".btnCIE10").on("click", function () {
-    var dataSelectCIE10 = tableCIE10.rows(".selected").data();
-    $("#ec_cie10").val(
-      dataSelectCIE10[0].codigo_cie + " " + dataSelectCIE10[0].diagnostico
-    );
+    var dataSelectCIE10 = tableCIE10.rows(".selected").data()[0];
+    var name = dataSelectCIE10.diagnostico;
+    switch (language["language"]) {
+      case "en":
+        name = dataSelectCIE10.diagnostico_en;
+        break;
+      case "pt":
+        name = dataSelectCIE10.diagnostico_pr;
+        break;
+      case "fr":
+        name = dataSelectCIE10.diagnostico_fr;
+        break;
+    }
+    $("#ec_cie10").val(dataSelectCIE10.codigo_cie + " " + name);
     crud_ajax(
       "cod_cie10",
-      dataSelectCIE10[0].codigo_cie,
+      dataSelectCIE10.codigo_cie,
       "updateMedicalAttention"
     );
   });
@@ -845,7 +1128,7 @@ $(function () {
   $("#print-medical").on("click", function () {
     var doc = new jsPDF();
     doc.setFontSize(18);
-    doc.text("Orden de medicamentos", 14, 22);
+    doc.text(language["MedicalOrden"], 14, 22);
     doc.setFontSize(11);
     doc.setTextColor(100);
 
@@ -866,7 +1149,7 @@ $(function () {
       date.getSeconds();
 
     doc.autoTable({
-      head: [["Nombre hospital", "Fecha expedición"]],
+      head: [[language["hospitalName"], language["expireDate"]]],
       body: [[name_hospital, dateNow]],
       startY: 30,
     });
@@ -879,7 +1162,12 @@ $(function () {
 
     doc.autoTable({
       head: [
-        ["Nombre paciente", "Identificacion", "Edad", "Código Diagnóstico"],
+        [
+          language["patientName"],
+          language["identity"],
+          language["age"],
+          language["code"],
+        ],
       ],
       body: [[name, dataSelect.num_doc, age, dataSelect.cod_cie10]],
     });
@@ -895,12 +1183,12 @@ $(function () {
     });
 
     doc.autoTable({
-      head: [["Medicamentos", "Dosis"]],
+      head: [[language["medical"], language["dosis"]]],
       body: body,
     });
 
     doc.autoTable({
-      head: [["Prescribe (médico)"]],
+      head: [[language["doctor"]]],
       body: [[$("#data-user").data("user")]],
     });
 
@@ -945,7 +1233,19 @@ $(function () {
 
   $(".btn-medical-search").on("click", function () {
     idMedical = tableMedical.rows(".selected").data()[0].id_medicamento;
-    $("#input-medical").val(tableMedical.rows(".selected").data()[0].producto);
+    var name = tableMedical.rows(".selected").data()[0].producto;
+    switch (language["language"]) {
+      case "en":
+        name = tableMedical.rows(".selected").data()[0].producto_en;
+        break;
+      case "pt":
+        name = tableMedical.rows(".selected").data()[0].producto_pt;
+        break;
+      case "fr":
+        name = tableMedical.rows(".selected").data()[0].producto_fr;
+        break;
+    }
+    $("#input-medical").val(name);
     if ($.trim($("#dosis").val()) != "")
       $(".btn-medical").prop("disabled", false);
   });
@@ -1002,9 +1302,21 @@ $(function () {
       .done(function (data) {
         var array = [];
         $.each(tableExamen.rows(".selected").data(), function (index, value) {
+          var name = value.nombre_examen;
+          switch (language["language"]) {
+            case "en":
+              name = value.nombre_examen_en;
+              break;
+            case "pt":
+              name = value.nombre_examen_pt;
+              break;
+            case "fr":
+              name = value.nombre_examen_fr;
+              break;
+          }
           array.push({
             id_atencionmedica_examen: data[index].id_atencionmedica_examen,
-            nombre_examen: value.nombre_examen,
+            nombre_examen: name,
           });
         });
         appendTableExamen(array);
@@ -1015,13 +1327,11 @@ $(function () {
   });
 
   $("#print-examen").on("click", function () {
-    //console.log(dataSelect);
     var doc = new jsPDF();
     doc.setFontSize(18);
-    doc.text("Orden de exámenes", 14, 22);
+    doc.text(language["pdf_testorden"], 14, 22);
     doc.setFontSize(11);
     doc.setTextColor(100);
-
     var date = new Date();
     var dateNow =
       (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
@@ -1037,43 +1347,41 @@ $(function () {
       date.getMinutes() +
       ":" +
       date.getSeconds();
-
     doc.autoTable({
-      head: [["Nombre hospital", "Fecha expedición"]],
+      head: [[language["hospitalName"], language["expireDate"]]],
       body: [[name_hospital, dateNow]],
       startY: 30,
     });
-
     var name = dataSelect.nombre1;
     if (dataSelect.nombre2) name += " " + dataSelect.nombre2;
     if (dataSelect.apellido1) name += " " + dataSelect.apellido1;
     if (dataSelect.apellido2) name += " " + dataSelect.apellido2;
     var age = dataSelect.edad + " " + dataSelect.nombre_edad;
-
     doc.autoTable({
       head: [
-        ["Nombre paciente", "Identificacion", "Edad", "Código Diagnóstico"],
+        [
+          language["patientName"],
+          language["identity"],
+          language["age"],
+          language["code"],
+        ],
       ],
       body: [[name, dataSelect.num_doc, age, dataSelect.cod_cie10]],
     });
-
     var body = [];
     $("#tableExamen tr").each(function (index, value) {
       if (index > 0) {
         body.push([$(this).find("td.name").text()]);
       }
     });
-
     doc.autoTable({
-      head: [["Exámenes"]],
+      head: [[language["test"]]],
       body: body,
     });
-
     doc.autoTable({
-      head: [["Prescribe (médico)"]],
+      head: [[language["doctor"]]],
       body: [[$("#data-user").data("user")]],
     });
-
     doc.save("orden_examenes.pdf");
   });
 });

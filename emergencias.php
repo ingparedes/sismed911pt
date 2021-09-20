@@ -32,6 +32,22 @@ Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
 
+<script>
+	localStorage.setItem("language", "<?php echo CurrentLanguageID(); ?>");
+	localStorage.setItem("pdf_medicalorden", "<?php $Language->Phrase("pdf_medicalorden"); ?>");
+	localStorage.setItem("pdf_testorden", "<?php $Language->Phrase("pdf_testorden"); ?>");
+	localStorage.setItem("pdf_hospitalname", "<?php $Language->Phrase("pdf_hospitalname"); ?>");
+	localStorage.setItem("pdf_expiredate", "<?php $Language->Phrase("pdf_expiredate"); ?>");
+	localStorage.setItem("pdf_patientname", "<?php $Language->Phrase("pdf_patientname"); ?>");
+	localStorage.setItem("pdf_identity", "<?php $Language->Phrase("pdf_identity"); ?>");
+	localStorage.setItem("pdf_code", "<?php $Language->Phrase("pdf_code"); ?>");
+	localStorage.setItem("pdf_doctor", "<?php $Language->Phrase("pdf_doctor"); ?>");
+	localStorage.setItem("fp_age", "<?php $Language->Phrase("fp_age"); ?>");
+	localStorage.setItem("m_medicalsearch", "<?php $Language->Phrase("m_medicalsearch"); ?>");
+	localStorage.setItem("m_medicallabel2", "<?php $Language->Phrase("m_medicallabel2"); ?>");
+	localStorage.setItem("m_test", "<?php $Language->Phrase("m_test"); ?>");
+</script>
+
 <div id="data-user" data-user="<?php echo CurrentUserInfo('nombres') . ' ' . CurrentUserInfo('apellidos') ?>" data-hospital="<?php echo CurrentUserInfo('hospital') ?>" hidden></div>
 
 <div class="row mb-3">
