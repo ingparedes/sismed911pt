@@ -29,6 +29,8 @@ SetClientVar("login", LoginStatus());
 
 // Global Page Rendering event (in userfn*.php)
 Page_Rendering();
+
+global $Language;
 ?>
 <?php include_once "header.php"; ?>
 

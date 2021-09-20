@@ -25,28 +25,7 @@ $(function () {
     pageLength: 5,
     order: [[0, "desc"]],
     language: {
-      select: {
-        rows: {
-          _: "",
-          0: "",
-          1: "",
-        },
-      },
-      sProcessing: "Procesando...",
-      sLengthMenu: "Mostrar _MENU_ registros",
-      sZeroRecords: "No se encontraron resultados",
-      sEmptyTable: "Ningún dato disponible en esta tabla",
-      sInfo: "Mostrando _START_ al _END_ de _TOTAL_",
-      sInfoEmpty: "Mostrando 0 al 0 de 0 registros",
-      sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-      sSearch: "Buscar:",
-      sLoadingRecords: "Cargando...",
-      oPaginate: {
-        sFirst: "Primero",
-        sLast: "Último",
-        sNext: "Siguiente",
-        sPrevious: "Anterior",
-      },
+      url: "lang/" + language["language"] + ".json",
     },
     ajax: {
       url: "bd/admission.php",
@@ -415,30 +394,8 @@ $(function () {
   function createDataTableMedical() {
     return $("#table-medical").DataTable({
       select: "single",
-      //pageLength: 5,
       language: {
-        select: {
-          rows: {
-            _: "",
-            0: "",
-            1: "",
-          },
-        },
-        sProcessing: "Procesando...",
-        sLengthMenu: "Mostrar _MENU_ registros",
-        sZeroRecords: "No se encontraron resultados",
-        sEmptyTable: "Ningún dato disponible en esta tabla",
-        sInfo: "Mostrando _START_ al _END_ de _TOTAL_",
-        sInfoEmpty: "Mostrando 0 al 0 de 0 registros",
-        sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-        sSearch: "Buscar:",
-        sLoadingRecords: "Cargando...",
-        oPaginate: {
-          sFirst: "Primero",
-          sLast: "Último",
-          sNext: "Siguiente",
-          sPrevious: "Anterior",
-        },
+        url: "lang/" + language["language"] + ".json",
       },
       ajax: {
         url: "bd/admission.php",
@@ -475,30 +432,8 @@ $(function () {
   function createDataTableExamen() {
     return $("#table-examen").DataTable({
       select: "multiple",
-      //pageLength: 5,
       language: {
-        select: {
-          rows: {
-            _: "",
-            0: "",
-            1: "",
-          },
-        },
-        sProcessing: "Procesando...",
-        sLengthMenu: "Mostrar _MENU_ registros",
-        sZeroRecords: "No se encontraron resultados",
-        sEmptyTable: "Ningún dato disponible en esta tabla",
-        sInfo: "Mostrando _START_ al _END_ de _TOTAL_",
-        sInfoEmpty: "Mostrando 0 al 0 de 0 registros",
-        sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-        sSearch: "Buscar:",
-        sLoadingRecords: "Cargando...",
-        oPaginate: {
-          sFirst: "Primero",
-          sLast: "Último",
-          sNext: "Siguiente",
-          sPrevious: "Anterior",
-        },
+        url: "lang/" + language["language"] + ".json",
       },
       ajax: {
         url: "bd/admission.php",
@@ -998,30 +933,8 @@ $(function () {
 
   var tableCIE10 = $("#tableCIE10").DataTable({
     select: "single",
-    //pageLength: 5,
     language: {
-      select: {
-        rows: {
-          _: "",
-          0: "",
-          1: "",
-        },
-      },
-      sProcessing: "Procesando...",
-      sLengthMenu: "Mostrar _MENU_ registros",
-      sZeroRecords: "No se encontraron resultados",
-      sEmptyTable: "Ningún dato disponible en esta tabla",
-      sInfo: "Mostrando _START_ al _END_ de _TOTAL_",
-      sInfoEmpty: "Mostrando 0 al 0 de 0 registros",
-      sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-      sSearch: "Buscar:",
-      sLoadingRecords: "Cargando...",
-      oPaginate: {
-        sFirst: "Primero",
-        sLast: "Último",
-        sNext: "Siguiente",
-        sPrevious: "Anterior",
-      },
+      url: "lang/" + language["language"] + ".json",
     },
     ajax: {
       url: "bd/admission.php",

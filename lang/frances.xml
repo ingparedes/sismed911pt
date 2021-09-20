@@ -91,6 +91,7 @@
     <!-- Modals -->
     <phrase id="m_cie10title" value="Por favor, seleccione el CIE10" />
     <phrase id="m_cie10code" value="Código" />
+    <phrase id="m_ambulanceplaca" value="Placa" />
     <phrase id="m_cie10diag" value="Diagnóstico" />
     <phrase id="m_hosptitle" value="Por favor, seleccione el hospital" />
     <phrase id="m_hospid" value="Id" />
