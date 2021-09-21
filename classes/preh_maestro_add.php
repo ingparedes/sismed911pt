@@ -877,7 +877,7 @@ class preh_maestro_add extends preh_maestro
 		$this->prioridad->OldValue = $this->prioridad->CurrentValue;
 		$this->accion->CurrentValue = NULL;
 		$this->accion->OldValue = $this->accion->CurrentValue;
-		$this->estado->CurrentValue = 0;
+		$this->estado->CurrentValue = 1;
 		//$this->estado->OldValue = $this->estado->CurrentValue;
 		$this->cierre->CurrentValue = 0;
 		$this->caso_multiple->CurrentValue = 0;
