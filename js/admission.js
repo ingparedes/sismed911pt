@@ -419,13 +419,13 @@ $(function () {
   $("#p_number").on("focusout", function () {
     if ($("#p_ide option:selected").val() == 1) {
       if (number_validate($(this).val())) {
-        $(".form-control[name='p_number']").removeClass("is-invalid");
+        $(".form-control#p_number").removeClass("is-invalid");
         if (updatePatient) crud_ajax("num_doc", $(this).val(), "updateP");
       } else {
-        $(".form-control[name='p_number']").addClass("is-invalid");
+        $(".form-control#p_number").addClass("is-invalid");
       }
     } else {
-      $(".form-control[name='p_number']").removeClass("is-invalid");
+      $(".form-control#p_number").removeClass("is-invalid");
       if (updatePatient) crud_ajax("num_doc", $(this).val(), "updateP");
     }
   });

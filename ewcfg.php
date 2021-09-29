@@ -218,10 +218,10 @@ $CONFIG = [
 
 	// Database connection info
 	"CONNECTION_INFO" => [
-		"DB" => ["id" => "DB", "type" => "POSTGRESQL", "qs" => "\"", "qe" => "\"", "host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "12345", "db" => "sismed911", "schema" => "public"]
+		"DB" => ["id" => "DB", "type" => "POSTGRESQL", "qs" => "\"", "qe" => "\"", "host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "root", "db" => "sismed911", "schema" => "public"]
 	],
 	"PRODUCTION_CONNECTION_INFO" => [
-		"DB" => ["id" => "DB", "type" => "POSTGRESQL", "qs" => "\"", "qe" => "\"", "host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "12345", "db" => "sismed911", "schema" => "public"]
+		"DB" => ["id" => "DB", "type" => "POSTGRESQL", "qs" => "\"", "qe" => "\"", "host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "root", "db" => "sismed911", "schema" => "public"]
 	],
 
 	// Database error function
@@ -1113,7 +1113,7 @@ $DATE_SEPARATOR = "/";
 $TIME_SEPARATOR = ":";
 $DATE_FORMAT = "yyyy/mm/dd";
 $DATE_FORMAT_ID = 5;
-$TIME_ZONE = "GMT-4";
+$TIME_ZONE = "GMT";
 $LOCALE = [
 	"decimal_point" => &$DECIMAL_POINT,
 	"thousands_sep" => &$THOUSANDS_SEP,

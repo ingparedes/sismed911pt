@@ -13,7 +13,7 @@ class connection
         $this->host = "localhost";
         $this->db = "sismed911";
         $this->user = "postgres";
-        $this->pass = "12345";
+        $this->pass = "root";
         $this->connect = "host=" . $this->host . " dbname=" . $this->db . " user=" . $this->user . " password=" . $this->pass;
     }
 
