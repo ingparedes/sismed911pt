@@ -69,7 +69,15 @@ form#form_admission .form-control {
   text-align: center;
 }
 
-.timer_parent .countdown-wrapper .countdown .countdown-section .countdown-period {
+.timer_parent
+  .countdown-wrapper
+  .countdown
+  .countdown-section
+  .countdown-period {
   color: black;
   text-shadow: none;
+}
+
+#form_admission span.fa-stack {
+  cursor: pointer;
 }

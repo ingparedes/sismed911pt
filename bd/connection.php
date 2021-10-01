@@ -1,12 +1,12 @@
 <?php
 class connection
 {
-    public $host;
-    public $db;
-    public $user;
-    public $pass;
-    public $connect;
-    public $url;
+    private $host;
+    private $db;
+    private $user;
+    private $pass;
+    private $connect;
+    private $url;
 
     function __construct()
     {

@@ -34,6 +34,68 @@ Page_Rendering();
 
 <script>
 	localStorage.setItem("language", "<?php echo CurrentLanguageID(); ?>");
+	localStorage.setItem("pdf_information", "<?php echo $Language->Phrase('pdf_admissionorden'); ?>");
+	localStorage.setItem("pdf_date", "<?php echo $Language->Phrase('dt_date'); ?>");
+	localStorage.setItem("pdf_hour", "<?php echo $Language->Phrase('pdf_hour'); ?>");
+	localStorage.setItem("pdf_priority", "<?php echo $Language->Phrase('dt_priority'); ?>");
+	localStorage.setItem("pdf_incident", "<?php echo $Language->Phrase('dt_incident'); ?>");
+	localStorage.setItem("pdf_ambulance", "<?php echo $Language->Phrase('fa_ambulance'); ?>");
+	localStorage.setItem("pdf_place", "<?php echo $Language->Phrase('pdf_place'); ?>");
+	localStorage.setItem("pdf_kmstart", "<?php echo $Language->Phrase('pdf_kmstart'); ?>");
+	localStorage.setItem("pdf_kmend", "<?php echo $Language->Phrase('pdf_kmend'); ?>");
+	localStorage.setItem("pdf_patientname", "<?php echo $Language->Phrase('pdf_patientname'); ?>");
+	localStorage.setItem("pdf_gender", "<?php echo $Language->Phrase('fp_gender'); ?>");
+	localStorage.setItem("pdf_datebirth", "<?php echo $Language->Phrase('fp_datebirth'); ?>");
+	localStorage.setItem("pdf_age", "<?php echo $Language->Phrase('fp_age'); ?>");
+	localStorage.setItem("pdf_cause", "<?php echo $Language->Phrase('pdf_cause'); ?>");
+	localStorage.setItem("pdf_infotime", "<?php echo $Language->Phrase('pdf_infotime'); ?>");
+	localStorage.setItem("pdf_hourstart", "<?php echo $Language->Phrase('pdf_hourstart'); ?>");
+	localStorage.setItem("pdf_hourplace", "<?php echo $Language->Phrase('pdf_hourplace'); ?>");
+	localStorage.setItem("pdf_hourhospital", "<?php echo $Language->Phrase('pdf_hourhospital'); ?>");
+	localStorage.setItem("pdf_hourbase", "<?php echo $Language->Phrase('pdf_hourbase'); ?>");
+	localStorage.setItem("pdf_expgeneral", "<?php echo $Language->Phrase('pdf_expgeneral'); ?>");
+	localStorage.setItem("pdf_category", "<?php echo $Language->Phrase('pdf_category'); ?>");
+	localStorage.setItem("pdf_name", "<?php echo $Language->Phrase('m_hospname'); ?>");
+	localStorage.setItem("pdf_process", "<?php echo $Language->Phrase('pdf_process'); ?>");
+	localStorage.setItem("pdf_expphysical", "<?php echo $Language->Phrase('pdf_expphysical'); ?>");
+	localStorage.setItem("pdf_position", "<?php echo $Language->Phrase('pdf_position'); ?>");
+	localStorage.setItem("pdf_trauma", "<?php echo $Language->Phrase('pdf_trauma'); ?>");
+	localStorage.setItem("pdf_signal", "<?php echo $Language->Phrase('pdf_signal'); ?>");
+	localStorage.setItem("pdf_fr", "<?php echo $Language->Phrase('fec_fr'); ?>");
+	localStorage.setItem("pdf_ta", "<?php echo $Language->Phrase('fec_ta'); ?>");
+	localStorage.setItem("pdf_fc", "<?php echo $Language->Phrase('fec_fc'); ?>");
+	localStorage.setItem("pdf_sao2", "<?php echo $Language->Phrase('pdf_sao2'); ?>");
+	localStorage.setItem("pdf_temp", "<?php echo $Language->Phrase('pdf_temp'); ?>");
+	localStorage.setItem("pdf_glasgow", "<?php echo $Language->Phrase('fec_glasgow'); ?>");
+	localStorage.setItem("pdf_past", "<?php echo $Language->Phrase('fec_past'); ?>");
+	localStorage.setItem("pdf_diabetes", "<?php echo $Language->Phrase('pdf_diabetes'); ?>");
+	localStorage.setItem("pdf_heartdisease", "<?php echo $Language->Phrase('pdf_heartdisease'); ?>");
+	localStorage.setItem("pdf_seizures", "<?php echo $Language->Phrase('pdf_seizures'); ?>");
+	localStorage.setItem("pdf_asthma", "<?php echo $Language->Phrase('pdf_asthma'); ?>");
+	localStorage.setItem("pdf_acv", "<?php echo $Language->Phrase('pdf_acv'); ?>");
+	localStorage.setItem("pdf_has", "<?php echo $Language->Phrase('pdf_has'); ?>");
+	localStorage.setItem("pdf_allergy", "<?php echo $Language->Phrase('pdf_allergy'); ?>");
+	localStorage.setItem("pdf_other", "<?php echo $Language->Phrase('em_other'); ?>");
+	localStorage.setItem("pdf_medical", "<?php echo $Language->Phrase('m_medicalsearch'); ?>");
+	localStorage.setItem("pdf_diag", "<?php echo $Language->Phrase('pdf_diag'); ?>");
+	localStorage.setItem("pdf_cie10", "<?php echo $Language->Phrase('pdf_codecie10'); ?>");
+	localStorage.setItem("pdf_cie10diag", "<?php echo $Language->Phrase('m_cie10diag'); ?>");
+	localStorage.setItem("pdf_complement", "<?php echo $Language->Phrase('pdf_complement'); ?>");
+	localStorage.setItem("pdf_supplies", "<?php echo $Language->Phrase('pdf_supplies'); ?>");
+	localStorage.setItem("pdf_cant", "<?php echo $Language->Phrase('pdf_cant'); ?>");
+	localStorage.setItem("pdf_triage", "<?php echo $Language->Phrase('fec_triage'); ?>");
+	localStorage.setItem("pdf_obs", "<?php echo $Language->Phrase('fp_observation'); ?>");
+	localStorage.setItem("pdf_belongings", "<?php echo $Language->Phrase('pdf_belongings'); ?>");
+	localStorage.setItem("pdf_desc", "<?php echo $Language->Phrase('pdf_desc'); ?>");
+	localStorage.setItem("pdf_namereceives", "<?php echo $Language->Phrase('pdf_namereceives'); ?>");
+	localStorage.setItem("pdf_optionclosecase", "<?php echo $Language->Phrase('pdf_optionclosecase'); ?>");
+	localStorage.setItem("pdf_responsible", "<?php echo $Language->Phrase('pdf_responsible'); ?>");
+	localStorage.setItem("pdf_doctor", "<?php echo $Language->Phrase('pdf_doctor'); ?>");
+	localStorage.setItem("pdf_nurse", "<?php echo $Language->Phrase('pdf_nurse'); ?>");
+	localStorage.setItem("pdf_destiny", "<?php echo $Language->Phrase('pdf_destiny'); ?>");
+	localStorage.setItem("pdf_hospital", "<?php echo $Language->Phrase('fh_title'); ?>");
+	localStorage.setItem("pdf_doctorreceives", "<?php echo $Language->Phrase('pdf_doctorreceives'); ?>");
+	localStorage.setItem("pdf_doctorfirm", "<?php echo $Language->Phrase('pdf_doctorfirm'); ?>");	
 </script>
 
 <div id="data-user" data-hospital="<?php echo CurrentUserInfo('hospital') ?>" hidden></div>
@@ -74,11 +136,14 @@ Page_Rendering();
 				</div>
 				<div class="form-group col-auto">
 					<label for="tel_companion"><?php echo $Language->Phrase('adm_phonecompanion'); ?>:</label>
-					<input id="phone_companion" class="form-control" />
+					<input type="text" id="phone_companion" class="form-control" />
 				</div>
 			</div>
 			<button class="btn btn-primary not-allowed" id="btnSaveAdmission" disabled>
 				<?php echo $Language->Phrase('savebtn'); ?>
+			</button>
+			<button type="button" class="btn btn-primary" id="print-admission" disabled>
+				<i class="fa fa-print"></i> <?php echo $Language->Phrase("em_ordenadmission"); ?>
 			</button>
 		</form>
 	</div>
@@ -181,9 +246,6 @@ Page_Rendering();
 												<textarea class="form-control" id="p_obs" placeholder="<?php echo $Language->Phrase("fp_observation"); ?>"></textarea>
 											</div>
 										</div>
-										<button type="button" id="btnAddPatient" class="btn btn-primary" hidden>
-											<?php echo $Language->Phrase('savebtn'); ?>
-										</button>
 									</form>
 								</div>
 								<!-- end form paciente-->

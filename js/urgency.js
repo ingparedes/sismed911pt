@@ -1236,7 +1236,7 @@ $(function () {
   $("#print-examen").on("click", function () {
     var doc = new jsPDF();
     doc.setFontSize(18);
-    doc.text(language["pdf_testorden"], 14, 22);
+    doc.text(language["testorden"], 14, 22);
     doc.setFontSize(11);
     doc.setTextColor(100);
     var date = new Date();

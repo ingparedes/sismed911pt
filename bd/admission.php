@@ -4,8 +4,6 @@ include_once 'connection.php';
 $connection = new connection();
 $connect = $connection->connect();
 
-date_default_timezone_set('America/Asuncion');
-
 $option = (isset($_POST['option'])) ? $_POST['option'] : '';
 $reason = (isset($_POST['reason'])) ? $_POST['reason'] : '';
 $field = (isset($_POST['field'])) ? $_POST['field'] : '';
@@ -23,10 +21,12 @@ $id_medicalAttentionExamen = (isset($_POST['idMAE'])) ? $_POST['idMAE'] : null;
 $id_medicalAttentionMedical = (isset($_POST['idMAM'])) ? $_POST['idMAM'] : null;
 $dosis = (isset($_POST['dosis'])) ? $_POST['dosis'] : null;
 $id_hospital = (isset($_POST['idH'])) ? $_POST['idH'] : null;
+$id_casePreh = (isset($_POST['id_casePreh'])) ? $_POST['id_casePreh'] : null;
 
 switch ($option) {
     case 'selectPatient':
-        $sql = "SELECT * FROM pacientegeneral
+        $sql = "SELECT *, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente
+                FROM pacientegeneral
                 INNER JOIN preh_maestro ON pacientegeneral.cod_casointerh=preh_maestro.cod_casopreh
                 LEFT JOIN tipo_id ON pacientegeneral.tipo_doc = tipo_id.id_tipo
                 LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
@@ -299,6 +299,140 @@ switch ($option) {
     case 'deleteAttentionMedical':
         $sql = "DELETE FROM sala_atencionmedica_medicamentos WHERE id_atencionmedica_medicamentos=" . $id_medicalAttentionMedical;
         echo $connection->execute($connect, $sql);
+        break;
+    case 'printInformation':
+        $sql = "SELECT
+                    phm.cod_alfa AS cod_alfa,
+                    phm.cod_casopreh AS Caso,
+                    phm.fecha AS Fecha,
+                    phm.hospital_destino AS Hospital_Id,
+                    hg.nombre_hospital AS Hospital_Nombre,
+                    pha.cod_ambulancia AS Ambulancia,
+                    amb.id_ambulancias AS id_Ambulancia,
+                    CONCAT ( pg.nombre1, ' ', pg.nombre2, ' ', pg.apellido1, ' ', pg.apellido2 ) AS Paciente,
+                    pg.num_doc AS Paciente_DNI,
+                    td.descripcion AS Paciente_DNI_tipo,
+                    tg.nombre_genero AS Genero,
+                    REPLACE ( pg.fecha_nacido, '/', '-' ) AS Fecha_Nacimiento,
+                    pg.edad AS Edad,
+                    te.nombre_edad AS Edad_Tipo,
+                    pg.telefono AS Paciente_Telefono,
+                    pg.celular AS Paciente_Celular,
+                    pg.direccion AS Paciente_Direccion,
+                    SUBSTRING ( CAST ( pha.hora_asigna AS VARCHAR ( 20 ) ), 0, 17 ) AS Hora_Asignacion,
+                    SUBSTRING ( CAST ( pha.hora_llegada AS VARCHAR ( 20 ) ), 0, 17 ) AS Hora_Evento,
+                    SUBSTRING ( CAST ( pha.hora_preposicion AS VARCHAR ( 20 ) ), 0, 17 ) AS hora_base,
+                    SUBSTRING ( CAST ( pha.hora_inicio AS VARCHAR ( 20 ) ), 0, 17 ) AS Hora_Inicio,
+                    SUBSTRING ( CAST ( pha.hora_destino AS VARCHAR ( 20 ) ), 0, 17 ) AS Hora_Hospital,
+                    c_e.nom_causa AS Causa,
+                    SUBSTRING ( CAST ( phec.fecha_horaevaluacion AS VARCHAR ( 20 ) ), 0, 17 ) AS Hora_Evaluacion,
+                    phec.sv_fr AS Frecuencia_Respiratoria,
+                    phec.sv_tx AS Presion_Arterial,
+                    phec.sv_fc AS Frecuencia_Cardiaca,
+                    phec.sv_sato2 AS Saturacion_o2,
+                    phec.sv_temp AS Temperatura,
+                    phec.sv_gl AS Glasgow,
+                    phec.ap_diabetes AS a_Diabetes,
+                    phec.ap_cardiop AS a_Cardiopatia,
+                    phec.ap_convul AS a_Convul,
+                    phec.ap_asma AS a_Asma,
+                    phec.ap_acv AS a_Acv,
+                    phec.ap_has AS a_Has,
+                    phec.ap_alergia AS a_Alergia,
+                    phec.ap_med_paciente AS a_Medicamentos,
+                    phec.ap_otros AS a_Otros,
+                    tt.nombre_triage_es AS Triage,
+                    phm.observacion AS Observaciones,
+                    phm.descripcion AS Descrip_pertenencias,
+                    phm.nombre_confirma AS Nombre_p_recibe,
+                    phm.telefono_confirma AS Telefono_p_recibe,
+                    phm.nombre_medico AS Medico_recibe,
+                    pha.k_final AS Km_final,
+                    pha.k_inical AS Km_inicial,
+                    tcc.tipo_cierrecaso_es AS cierre,
+                    fr.posx AS pos_firma_x,
+                    fr.posy AS pos_firma_y,
+                    fr.ancho AS ancho_firma,
+                    phm.prioridad,
+                    phm.direccion AS direcevento,
+                    inc.nombre_es AS incidente,
+                    pha.medico AS atmedico,
+                    pha.paramedico AS atenfermero,
+                    pha.cuando_murio AS fallecidoen
+                FROM
+                    preh_maestro AS phm
+                    LEFT JOIN incidentes AS inc ON inc.id_incidente = phm.incidente
+                    LEFT JOIN firmas_registro AS fr ON fr.cod_casopreh = phm.cod_casopreh
+                    LEFT JOIN preh_evaluacionclinica AS phec ON phec.cod_casopreh = phm.cod_casopreh
+                    LEFT JOIN pacientegeneral AS pg ON pg.cod_casointerh = phm.cod_casopreh
+                    LEFT JOIN preh_servicio_ambulancia AS pha ON pha.cod_casopreh = phm.cod_casopreh
+                    LEFT JOIN ambulancias AS amb ON pha.cod_ambulancia = amb.cod_ambulancias
+                    LEFT JOIN causa_registro AS c_r ON c_r.cod_casopreh = phm.cod_casopreh
+                    LEFT JOIN tipo_id AS td ON pg.tipo_doc = td.id_tipo
+                    LEFT JOIN tipo_genero AS tg ON pg.genero = tg.id_genero
+                    LEFT JOIN tipo_cierrecaso AS tcc ON phm.cierre = tcc.id_tranlado_fallido
+                    LEFT JOIN triage AS tt ON CAST ( phec.triage AS SMALLINT ) = tt.id_triage
+                    LEFT JOIN tipo_edad AS te ON pg.cod_edad = te.id_edad
+                    LEFT JOIN hospitalesgeneral AS hg ON phm.hospital_destino = hg.id_hospital
+                    LEFT JOIN causa_externa AS c_e ON c_r.id_causa = c_e.id_causa
+                WHERE
+                    phm.cod_casopreh = $id_casePreh AND phm.cierre <> '0';";
+        $data['data'] = pg_fetch_all($connection->execute($connect, $sql))[0];
+
+        $sql = "SELECT
+                    egc.descripcion AS explo_general_cat_desc,
+                    ega.descripcion AS explo_general_afec_desc
+                FROM
+                    explo_general_registro AS egr
+                    LEFT JOIN explo_general_afeccion AS ega ON ega.id = egr.explo_general_afeccion
+                    LEFT JOIN explo_general_cat AS egc ON egc.id = ega.explo_general_cat
+                WHERE egr.cod_casopreh = $id_casePreh";
+        $data['general'] = pg_fetch_all($connection->execute($connect, $sql));
+
+        $sql = "SELECT 
+                    pt.nombre_procedimeto AS procedimiento
+                FROM procedimiento_registro AS pr
+                    LEFT JOIN procedimiento_tipos AS pt ON pt.id = pr.procedimiento_tipo_id
+                WHERE pr.cod_casopreh = $id_casePreh";
+        $data['process'] = pg_fetch_all($connection->execute($connect, $sql));
+
+        $sql = "SELECT
+                    ef.nombre AS physical_name,
+                    efr.pos AS physical_pos,
+                    efr.posx AS physical_posx,
+                    efr.posy AS physical_posy
+                FROM explo_fisica_registro AS efr
+                    LEFT JOIN explo_fisica AS ef ON ef.id = efr.id_trauma_fisico
+                WHERE efr.cod_casopreh = $id_casePreh ORDER BY efr.pos ASC";
+        $data['physical'] = pg_fetch_all($connection->execute($connect, $sql));
+
+        $sql = "SELECT cod_diag_cie, '1' AS existe FROM preh_evaluacionclinica WHERE cod_casopreh = $id_casePreh";
+        $query = $connection->execute($connect, $sql);
+        if (pg_num_rows($query)) {
+            while ($row = pg_fetch_assoc($query)) {
+                $codigo_diag = $row['cod_diag_cie'];
+                $codigo_diag = str_replace(", ", "','", $codigo_diag);
+                $codigo_diag = "'" . $codigo_diag . "'";
+            }
+        }
+        $sql = "SELECT codigo_cie, diagnostico FROM cie10 WHERE codigo_cie IN ($codigo_diag)";
+        $data['cie'] = pg_fetch_all($connection->execute($connect, $sql));
+
+        $sql = "SELECT
+                    med.nombre_medicamento, mr.cantidad AS cant_medical
+                FROM medicamentos_registros AS mr
+                    LEFT JOIN medicamentos AS med ON med.id_medicamento = mr.medicamentos_id
+                WHERE mr.cod_casopreh = $id_casePreh";
+        $data['medical'] = pg_fetch_all($connection->execute($connect, $sql));
+
+        $sql = "SELECT
+                    ins.nombre_insumo, inr.cantidad AS cant_insumo
+                FROM insumos_registros AS inr
+                    LEFT JOIN insumos AS ins ON ins.id_insumo = inr.insumos_id
+                WHERE inr.cod_casopreh = $id_casePreh";
+        $data['supplies'] = pg_fetch_all($connection->execute($connect, $sql));
+
+        print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
 }
 

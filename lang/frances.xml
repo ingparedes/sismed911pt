@@ -124,6 +124,7 @@
     <phrase id="adm_egress" value="Tipo de ingreso" />
     <phrase id="adm_companion" value="Acompañante" />
     <phrase id="adm_phonecompanion" value="Teléf. del acompañante" />
+    <phrase id="em_ordenadmission" value="Informe" />
     <!-- Clasificación -->
     <phrase id="clasif_motivation" value="Motivo de la atención" />
     <phrase id="clasif_location" value="Localización trauma" />
@@ -187,6 +188,48 @@
     <phrase id="pdf_identity" value="Identificación" />
     <phrase id="pdf_code" value="Código del diagnóstico" />
     <phrase id="pdf_doctor" value="Preescribe (médico)" />
+    <phrase id="pdf_admissionorden" value="Informe del caso N° " />
+    <phrase id="pdf_hour" value="Hora" />
+    <phrase id="pdf_place" value="Lugar del evento" />
+    <phrase id="pdf_kmstart" value="Km Inicial" />
+    <phrase id="pdf_kmend" value="Km Final" />
+    <phrase id="pdf_cause" value="Causa de la emergencia" />
+    <phrase id="pdf_infotime" value="Información de tiempos (Fecha y hora)" />
+    <phrase id="pdf_hourstart" value="Inicio del desplazamiento" />
+    <phrase id="pdf_hourplace" value="Llegada al lugar" />
+    <phrase id="pdf_hourhospital" value="Llegada al hospital" />
+    <phrase id="pdf_hourbase" value="Llegada a la base" />
+    <phrase id="pdf_expgeneral" value="Exploración general" />
+    <phrase id="pdf_category" value="Cetegoría" />
+    <phrase id="pdf_process" value="Procedimientos" />
+    <phrase id="pdf_expphysical" value="Exploración física" />
+    <phrase id="pdf_position" value="Posición" />
+    <phrase id="pdf_trauma" value="Trauma" />
+    <phrase id="pdf_signal" value="Signos vitales" />
+    <phrase id="pdf_sao2" value="SaO2" />
+    <phrase id="pdf_temp" value="Temp" />
+    <phrase id="pdf_diabetes" value="Diabetes" />
+    <phrase id="pdf_heartdisease" value="Cardiopatía" />
+    <phrase id="pdf_seizures" value="Convulsiones" />
+    <phrase id="pdf_asthma" value="Asma/bronquitis" />
+    <phrase id="pdf_acv" value="ACV" />
+    <phrase id="pdf_has" value="HAS" />
+    <phrase id="pdf_allergy" value="Alergia" />
+    <phrase id="pdf_diag" value="Diagnósticos" />
+    <phrase id="pdf_codecie10" value="Código CIE10" />
+    <phrase id="pdf_complement" value="Complementos" />
+    <phrase id="pdf_supplies" value="Insumos" />
+    <phrase id="pdf_cant" value="Cantidad" />
+    <phrase id="pdf_belongings" value="Pertenencias" />
+    <phrase id="pdf_desc" value="Descripción" />
+    <phrase id="pdf_namereceives" value="Nombre quién recibe" />
+    <phrase id="pdf_optionclosecase" value="Opción cierre caso" />
+    <phrase id="pdf_responsible" value="Responsables de la atención" />
+    <phrase id="pdf_doctor" value="Médico a cargo" />
+    <phrase id="pdf_nurse" value="Lic. Enfermería" />
+    <phrase id="pdf_destiny" value="Destino" />
+    <phrase id="pdf_doctorreceives" value="Médico que recibe" />
+    <phrase id="pdf_doctorfirm" value="Firma del médico" />
 
     <phrase id="accept" value="Accepter" />
     <!-- v2019 -->
