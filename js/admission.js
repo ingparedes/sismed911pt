@@ -1,4 +1,5 @@
 $(function () {
+  $("#espacioFigura").css("display", "initial");
   window.jsPDF = window.jspdf.jsPDF;
   var id_patient,
     focus_value,
@@ -221,6 +222,54 @@ $(function () {
         console.log("error");
       });
   }
+
+  function createImage(data) {
+    //Variables
+    let puntoNuevo; //variable para el punto nuevo
+    let contenedorFigura = document.getElementById("espacioFigura"); //contenedor de la figura
+    let tamanoy = contenedorFigura.clientHeight; //captura la altura de la figura
+    let tamanox = contenedorFigura.clientWidth; //captura la anchura de la figura
+    $("#espacioFigura #figura").css({ maxHeight: tamanoy, maxWidth: tamanox }); //asigna el tamaño maximo de altura y anchura de la figura
+    let x = 0;
+    let y = 0;
+    let posicionAbsolutaY = contenedorFigura.getBoundingClientRect().top; //captura q margen tiene con el marco superior
+    let posicionAbsolutaX = contenedorFigura.getBoundingClientRect().left; //captura que margen tiene con el marco izquierdo
+    let texto;
+    let contenedorBoton;
+
+    $.each(data, function (index, value) {
+      puntoNuevo = document.createElement("img");
+      puntoNuevo.src = "images/punto.png";
+      puntoNuevo.className = "punto";
+      x = value.physical_posx; //pasamos el valor del punto de php a javascript
+      y = value.physical_posy;
+      $(puntoNuevo).css({
+        height: tamanoy / 10,
+        width: tamanoy / 10,
+      });
+      posicionx = (x * tamanox) / 100;
+      posiciony = (y * tamanoy) / 100;
+      texto = document.createElement("div"); //creamos un div para el texto
+      texto.className = "centrado";
+      texto.innerHTML = value.physical_pos;
+      contenedorBoton = document.createElement("div"); //creamos un div para el circulo rojo
+      contenedorBoton.className = "contenedorBoton";
+      $(contenedorBoton).css({
+        height: tamanoy / 10,
+        width: tamanoy / 10,
+        top: posicionAbsolutaY + posiciony - tamanoy / 10,
+        left: 10 + posicionAbsolutaX + posicionx - tamanoy / 10,
+      });
+      contenedorBoton.appendChild(puntoNuevo); //juntamos el texto y la imagen del circulo en un div
+      contenedorBoton.appendChild(texto);
+      contenedorFigura.appendChild(contenedorBoton); //metemos todo en el contenedor principal de la figura
+    });
+  }
+
+  // createImage([
+  //   { physical_pos: 1, physical_posx: 30, physical_posy: 50 },
+  //   { physical_pos: 2, physical_posx: 30, physical_posy: 40 },
+  // ]);
 
   $.ajax({
     url: "bd/admission.php",
@@ -447,195 +496,508 @@ $(function () {
     })
       .done(function (data) {
         console.log(data);
-        var doc = new jsPDF();
-        doc.setFontSize(18);
-        var img = new Image();
-        img.src = "images/SISMED911_logo.png";
-        switch (language["language"]) {
-          case "en":
-            img.src = "images/SISMED911_logo_en.png";
-            break;
-          case "pt":
-            break;
-          case "fr":
-            break;
-        }
-        doc.addImage(img, "png", 140, 10, 60, 20);
-        doc.text(
-          language["information"] + data["data"].caso,
-          doc.internal.pageSize.getWidth() / 2,
-          40,
-          { align: "center" }
-        );
+        createImage(data["physical"]);
 
-        doc.autoTable({
-          theme: "grid",
-          startY: 45,
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              language["date"],
-              language["hour"],
-              language["priority"],
-              language["incident"],
-              language["ambulance"],
+        html2canvas(document.querySelector("#espacioFigura")).then((canvas) => {
+          var doc = new jsPDF();
+          doc.setFontSize(18);
+          var img = new Image();
+          img.src = "images/SISMED911_logo.png";
+          switch (language["language"]) {
+            case "en":
+              img.src = "images/SISMED911_logo_en.png";
+              break;
+            case "pt":
+              break;
+            case "fr":
+              break;
+          }
+          doc.addImage(img, "png", 140, 10, 60, 20);
+          doc.text(
+            language["information"] + data["data"].caso,
+            doc.internal.pageSize.getWidth() / 2,
+            40,
+            { align: "center" }
+          );
+
+          doc.autoTable({
+            theme: "grid",
+            startY: 45,
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                language["date"],
+                language["hour"],
+                language["priority"],
+                language["incident"],
+                language["ambulance"],
+              ],
             ],
-          ],
-          body: [
-            [
-              data["data"].fecha.split(" ")[0],
-              data["data"].fecha.split(" ")[1],
-              data["data"].prioridad,
-              data["data"].incidente,
-              data["data"].ambulancia,
+            body: [
+              [
+                data["data"].fecha.split(" ")[0],
+                data["data"].fecha.split(" ")[1],
+                data["data"].prioridad,
+                data["data"].incidente,
+                data["data"].ambulancia,
+              ],
             ],
-          ],
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [[language["place"], language["kmStart"], language["kmEnd"]]],
+            body: [
+              [
+                data["data"].direcevento,
+                data["data"].km_inicial,
+                data["data"].km_final,
+              ],
+            ],
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                language["patientName"],
+                language["gender"],
+                language["dateBirth"],
+                language["age"],
+              ],
+            ],
+            body: [
+              [
+                data["data"].paciente,
+                data["data"].genero,
+                data["data"].fecha_nacimiento,
+                data["data"].edad + " " + data["data"].edad_tipo,
+              ],
+            ],
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: {
+              halign: "center",
+              fillColor: null,
+              lineWidth: 0.3,
+              textColor: 0,
+            },
+            bodyStyles: { textColor: 50 },
+            head: [[language["cause"]]],
+            body: [[data["data"].causa]],
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["infoTime"],
+                  colSpan: 4,
+                  styles: { halign: "center" },
+                },
+              ],
+              [
+                language["hourStart"],
+                language["hourPlace"],
+                language["hourHospital"],
+                language["hourBase"],
+              ],
+            ],
+            body: [
+              [
+                data["data"].hora_inicio,
+                data["data"].hora_evento,
+                data["data"].hora_hospital,
+                data["data"].hora_base,
+              ],
+            ],
+          });
+
+          var body = [];
+          $.each(data["general"], function (index, value) {
+            body.push([
+              value.explo_general_cat_desc,
+              value.explo_general_afec_desc,
+            ]);
+          });
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["expGeneral"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+              [language["category"], language["name"]],
+            ],
+            body: body,
+          });
+
+          body = [];
+          $.each(data["process"], function (index, value) {
+            body.push([index + 1 + " - " + value.procedimiento]);
+          });
+          doc.autoTable({
+            theme: "grid",
+            headStyles: {
+              halign: "center",
+              fillColor: null,
+              lineWidth: 0.3,
+              textColor: 0,
+            },
+            bodyStyles: { textColor: 50 },
+            head: [[language["process"]]],
+            body: body,
+          });
+
+          doc.addPage();
+
+          body = [];
+          $.each(data["physical"], function (index, value) {
+            body.push(["Punto " + value.physical_pos, value.physical_name]);
+          });
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["expPhysical"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+              [language["position"], language["trauma"]],
+            ],
+            body: body,
+          });
+
+          img = canvas.toDataURL("image/png");
+          var img_width = doc.internal.pageSize.getWidth() / 2 - 40;
+          var img_heigth = doc.autoTable.previous.finalY + 5;
+          doc.addImage(img, "png", img_width, img_heigth, 70, 110);
+
+          doc.autoTable({
+            startY: doc.autoTable.previous.finalY + 110,
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["signal"],
+                  colSpan: 7,
+                  styles: { halign: "center" },
+                },
+              ],
+              [
+                language["hour"],
+                language["fr"],
+                language["ta"],
+                language["fc"],
+                language["sao2"],
+                language["temp"],
+                language["glasgow"],
+              ],
+            ],
+            body: [
+              [
+                data["data"].hora_evaluacion,
+                data["data"].frecuencia_respiratoria,
+                data["data"].presion_arterial,
+                data["data"].frecuencia_cardiaca,
+                data["data"].saturacion_o2,
+                data["data"].temperatura,
+                data["data"].glasgow,
+              ],
+            ],
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["past"],
+                  colSpan: 4,
+                  styles: { halign: "center" },
+                },
+              ],
+            ],
+            body: [
+              [
+                language["diabetes"] +
+                  ": " +
+                  (data["data"].a_diabetes ? data["data"].a_diabetes : ""),
+                language["heartDisease"] +
+                  ": " +
+                  (data["data"].a_cardiopatia
+                    ? data["data"].a_cardiopatia
+                    : ""),
+                language["seizures"] +
+                  ": " +
+                  (data["data"].a_convul ? data["data"].a_convul : ""),
+                language["asthma"] +
+                  ": " +
+                  (data["data"].a_asma ? data["data"].a_asma : ""),
+              ],
+              [
+                language["acv"] +
+                  ": " +
+                  (data["data"].a_acv ? data["data"].a_acv : ""),
+                language["has"] +
+                  ": " +
+                  (data["data"].a_has ? data["data"].a_has : ""),
+                language["allergy"] +
+                  ": " +
+                  (data["data"].a_alergia ? data["data"].a_alergia : ""),
+              ],
+              [
+                {
+                  content:
+                    language["other"] +
+                    ": " +
+                    (data["data"].a_otros ? data["data"].a_otros : ""),
+                  colSpan: 2,
+                },
+                {
+                  content:
+                    language["medical"] +
+                    ": " +
+                    (data["data"].a_medicamentos
+                      ? data["data"].a_medicamentos
+                      : ""),
+                  colSpan: 2,
+                },
+              ],
+            ],
+          });
+
+          body = [];
+          $.each(data["cie"], function (index, value) {
+            body.push([value.codigo_cie, value.diagnostico]);
+          });
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["diag"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+              [language["cie10"], language["cie10diag"]],
+            ],
+            body: body,
+          });
+
+          body = [];
+          $.each(data["medical"], function (index, value) {
+            body.push([value.nombre_medicamento, value.cant_medical]);
+          });
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["complement"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+              [language["medical"], language["cant"]],
+            ],
+            body: body,
+          });
+
+          body = [];
+          $.each(data["supplies"], function (index, value) {
+            body.push([value.nombre_insumo, value.cant_insumo]);
+          });
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["complement"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+              [language["supplies"], language["cant"]],
+            ],
+            body: body,
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["other"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+            ],
+            body: [
+              [
+                language["triage"] +
+                  ": " +
+                  (data["data"].triage ? data["data"].triage : ""),
+                language["obs"] +
+                  ": " +
+                  (data["data"].observaciones
+                    ? data["data"].observaciones
+                    : ""),
+              ],
+            ],
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["belongings"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+            ],
+            body: [
+              [
+                language["desc"] +
+                  ": " +
+                  (data["data"].descrip_pertenencias
+                    ? data["data"].descrip_pertenencias
+                    : ""),
+                language["nameReceives"] +
+                  ": " +
+                  (data["data"].nombre_p_recibe
+                    ? data["data"].nombre_p_recibe
+                    : ""),
+              ],
+            ],
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: {
+              halign: "center",
+              fillColor: null,
+              lineWidth: 0.3,
+              textColor: 0,
+            },
+            bodyStyles: { textColor: 50 },
+            head: [[language["optionCloseCase"]]],
+            body: [[data["data"].cierre]],
+          });
+
+          doc.autoTable({
+            theme: "grid",
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            head: [
+              [
+                {
+                  content: language["responsible"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+            ],
+            body: [
+              [
+                language["doctor"] +
+                  ": " +
+                  (data["data"].atmedico ? data["data"].atmedico : ""),
+                language["nurse"] +
+                  ": " +
+                  (data["data"].atenfermero ? data["data"].atenfermero : ""),
+              ],
+            ],
+          });
+
+          doc.setFontSize(20);
+          doc.text(
+            "X____________________      X____________________",
+            14,
+            doc.autoTable.previous.finalY + 10
+          );
+
+          doc.autoTable({
+            theme: "grid",
+            startY: doc.autoTable.previous.finalY + 20,
+            headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            bodyStyles: { textColor: 50 },
+            footStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
+            head: [
+              [
+                {
+                  content: language["destiny"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+            ],
+            body: [
+              [
+                language["hospital"] +
+                  ": " +
+                  (data["data"].hospital_nombre
+                    ? data["data"].hospital_nombre
+                    : ""),
+                language["doctorReceives"] +
+                  ": " +
+                  (data["data"].medico_recibe
+                    ? data["data"].medico_recibe
+                    : ""),
+              ],
+            ],
+            foot: [
+              [
+                {
+                  content: language["doctorFirm"],
+                  colSpan: 2,
+                  styles: { halign: "center" },
+                },
+              ],
+            ],
+          });
+
+          doc.save("orden_admision.pdf");
         });
 
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [[language["place"], language["kmStart"], language["kmEnd"]]],
-          body: [
-            [
-              data["data"].direcevento,
-              data["data"].km_inicial,
-              data["data"].km_final,
-            ],
-          ],
-        });
-
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              language["patientName"],
-              language["gender"],
-              language["dateBirth"],
-              language["age"],
-            ],
-          ],
-          body: [
-            [
-              data["data"].paciente,
-              data["data"].genero,
-              data["data"].fecha_nacimiento,
-              data["data"].edad + " " + data["data"].edad_tipo,
-            ],
-          ],
-        });
-
-        doc.autoTable({
-          theme: "grid",
-          headStyles: {
-            halign: "center",
-            fillColor: null,
-            lineWidth: 0.3,
-            textColor: 0,
-          },
-          bodyStyles: { textColor: 50 },
-          head: [[language["cause"]]],
-          body: [[data["data"].causa]],
-        });
-
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["infoTime"],
-                colSpan: 4,
-                styles: { halign: "center" },
-              },
-            ],
-            [
-              language["hourStart"],
-              language["hourPlace"],
-              language["hourHospital"],
-              language["hourBase"],
-            ],
-          ],
-          body: [
-            [
-              data["data"].hora_inicio,
-              data["data"].hora_evento,
-              data["data"].hora_hospital,
-              data["data"].hora_base,
-            ],
-          ],
-        });
-
-        var body = [];
-        $.each(data["general"], function (index, value) {
-          body.push([
-            value.explo_general_cat_desc,
-            value.explo_general_afec_desc,
-          ]);
-        });
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["expGeneral"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-            [language["category"], language["name"]],
-          ],
-          body: body,
-        });
-
-        body = [];
-        $.each(data["process"], function (index, value) {
-          body.push([index + 1 + " - " + value.procedimiento]);
-        });
-        doc.autoTable({
-          theme: "grid",
-          headStyles: {
-            halign: "center",
-            fillColor: null,
-            lineWidth: 0.3,
-            textColor: 0,
-          },
-          bodyStyles: { textColor: 50 },
-          head: [[language["process"]]],
-          body: body,
-        });
-
-        doc.addPage();
-
-        body = [];
-        $.each(data["physical"], function (index, value) {
-          body.push(["Punto " + value.physical_pos, value.physical_name]);
-        });
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["expPhysical"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-            [language["position"], language["trauma"]],
-          ],
-          body: body,
-        });
-
-        img = new Image();
+        /*img = new Image();
         img.src = "images/body.png";
         doc.addImage(
           img,
@@ -644,305 +1006,7 @@ $(function () {
           doc.autoTable.previous.finalY + 5,
           50,
           100
-        );
-
-        doc.autoTable({
-          startY: doc.autoTable.previous.finalY + 110,
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["signal"],
-                colSpan: 7,
-                styles: { halign: "center" },
-              },
-            ],
-            [
-              language["hour"],
-              language["fr"],
-              language["ta"],
-              language["fc"],
-              language["sao2"],
-              language["temp"],
-              language["glasgow"],
-            ],
-          ],
-          body: [
-            [
-              data["data"].hora_evaluacion,
-              data["data"].frecuencia_respiratoria,
-              data["data"].presion_arterial,
-              data["data"].frecuencia_cardiaca,
-              data["data"].saturacion_o2,
-              data["data"].temperatura,
-              data["data"].glasgow,
-            ],
-          ],
-        });
-
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["past"],
-                colSpan: 4,
-                styles: { halign: "center" },
-              },
-            ],
-          ],
-          body: [
-            [
-              language["diabetes"] +
-                ": " +
-                (data["data"].a_diabetes ? data["data"].a_diabetes : ""),
-              language["heartDisease"] +
-                ": " +
-                (data["data"].a_cardiopatia ? data["data"].a_cardiopatia : ""),
-              language["seizures"] +
-                ": " +
-                (data["data"].a_convul ? data["data"].a_convul : ""),
-              language["asthma"] +
-                ": " +
-                (data["data"].a_asma ? data["data"].a_asma : ""),
-            ],
-            [
-              language["acv"] +
-                ": " +
-                (data["data"].a_acv ? data["data"].a_acv : ""),
-              language["has"] +
-                ": " +
-                (data["data"].a_has ? data["data"].a_has : ""),
-              language["allergy"] +
-                ": " +
-                (data["data"].a_alergia ? data["data"].a_alergia : ""),
-            ],
-            [
-              {
-                content:
-                  language["other"] +
-                  ": " +
-                  (data["data"].a_otros ? data["data"].a_otros : ""),
-                colSpan: 2,
-              },
-              {
-                content:
-                  language["medical"] +
-                  ": " +
-                  (data["data"].a_medicamentos
-                    ? data["data"].a_medicamentos
-                    : ""),
-                colSpan: 2,
-              },
-            ],
-          ],
-        });
-
-        body = [];
-        $.each(data["cie"], function (index, value) {
-          body.push([value.codigo_cie, value.diagnostico]);
-        });
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["diag"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-            [language["cie10"], language["cie10diag"]],
-          ],
-          body: body,
-        });
-
-        body = [];
-        $.each(data["medical"], function (index, value) {
-          body.push([value.nombre_medicamento, value.cant_medical]);
-        });
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["complement"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-            [language["medical"], language["cant"]],
-          ],
-          body: body,
-        });
-
-        body = [];
-        $.each(data["supplies"], function (index, value) {
-          body.push([value.nombre_insumo, value.cant_insumo]);
-        });
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["complement"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-            [language["supplies"], language["cant"]],
-          ],
-          body: body,
-        });
-
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["other"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-          ],
-          body: [
-            [
-              language["triage"] +
-                ": " +
-                (data["data"].triage ? data["data"].triage : ""),
-              language["obs"] +
-                ": " +
-                (data["data"].observaciones ? data["data"].observaciones : ""),
-            ],
-          ],
-        });
-
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["belongings"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-          ],
-          body: [
-            [
-              language["desc"] +
-                ": " +
-                (data["data"].descrip_pertenencias
-                  ? data["data"].descrip_pertenencias
-                  : ""),
-              language["nameReceives"] +
-                ": " +
-                (data["data"].nombre_p_recibe
-                  ? data["data"].nombre_p_recibe
-                  : ""),
-            ],
-          ],
-        });
-
-        doc.autoTable({
-          theme: "grid",
-          headStyles: {
-            halign: "center",
-            fillColor: null,
-            lineWidth: 0.3,
-            textColor: 0,
-          },
-          bodyStyles: { textColor: 50 },
-          head: [[language["optionCloseCase"]]],
-          body: [[data["data"].cierre]],
-        });
-
-        doc.autoTable({
-          theme: "grid",
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          head: [
-            [
-              {
-                content: language["responsible"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-          ],
-          body: [
-            [
-              language["doctor"] +
-                ": " +
-                (data["data"].atmedico ? data["data"].atmedico : ""),
-              language["nurse"] +
-                ": " +
-                (data["data"].atenfermero ? data["data"].atenfermero : ""),
-            ],
-          ],
-        });
-
-        doc.setFontSize(20);
-        doc.text(
-          "X____________________      X____________________",
-          14,
-          doc.autoTable.previous.finalY + 10
-        );
-
-        doc.autoTable({
-          theme: "grid",
-          startY: doc.autoTable.previous.finalY + 20,
-          headStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          bodyStyles: { textColor: 50 },
-          footStyles: { fillColor: null, lineWidth: 0.3, textColor: 0 },
-          head: [
-            [
-              {
-                content: language["destiny"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-          ],
-          body: [
-            [
-              language["hospital"] +
-                ": " +
-                (data["data"].hospital_nombre
-                  ? data["data"].hospital_nombre
-                  : ""),
-              language["doctorReceives"] +
-                ": " +
-                (data["data"].medico_recibe ? data["data"].medico_recibe : ""),
-            ],
-          ],
-          foot: [
-            [
-              {
-                content: language["doctorFirm"],
-                colSpan: 2,
-                styles: { halign: "center" },
-              },
-            ],
-          ],
-        });
-
-        doc.save("orden_admision.pdf");
+        );*/
       })
       .fail(function () {
         console.log("error");

@@ -105,6 +105,7 @@ namespace PHPMaker2020\sismed911; ?>
 
 			ew.ready("jquery", ["<?php echo $RELATIVE_PATH ?>assets/jspdf.umd.min.js",
 				"<?php echo $RELATIVE_PATH ?>assets/jspdf.plugin.autotable.min.js",
+				"<?php echo $RELATIVE_PATH ?>assets/html2canvas.min.js",
 			], "jspdf");
 
 			loadjs([
@@ -147,7 +148,7 @@ namespace PHPMaker2020\sismed911; ?>
 			ew.ready("makerjs", [cssjs, "<?php echo $RELATIVE_PATH ?>js/userfn.js"], "head");
 		</script>
 		<script>
-			loadjs(["<?php echo $RELATIVE_PATH ?>css/tempusdominus-bootstrap-4.css",				
+			loadjs(["<?php echo $RELATIVE_PATH ?>css/tempusdominus-bootstrap-4.css",
 				"<?php echo $RELATIVE_PATH ?>assets/dataTables.bootstrap4.min.css",
 				"<?php echo $RELATIVE_PATH ?>assets/responsive.bootstrap4.min.css",
 				"<?php echo $RELATIVE_PATH ?>assets/select.bootstrap4.min.css"
@@ -413,11 +414,53 @@ namespace PHPMaker2020\sismed911; ?>
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo $RELATIVE_PATH ?>sismedico.ico">
 	<link rel="icon" type="image/x-icon" href="<?php echo $RELATIVE_PATH ?>sismedico.ico">
 	<meta name="generator" content="PHPMaker 2020">
+	<style>
+		.punto {
+			position: absolute;
+			z-index: 1;
+			opacity: 0.35;
+			left: -1%;
+		}
+
+		#espacioFigura {
+			height: 400px;
+			width: 250px;
+			position: absolute;
+		}
+
+		#figura {
+			position: absolute;
+			height: contain;
+			width: contain;
+			z-index: -1;
+		}
+
+		.centrado {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.contenedorBoton {
+			position: relative;
+			display: inline-block;
+			text-align: center;
+		}
+	</style>
 </head>
 
 <body class="<?php echo Config("BODY_CLASS") ?>" dir="<?php echo Config("CSS_FLIP") ? "rtl" : "ltr" ?>">
 	<?php if (@!$SkipHeaderFooter) { ?>
 		<?php if (!IsExport()) { ?>
+			<div id="espacioFigura">
+				<!--div donde carga la figura-->
+				<img id="figura" src="images/sc.png" />
+				<!--figura-->
+			</div>
+			<script>
+				document.getElementById("espacioFigura").style.display = "none";
+			</script>
 			<div class="wrapper ew-layout">
 				<!-- Main Header -->
 				<!-- Navbar -->

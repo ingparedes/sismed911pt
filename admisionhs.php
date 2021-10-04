@@ -95,7 +95,7 @@ Page_Rendering();
 	localStorage.setItem("pdf_destiny", "<?php echo $Language->Phrase('pdf_destiny'); ?>");
 	localStorage.setItem("pdf_hospital", "<?php echo $Language->Phrase('fh_title'); ?>");
 	localStorage.setItem("pdf_doctorreceives", "<?php echo $Language->Phrase('pdf_doctorreceives'); ?>");
-	localStorage.setItem("pdf_doctorfirm", "<?php echo $Language->Phrase('pdf_doctorfirm'); ?>");	
+	localStorage.setItem("pdf_doctorfirm", "<?php echo $Language->Phrase('pdf_doctorfirm'); ?>");
 </script>
 
 <div id="data-user" data-hospital="<?php echo CurrentUserInfo('hospital') ?>" hidden></div>
