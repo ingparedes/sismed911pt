@@ -139,16 +139,28 @@ global $Language;
 												</div>
 											</div>
 											<div class="form-row">
-												<div class="form-group col-lg-1">
+												<div class="form-group col-lg-auto">
 													<label class="col-form-label pt-0"><?php echo $Language->Phrase("fp_gender"); ?>:</label>
 													<div class="form-check">
 														<input class="form-check-input gender" type="radio" name="gender" id="p_genM" value="1" />
-														<label class="form-check-label" for="p_genM">M</label>
+														<label class="form-check-label" for="p_genM"><?php echo $Language->Phrase("fp_male"); ?></label>
 													</div>
 													<div class="form-check">
 														<input class="form-check-input gender" type="radio" name="gender" id="p_genF" value="2" />
-														<label class="form-check-label" for="p_genF">F</label>
+														<label class="form-check-label" for="p_genF"><?php echo $Language->Phrase("fp_female"); ?></label>
 													</div>
+													<div class="form-check">
+														<input class="form-check-input gender" type="radio" name="gender" id="p_genO" value="3" />
+														<label class="form-check-label" for="p_genF"><?php echo $Language->Phrase("em_other"); ?></label>
+													</div>
+												</div>
+												<div class="form-group col-lg-2">
+													<label for="p_phone"><?php echo $Language->Phrase("fp_nickname"); ?>:</label>
+													<input type="text" class="form-control" id="p_nickname" />
+												</div>
+												<div class="form-group col-lg-2">
+													<label for="p_phone"><?php echo $Language->Phrase("fp_nationality"); ?>:</label>
+													<input type="text" class="form-control" id="p_nationality" />
 												</div>
 												<div class="form-group col-lg-2">
 													<label for="p_phone"><?php echo $Language->Phrase("fp_phone"); ?>:</label>
@@ -158,14 +170,13 @@ global $Language;
 													<label for="p_segS"><?php echo $Language->Phrase("fp_social"); ?>:</label>
 													<input type="text" class="form-control" id="p_segS" placeholder="<?php echo $Language->Phrase("fp_social"); ?>" />
 												</div>
-												<div class="form-group col-lg-7">
+											</div>
+											<div class="form-row">
+												<div class="form-group col-lg-6">
 													<label for="p_address"><?php echo $Language->Phrase("fp_address"); ?>:</label>
 													<input type="text" class="form-control" id="p_address" placeholder="<?php echo $Language->Phrase("fp_address"); ?>" />
 												</div>
-											</div>
-											<div class="form-row">
-
-												<div class="form-group col-lg-12">
+												<div class="form-group col-lg-6">
 													<label for="p_obs"><?php echo $Language->Phrase("fp_observation"); ?>:</label>
 													<textarea class="form-control" id="p_obs" placeholder="<?php echo $Language->Phrase("fp_observation"); ?>"></textarea>
 												</div>
@@ -178,7 +189,7 @@ global $Language;
 									<div class="tab-pane fade" id="evaluacion" role="tabpanel" aria-labelledby="evaluacion-tab">
 										<form id="form_evalClinic" class="needs-validation" novalidate>
 											<div class="form-row">
-												<div class="form-group col-lg-2">
+												<div class="form-group col-lg-3">
 													<label for="ec_triage"><?php echo $Language->Phrase("fec_triage"); ?>:</label>
 													<select class="form-control" id="ec_triage" required>
 														<option><?php echo $Language->Phrase("fp_select"); ?></option>

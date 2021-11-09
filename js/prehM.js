@@ -217,16 +217,24 @@ $(function () {
       $("#p_exp").val(dataSelect.expendiente);
       $("#p_date").val(dataSelect.fecha_nacido);
       $("#p_age").val(dataSelect.edad);
-      if (dataSelect.genero == 1) {
-        $("#p_genM").prop("checked", true);
-      } else if (dataSelect.genero == 2) {
-        $("#p_genF").prop("checked", true);
-      }
-      $("#p_phone").val(dataSelect.telefono_paciente);
       $("#p_name1").val(dataSelect.nombre1);
       $("#p_name2").val(dataSelect.nombre2);
       $("#p_lastname1").val(dataSelect.apellido1);
       $("#p_lastname2").val(dataSelect.apellido2);
+      switch (dataSelect.genero) {
+        case "1":
+          $("#p_genM").prop("checked", true);
+          break;
+        case "2":
+          $("#p_genF").prop("checked", true);
+          break;
+        case "3":
+          $("#p_genO").prop("checked", true);
+          break;
+      }
+      $("#p_nickname").val(dataSelect.apodo);
+      $("#p_nationality").val(dataSelect.nacionalidad);
+      $("#p_phone").val(dataSelect.telefono_paciente);
       $("#p_segS").val(dataSelect.aseguradro);
       $("#p_address").val(dataSelect.direccion_paciente);
       $("#p_obs").html(dataSelect.observacion_paciente);
@@ -316,11 +324,7 @@ $(function () {
 
   $("#p_age").focus(function () {
     focus_value = $(this).val();
-  });
-
-  $("#p_phone").focus(function () {
-    focus_value = $(this).val();
-  });
+  });  
 
   $("#p_name1").focus(function () {
     focus_value = $(this).val();
@@ -335,6 +339,18 @@ $(function () {
   });
 
   $("#p_lastname2").focus(function () {
+    focus_value = $(this).val();
+  });
+
+  $("#p_nickname").focus(function () {
+    focus_value = $(this).val();
+  });
+
+  $("#p_nationality").focus(function () {
+    focus_value = $(this).val();
+  });
+
+  $("#p_phone").focus(function () {
     focus_value = $(this).val();
   });
 
@@ -353,12 +369,7 @@ $(function () {
   $("#p_ide").on("change", function () {
     if ($("#p_ide option:selected").val() != 0)
       crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
-  });
-
-  $("#p_typeage").on("change", function () {
-    if ($("#p_typeage option:selected").val() != 0)
-      crud_ajax("cod_edad", $("#p_typeage option:selected").val(), "updateP");
-  });
+  });  
 
   /* Validación de número de cédula dominicana */
   $("#p_number").on("focusout", function () {
@@ -386,17 +397,9 @@ $(function () {
     crud_ajax("edad", $(this).val(), "updateP");
   });
 
-  $(".gender").on("click", function () {
-    if (
-      !dataSelect.genero ||
-      (dataSelect.genero == 1 && $("input:checked").val() == 2) ||
-      (dataSelect.genero == 2 && $("input:checked").val() == 1)
-    )
-      crud_ajax("genero", $("input:checked").val(), "updateP");
-  });
-
-  $("#p_phone").focusout(function () {
-    crud_ajax("telefono", $(this).val(), "updateP");
+  $("#p_typeage").on("change", function () {
+    if ($("#p_typeage option:selected").val() != 0)
+      crud_ajax("cod_edad", $("#p_typeage option:selected").val(), "updateP");
   });
 
   $("#p_name1").focusout(function () {
@@ -413,6 +416,31 @@ $(function () {
 
   $("#p_lastname2").focusout(function () {
     crud_ajax("apellido2", $(this).val(), "updateP");
+  });
+
+  $(".gender").on("click", function () {
+    if (
+      !dataSelect.genero ||
+      (dataSelect.genero == 1 &&
+        ($("input:checked").val() == 2 || $("input:checked").val() == 3)) ||
+      (dataSelect.genero == 2 &&
+        ($("input:checked").val() == 1 || $("input:checked").val() == 3)) ||
+      (dataSelect.genero == 3 &&
+        ($("input:checked").val() == 1 || $("input:checked").val() == 2))
+    )
+      crud_ajax("genero", $("input:checked").val(), "updateP");
+  });
+
+  $("#p_nickname").focusout(function () {
+    crud_ajax("apodo", $(this).val(), "updateP");
+  });
+
+  $("#p_nationality").focusout(function () {
+    crud_ajax("nacionalidad", $(this).val(), "updateP");
+  });
+
+  $("#p_phone").focusout(function () {
+    crud_ajax("telefono", $(this).val(), "updateP");
   });
 
   $("#p_segS").focusout(function () {
