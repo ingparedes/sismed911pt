@@ -11,7 +11,7 @@ class usuarios_edit extends usuarios
 	public $PageID = "edit";
 
 	// Project ID
-	public $ProjectID = "{17BEB368-DB80-46DC-8EC5-730EB11B94E5}";
+	public $ProjectID = "{4E339F5D-7A0C-4550-99C0-1CC44C54B665}";
 
 	// Table name
 	public $TableName = 'usuarios';
@@ -676,6 +676,7 @@ class usuarios_edit extends usuarios
 		$this->perfil->setVisibility();
 		$this->sede->setVisibility();
 		$this->acode->setVisibility();
+		$this->hospital->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -700,6 +701,7 @@ class usuarios_edit extends usuarios
 		$this->setupLookupOptions($this->perfil);
 		$this->setupLookupOptions($this->sede);
 		$this->setupLookupOptions($this->acode);
+		$this->setupLookupOptions($this->hospital);
 
 		// Check permission
 		if (!$Security->canEdit()) {
@@ -942,6 +944,15 @@ class usuarios_edit extends usuarios
 			else
 				$this->acode->setFormValue($val);
 		}
+
+		// Check field name 'hospital' first before field var 'x_hospital'
+		$val = $CurrentForm->hasValue("hospital") ? $CurrentForm->getValue("hospital") : $CurrentForm->getValue("x_hospital");
+		if (!$this->hospital->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->hospital->Visible = FALSE; // Disable update for API request
+			else
+				$this->hospital->setFormValue($val);
+		}
 	}
 
 	// Restore form values
@@ -959,6 +970,7 @@ class usuarios_edit extends usuarios
 		$this->perfil->CurrentValue = $this->perfil->FormValue;
 		$this->sede->CurrentValue = $this->sede->FormValue;
 		$this->acode->CurrentValue = $this->acode->FormValue;
+		$this->hospital->CurrentValue = $this->hospital->FormValue;
 	}
 
 	// Load row based on key values
@@ -1006,6 +1018,7 @@ class usuarios_edit extends usuarios
 		$this->perfil->setDbValue($row['perfil']);
 		$this->sede->setDbValue($row['sede']);
 		$this->acode->setDbValue($row['acode']);
+		$this->hospital->setDbValue($row['hospital']);
 	}
 
 	// Return a row with default values
@@ -1022,6 +1035,7 @@ class usuarios_edit extends usuarios
 		$row['perfil'] = NULL;
 		$row['sede'] = NULL;
 		$row['acode'] = NULL;
+		$row['hospital'] = NULL;
 		return $row;
 	}
 
@@ -1069,6 +1083,7 @@ class usuarios_edit extends usuarios
 		// perfil
 		// sede
 		// acode
+		// hospital
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1171,6 +1186,28 @@ class usuarios_edit extends usuarios
 			}
 			$this->acode->ViewCustomAttributes = "";
 
+			// hospital
+			$curVal = strval($this->hospital->CurrentValue);
+			if ($curVal != "") {
+				$this->hospital->ViewValue = $this->hospital->lookupCacheOption($curVal);
+				if ($this->hospital->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "\"id_hospital\"" . SearchString("=", $curVal, DATATYPE_STRING, "");
+					$sqlWrk = $this->hospital->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->hospital->ViewValue = $this->hospital->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->hospital->ViewValue = $this->hospital->CurrentValue;
+					}
+				}
+			} else {
+				$this->hospital->ViewValue = NULL;
+			}
+			$this->hospital->ViewCustomAttributes = "";
+
 			// id_user
 			$this->id_user->LinkCustomAttributes = "";
 			$this->id_user->HrefValue = "";
@@ -1220,6 +1257,11 @@ class usuarios_edit extends usuarios
 			$this->acode->LinkCustomAttributes = "";
 			$this->acode->HrefValue = "";
 			$this->acode->TooltipValue = "";
+
+			// hospital
+			$this->hospital->LinkCustomAttributes = "";
+			$this->hospital->HrefValue = "";
+			$this->hospital->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// id_user
@@ -1344,6 +1386,38 @@ class usuarios_edit extends usuarios
 				$this->acode->EditValue = $arwrk;
 			}
 
+			// hospital
+			$this->hospital->EditCustomAttributes = "";
+			$curVal = trim(strval($this->hospital->CurrentValue));
+			if ($curVal != "")
+				$this->hospital->ViewValue = $this->hospital->lookupCacheOption($curVal);
+			else
+				$this->hospital->ViewValue = $this->hospital->Lookup !== NULL && is_array($this->hospital->Lookup->Options) ? $curVal : NULL;
+			if ($this->hospital->ViewValue !== NULL) { // Load from cache
+				$this->hospital->EditValue = array_values($this->hospital->Lookup->Options);
+				if ($this->hospital->ViewValue == "")
+					$this->hospital->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "\"id_hospital\"" . SearchString("=", $this->hospital->CurrentValue, DATATYPE_STRING, "");
+				}
+				$sqlWrk = $this->hospital->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->hospital->ViewValue = $this->hospital->displayValue($arwrk);
+				} else {
+					$this->hospital->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->hospital->EditValue = $arwrk;
+			}
+
 			// Edit refer script
 			// id_user
 
@@ -1385,6 +1459,10 @@ class usuarios_edit extends usuarios
 			// acode
 			$this->acode->LinkCustomAttributes = "";
 			$this->acode->HrefValue = "";
+
+			// hospital
+			$this->hospital->LinkCustomAttributes = "";
+			$this->hospital->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1453,6 +1531,11 @@ class usuarios_edit extends usuarios
 		if ($this->acode->Required) {
 			if (!$this->acode->IsDetailKey && $this->acode->FormValue != NULL && $this->acode->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->acode->caption(), $this->acode->RequiredErrorMessage));
+			}
+		}
+		if ($this->hospital->Required) {
+			if (!$this->hospital->IsDetailKey && $this->hospital->FormValue != NULL && $this->hospital->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->hospital->caption(), $this->hospital->RequiredErrorMessage));
 			}
 		}
 
@@ -1525,6 +1608,9 @@ class usuarios_edit extends usuarios
 
 			// acode
 			$this->acode->setDbValueDef($rsnew, $this->acode->CurrentValue, NULL, $this->acode->ReadOnly);
+
+			// hospital
+			$this->hospital->setDbValueDef($rsnew, $this->hospital->CurrentValue, NULL, $this->hospital->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
@@ -1613,6 +1699,8 @@ class usuarios_edit extends usuarios
 					break;
 				case "x_acode":
 					break;
+				case "x_hospital":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1638,6 +1726,8 @@ class usuarios_edit extends usuarios
 						case "x_sede":
 							break;
 						case "x_acode":
+							break;
+						case "x_hospital":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

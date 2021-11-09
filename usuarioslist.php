@@ -244,6 +244,15 @@ $usuarios_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($usuarios_list->hospital->Visible) { // hospital ?>
+	<?php if ($usuarios_list->SortUrl($usuarios_list->hospital) == "") { ?>
+		<th data-name="hospital" class="<?php echo $usuarios_list->hospital->headerCellClass() ?>"><div id="elh_usuarios_hospital" class="usuarios_hospital"><div class="ew-table-header-caption"><?php echo $usuarios_list->hospital->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="hospital" class="<?php echo $usuarios_list->hospital->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $usuarios_list->SortUrl($usuarios_list->hospital) ?>', 1);"><div id="elh_usuarios_hospital" class="usuarios_hospital">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $usuarios_list->hospital->caption() ?></span><span class="ew-table-header-sort"><?php if ($usuarios_list->hospital->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($usuarios_list->hospital->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php
 
 // Render list options (header, right)
@@ -376,6 +385,13 @@ $usuarios_list->ListOptions->render("body", "left", $usuarios_list->RowCount);
 		<td data-name="acode" <?php echo $usuarios_list->acode->cellAttributes() ?>>
 <span id="el<?php echo $usuarios_list->RowCount ?>_usuarios_acode">
 <span<?php echo $usuarios_list->acode->viewAttributes() ?>><?php echo $usuarios_list->acode->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($usuarios_list->hospital->Visible) { // hospital ?>
+		<td data-name="hospital" <?php echo $usuarios_list->hospital->cellAttributes() ?>>
+<span id="el<?php echo $usuarios_list->RowCount ?>_usuarios_hospital">
+<span<?php echo $usuarios_list->hospital->viewAttributes() ?>><?php echo $usuarios_list->hospital->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

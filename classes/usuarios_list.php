@@ -11,7 +11,7 @@ class usuarios_list extends usuarios
 	public $PageID = "list";
 
 	// Project ID
-	public $ProjectID = "{17BEB368-DB80-46DC-8EC5-730EB11B94E5}";
+	public $ProjectID = "{4E339F5D-7A0C-4550-99C0-1CC44C54B665}";
 
 	// Table name
 	public $TableName = 'usuarios';
@@ -784,6 +784,7 @@ class usuarios_list extends usuarios
 		$this->perfil->setVisibility();
 		$this->sede->setVisibility();
 		$this->acode->setVisibility();
+		$this->hospital->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -820,6 +821,7 @@ class usuarios_list extends usuarios
 		$this->setupLookupOptions($this->perfil);
 		$this->setupLookupOptions($this->sede);
 		$this->setupLookupOptions($this->acode);
+		$this->setupLookupOptions($this->hospital);
 
 		// Search filters
 		$srchAdvanced = ""; // Advanced search filter
@@ -1076,6 +1078,7 @@ class usuarios_list extends usuarios
 		$filterList = Concat($filterList, $this->perfil->AdvancedSearch->toJson(), ","); // Field perfil
 		$filterList = Concat($filterList, $this->sede->AdvancedSearch->toJson(), ","); // Field sede
 		$filterList = Concat($filterList, $this->acode->AdvancedSearch->toJson(), ","); // Field acode
+		$filterList = Concat($filterList, $this->hospital->AdvancedSearch->toJson(), ","); // Field hospital
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1193,6 +1196,14 @@ class usuarios_list extends usuarios
 		$this->acode->AdvancedSearch->SearchValue2 = @$filter["y_acode"];
 		$this->acode->AdvancedSearch->SearchOperator2 = @$filter["w_acode"];
 		$this->acode->AdvancedSearch->save();
+
+		// Field hospital
+		$this->hospital->AdvancedSearch->SearchValue = @$filter["x_hospital"];
+		$this->hospital->AdvancedSearch->SearchOperator = @$filter["z_hospital"];
+		$this->hospital->AdvancedSearch->SearchCondition = @$filter["v_hospital"];
+		$this->hospital->AdvancedSearch->SearchValue2 = @$filter["y_hospital"];
+		$this->hospital->AdvancedSearch->SearchOperator2 = @$filter["w_hospital"];
+		$this->hospital->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1207,6 +1218,7 @@ class usuarios_list extends usuarios
 		$this->buildBasicSearchSql($where, $this->_login, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->pw, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->acode, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hospital, $arKeywords, $type);
 		return $where;
 	}
 
@@ -1375,6 +1387,7 @@ class usuarios_list extends usuarios
 			$this->updateSort($this->perfil); // perfil
 			$this->updateSort($this->sede); // sede
 			$this->updateSort($this->acode); // acode
+			$this->updateSort($this->hospital); // hospital
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1420,6 +1433,7 @@ class usuarios_list extends usuarios
 				$this->perfil->setSort("");
 				$this->sede->setSort("");
 				$this->acode->setSort("");
+				$this->hospital->setSort("");
 			}
 
 			// Reset start position
@@ -1835,6 +1849,7 @@ class usuarios_list extends usuarios
 		$this->perfil->setDbValue($row['perfil']);
 		$this->sede->setDbValue($row['sede']);
 		$this->acode->setDbValue($row['acode']);
+		$this->hospital->setDbValue($row['hospital']);
 	}
 
 	// Return a row with default values
@@ -1851,6 +1866,7 @@ class usuarios_list extends usuarios
 		$row['perfil'] = NULL;
 		$row['sede'] = NULL;
 		$row['acode'] = NULL;
+		$row['hospital'] = NULL;
 		return $row;
 	}
 
@@ -1904,6 +1920,7 @@ class usuarios_list extends usuarios
 		// perfil
 		// sede
 		// acode
+		// hospital
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2006,6 +2023,28 @@ class usuarios_list extends usuarios
 			}
 			$this->acode->ViewCustomAttributes = "";
 
+			// hospital
+			$curVal = strval($this->hospital->CurrentValue);
+			if ($curVal != "") {
+				$this->hospital->ViewValue = $this->hospital->lookupCacheOption($curVal);
+				if ($this->hospital->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "\"id_hospital\"" . SearchString("=", $curVal, DATATYPE_STRING, "");
+					$sqlWrk = $this->hospital->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->hospital->ViewValue = $this->hospital->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->hospital->ViewValue = $this->hospital->CurrentValue;
+					}
+				}
+			} else {
+				$this->hospital->ViewValue = NULL;
+			}
+			$this->hospital->ViewCustomAttributes = "";
+
 			// id_user
 			$this->id_user->LinkCustomAttributes = "";
 			$this->id_user->HrefValue = "";
@@ -2055,6 +2094,11 @@ class usuarios_list extends usuarios
 			$this->acode->LinkCustomAttributes = "";
 			$this->acode->HrefValue = "";
 			$this->acode->TooltipValue = "";
+
+			// hospital
+			$this->hospital->LinkCustomAttributes = "";
+			$this->hospital->HrefValue = "";
+			$this->hospital->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -2130,6 +2174,8 @@ class usuarios_list extends usuarios
 					break;
 				case "x_acode":
 					break;
+				case "x_hospital":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2155,6 +2201,8 @@ class usuarios_list extends usuarios
 						case "x_sede":
 							break;
 						case "x_acode":
+							break;
+						case "x_hospital":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

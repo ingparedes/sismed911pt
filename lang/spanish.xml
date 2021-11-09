@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/9/11" version="16.0.1" id="es" name="Spanish_es" desc="Spanish_es" author="NEXO SL">
+<ew-language date="2021/9/14" version="16.0.1" id="es" name="Spanish_es" desc="Spanish_es" author="NEXO SL">
   <!--
 *** Important Notes:
 1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -8,6 +8,229 @@
 4. Locale files are ALWAYS used, regardless of whether the project is single language or multiple language.
 -->
   <global>
+    <!-- Datatable -->
+    <phrase id="dt_newcase" value="Nuevo Caso" />
+    <phrase id="dt_map" value="Mapa" />
+    <phrase id="dt_case" value="No. Caso" />
+    <phrase id="dt_date" value="Fecha" />
+    <phrase id="dt_time" value="Tiempo" />
+    <phrase id="dt_address" value="Dirección" />
+    <phrase id="dt_incident" value="Incidente" />
+    <phrase id="dt_priority" value="Prioridad" />
+    <phrase id="dt_patient" value="Paciente" />
+    <phrase id="dt_destinationhospital" value="Hospital destino" />
+    <phrase id="dt_medicalname" value="Nombre del médico" />
+    <phrase id="dt_phone" value="Teléfono del médico" />
+    <phrase id="dt_report" value="Reporta" />
+    <phrase id="dt_followup" value="Seguimiento" />
+    <phrase id="dt_dispatch" value="Despacho" />
+    <phrase id="dt_close" value="Cerrar caso" />
+    <phrase id="dt_service" value="Servicio" />
+    <phrase id="dt_originhospital" value="Hospital origen" />
+    <phrase id="dt_action" value="Acción" />
+    <phrase id="dt_base" value="Base" />
+    <phrase id="dt_hc" value="No. HC" />
+    <phrase id="dt_911" value="No. caso 911" />
+    <phrase id="dt_emergency" value="Emergencia" />
+    <phrase id="dt_daralta" value="Dar de alta" />
+    <phrase id="dt_urgency" value="Urgencia" />
+    <!-- Formularios -->
+    <phrase id="f_title" value="Formulario" />
+    <phrase id="f_titlecase" value="Caso: " />
+    <phrase id="f_select" value="-- Seleccione una opción --" />
+    <!-- Formulario paciente -->
+    <phrase id="fp_title" value="Paciente" />
+    <phrase id="fp_select" value="-- Seleccione --" />
+    <phrase id="fp_invalidfeedback" value="Por favor, ingrese un número válido" />
+    <phrase id="fp_ide" value="IDE" />
+    <phrase id="fp_number" value="Número" />
+    <phrase id="fp_record" value="Expediente" />
+    <phrase id="fp_datebirth" value="Fecha de nacimiento" />
+    <phrase id="fp_age" value="Edad" />
+    <phrase id="fp_typeage" value="Tipo de edad" />
+    <phrase id="fp_name1" value="Nombre 1" />
+    <phrase id="fp_name2" value="Nombre 2" />
+    <phrase id="fp_lastname1" value="Apellido 1" />
+    <phrase id="fp_lastname2" value="Apellido 2" />
+    <phrase id="fp_gender" value="Género" />
+    <phrase id="fp_phone" value="Teléfono" />
+    <phrase id="fp_social" value="No. seguro social" />
+    <phrase id="fp_address" value="Dirección" />
+    <phrase id="fp_observation" value="Observaciones" />
+    <!-- Formulario evaluación clínica -->
+    <phrase id="fec_title" value="Evaluación clínica" />
+    <phrase id="fec_triage" value="Triage" />
+    <phrase id="fec_ta" value="T.A" />
+    <phrase id="fec_fc" value="F.C" />
+    <phrase id="fec_fr" value="F.R" />
+    <phrase id="fec_temp" value="T°" />
+    <phrase id="fec_glasgow" value="Glasgow" />
+    <phrase id="fec_svsat" value="sv sat 02" />
+    <phrase id="fec_glycemia" value="Glicemia" />
+    <phrase id="fec_size" value="Talla" />
+    <phrase id="fec_weight" value="Peso" />
+    <phrase id="fec_cie10" value="CIE10" />
+    <phrase id="fec_clinical" value="Cuadro clínico" />
+    <phrase id="fec_test" value="Examen físico" />
+    <phrase id="fec_past" value="Antecedentes" />
+    <phrase id="fec_parac" value="Paraclínicos" />
+    <phrase id="fec_treatment" value="Tratamiento" />
+    <phrase id="fec_information" value="Información DX" />
+    <!-- Formulario hospital -->
+    <phrase id="fh_title" value="Hospital" />
+    <!-- Formulario ambulancia -->
+    <phrase id="fa_ambulance" value="Ambulancia" />
+    <phrase id="fa_assignment" value="H. Asignación" />
+    <phrase id="fa_arrival" value="H. Llegada" />
+    <phrase id="fa_start" value="H. Inicia" />
+    <phrase id="fa_destiny" value="H. Destino" />
+    <phrase id="fa_base" value="H. Base" />
+    <phrase id="fa_driver" value="Conductor" />
+    <phrase id="fa_doctor" value="Médico" />
+    <phrase id="fa_paramedic" value="Paramédico" />
+    <!-- Modals -->
+    <phrase id="m_cie10title" value="Por favor, seleccione el CIE10" />
+    <phrase id="m_cie10code" value="Código" />
+    <phrase id="m_ambulanceplaca" value="Placa" />
+    <phrase id="m_cie10diag" value="Diagnóstico" />
+    <phrase id="m_hosptitle" value="Por favor, seleccione el hospital" />
+    <phrase id="m_hospid" value="Id" />
+    <phrase id="m_hospname" value="Nombre" />
+    <phrase id="m_ambulancetitle" value="Por favor, seleccione la ambulancia" />
+    <phrase id="m_segtitle" value="Seguimiento" />
+    <phrase id="m_seglabel1" value="Por favor, escriba la nota" />
+    <phrase id="m_segtextarea" value="Nota" />
+    <phrase id="m_seglabel2" value="Notas" />
+    <phrase id="m_closelabel1" value="Por favor, seleccione el tipo de cierre" />
+    <phrase id="m_closelabel2" value="Por favor, escriba la razón por la cual cierra el caso" />
+    <phrase id="m_closetextarea" value="Razón" />
+    <phrase id="m_desptitle" value="Enviar a despacho" />
+    <phrase id="m_desptext" value="¿Desea enviar a despacho de ambulancia?" />
+    <phrase id="m_patienttitle" value="Por favor, seleccione el paciente" />
+    <phrase id="m_patientname" value="Nombre(s)" />
+    <phrase id="m_patientlastname" value="Apellido(s)" />
+    <phrase id="m_signaltitle" value="Por favor, seleccione un signo y síntoma" />
+    <phrase id="m_signal" value="Signos y síntomas" />
+    <phrase id="m_medicaltitle" value="Medicamento y dosis" />
+    <phrase id="m_medicallabel1" value="Medicamento" />
+    <phrase id="m_medicallabel2" value="Dosis" />
+    <phrase id="m_medicalsearchtitle" value="Por favor, seleccione el medicamento" />
+    <phrase id="m_medicalsearch" value="Medicamentos" />
+    <phrase id="m_testtitle" value="Por favor, seleccione el examen" />
+    <phrase id="m_test" value="Exámenes" />
+    <phrase id="m_agresstitle" value="Egreso" />
+    <phrase id="m_agresslabel" value="Disposición" />
+    <!-- Admission -->
+    <phrase id="adm_egress" value="Tipo de ingreso" />
+    <phrase id="adm_companion" value="Acompañante" />
+    <phrase id="adm_phonecompanion" value="Teléf. del acompañante" />
+    <phrase id="em_ordenadmission" value="Informe" />
+    <!-- Clasificación -->
+    <phrase id="clasif_motivation" value="Motivo de la atención" />
+    <phrase id="clasif_location" value="Localización trauma" />
+    <phrase id="clasif_cause" value="Causa trauma" />
+    <phrase id="clasif_system" value="Sistema" />
+    <phrase id="clasif_pas" value="PAS(mmHg)" />
+    <phrase id="clasif_pad" value="PAD(mmHg)" />
+    <phrase id="clasif_fc" value="FC(bpm)" />
+    <phrase id="clasif_so2" value="SO2(%)" />
+    <phrase id="clasif_fr" value="FR(rpm)" />
+    <phrase id="clasif_temp" value="Temperatura(c)" />
+    <phrase id="clasif_clasif" value="Clasificación" />
+    <phrase id="clasif_pain" value="Dolor" />
+    <phrase id="clasif_motivation" value="Motivo de la consulta" />
+    <phrase id="clasif_descrip" value="Signos y síntomas descripción" />
+    <phrase id="clasif_red" value="Rojo" />
+    <phrase id="clasif_orange" value="Naranja" />
+    <phrase id="clasif_yellow" value="Amarillo" />
+    <phrase id="clasif_blue" value="Azul" />
+    <phrase id="clasif_green" value="Verde" />
+    <phrase id="clasif_pain1" value="Escala 1" />
+    <phrase id="clasif_pain2" value="Escala 2" />
+    <phrase id="clasif_pain3" value="Escala 3" />
+    <phrase id="clasif_pain4" value="Escala 4" />
+    <phrase id="clasif_pain5" value="Escala 5" />
+    <phrase id="clasif_pain6" value="Escala 6" />
+    <phrase id="clasif_pain7" value="Escala 7" />
+    <phrase id="clasif_pain8" value="Escala 8" />
+    <phrase id="clasif_pain9" value="Escala 9" />
+    <phrase id="clasif_pain10" value="Escala 10" />
+    <!-- Emergencia -->
+    <phrase id="em_dateclasification" value="Fecha Clasificación" />
+    <phrase id="em_general" value="Genral" />
+    <phrase id="em_cabeza" value="Cabeza" />
+    <phrase id="em_ojo" value="Ojos" />
+    <phrase id="em_otorrino" value="Otorrino" />
+    <phrase id="em_boca" value="Boca" />
+    <phrase id="em_cuello" value="Cuello" />
+    <phrase id="em_torax" value="Tórax" />
+    <phrase id="em_corazon" value="Corazón" />
+    <phrase id="em_pulmon" value="Pulmón" />
+    <phrase id="em_abdomen" value="Abdomen" />
+    <phrase id="em_pelvis" value="Pelvis" />
+    <phrase id="em_rectal" value="Rectal" />
+    <phrase id="em_genital" value="Genital" />
+    <phrase id="em_extremidad" value="Extremidad" />
+    <phrase id="em_neuro" value="Neuro" />
+    <phrase id="em_piel" value="Piel" />
+    <phrase id="em_sign" value="Síntomas" />
+    <phrase id="em_description" value="Descripción diagnóstico" />
+    <phrase id="em_other" value="Otros" />
+    <phrase id="em_ordenmedical" value="Orden Medicamentos" />
+    <phrase id="em_ordentest" value="Orden Exámenes" />
+    <phrase id="em_option" value="Opción" />
+    <!-- Imprimir pdf -->
+    <phrase id="pdf_medicalorden" value="Orden de medicamentos" />
+    <phrase id="pdf_testorden" value="Orden de exámenes" />
+    <phrase id="pdf_hospitalname" value="Nombre del hospital" />
+    <phrase id="pdf_expiredate" value="Fecha de expedición" />
+    <phrase id="pdf_patientname" value="Nombre del paciente" />
+    <phrase id="pdf_identity" value="Identificación" />
+    <phrase id="pdf_code" value="Código del diagnóstico" />
+    <phrase id="pdf_doctor" value="Preescribe (médico)" />
+    <phrase id="pdf_admissionorden" value="Informe del caso N° " />
+    <phrase id="pdf_hour" value="Hora" />
+    <phrase id="pdf_place" value="Lugar del evento" />
+    <phrase id="pdf_kmstart" value="Km Inicial" />
+    <phrase id="pdf_kmend" value="Km Final" />
+    <phrase id="pdf_cause" value="Causa de la emergencia" />
+    <phrase id="pdf_infotime" value="Información de tiempos (Fecha y hora)" />
+    <phrase id="pdf_hourstart" value="Inicio del desplazamiento" />
+    <phrase id="pdf_hourplace" value="Llegada al lugar" />
+    <phrase id="pdf_hourhospital" value="Llegada al hospital" />
+    <phrase id="pdf_hourbase" value="Llegada a la base" />
+    <phrase id="pdf_expgeneral" value="Exploración general" />
+    <phrase id="pdf_category" value="Cetegoría" />
+    <phrase id="pdf_process" value="Procedimientos" />
+    <phrase id="pdf_expphysical" value="Exploración física" />
+    <phrase id="pdf_position" value="Posición" />
+    <phrase id="pdf_trauma" value="Trauma" />
+    <phrase id="pdf_signal" value="Signos vitales" />
+    <phrase id="pdf_sao2" value="SaO2" />
+    <phrase id="pdf_temp" value="Temp" />
+    <phrase id="pdf_diabetes" value="Diabetes" />
+    <phrase id="pdf_heartdisease" value="Cardiopatía" />
+    <phrase id="pdf_seizures" value="Convulsiones" />
+    <phrase id="pdf_asthma" value="Asma/bronquitis" />
+    <phrase id="pdf_acv" value="ACV" />
+    <phrase id="pdf_has" value="HAS" />
+    <phrase id="pdf_allergy" value="Alergia" />
+    <phrase id="pdf_diag" value="Diagnósticos" />
+    <phrase id="pdf_codecie10" value="Código CIE10" />
+    <phrase id="pdf_complement" value="Complementos" />
+    <phrase id="pdf_supplies" value="Insumos" />
+    <phrase id="pdf_cant" value="Cantidad" />
+    <phrase id="pdf_belongings" value="Pertenencias" />
+    <phrase id="pdf_desc" value="Descripción" />
+    <phrase id="pdf_namereceives" value="Nombre quién recibe" />
+    <phrase id="pdf_optionclosecase" value="Opción cierre caso" />
+    <phrase id="pdf_responsible" value="Responsables de la atención" />
+    <phrase id="pdf_doctor" value="Médico a cargo" />
+    <phrase id="pdf_nurse" value="Lic. Enfermería" />
+    <phrase id="pdf_destiny" value="Destino" />
+    <phrase id="pdf_doctorreceives" value="Médico que recibe" />
+    <phrase id="pdf_doctorfirm" value="Firma del médico" />
+
     <phrase id="accept" value="Aceptar" />
     <!-- v2019 -->
     <phrase id="actiondeleted" value="Borrado" />
@@ -1724,6 +1947,15 @@
       <field id="nom_causa">
         <phrase id="fldcaption" value="nom causa" />
       </field>
+      <field id="nom_causa_en">
+        <phrase id="fldcaption" value="nom causa en" />
+      </field>
+      <field id="nom_causa_fr">
+        <phrase id="fldcaption" value="nom causa fr" />
+      </field>
+      <field id="nom_causa_pt">
+        <phrase id="fldcaption" value="nom causa pt" />
+      </field>
     </table>
     <table id="causa_registro">
       <phrase id="tblcaption" value="causa registro" />
@@ -1745,6 +1977,15 @@
       <field id="causa_trauma">
         <phrase id="fldcaption" value="causa trauma" />
       </field>
+      <field id="causa_trauma_en">
+        <phrase id="fldcaption" value="causa trauma en" />
+      </field>
+      <field id="causa_trauma_fr">
+        <phrase id="fldcaption" value="causa trauma fr" />
+      </field>
+      <field id="causa_trauma_pt">
+        <phrase id="fldcaption" value="causa trauma pt" />
+      </field>
     </table>
     <table id="causa_trauma_situacion">
       <phrase id="tblcaption" value="causa trauma situacion" />
@@ -1756,6 +1997,15 @@
       </field>
       <field id="nombre">
         <phrase id="fldcaption" value="nombre" />
+      </field>
+      <field id="nombre_en">
+        <phrase id="fldcaption" value="nombre en" />
+      </field>
+      <field id="nombre_fr">
+        <phrase id="fldcaption" value="nombre fr" />
+      </field>
+      <field id="nombre_pt">
+        <phrase id="fldcaption" value="nombre pt" />
       </field>
     </table>
     <table id="censo_camas">
@@ -2162,6 +2412,15 @@
       <field id="nombre">
         <phrase id="fldcaption" value="Nombre" />
       </field>
+      <field id="nombre_en">
+        <phrase id="fldcaption" value="nombre en" />
+      </field>
+      <field id="nombre_fr">
+        <phrase id="fldcaption" value="nombre fr" />
+      </field>
+      <field id="nombre_pt">
+        <phrase id="fldcaption" value="nombre pt" />
+      </field>
     </table>
     <table id="explo_fisica_registro">
       <phrase id="tblcaption" value="explo fisica registro" />
@@ -2195,6 +2454,15 @@
       <field id="descripcion">
         <phrase id="fldcaption" value="descripcion" />
       </field>
+      <field id="descripcion_en">
+        <phrase id="fldcaption" value="descripcion en" />
+      </field>
+      <field id="descripcion_fr">
+        <phrase id="fldcaption" value="descripcion fr" />
+      </field>
+      <field id="descripcion_pt">
+        <phrase id="fldcaption" value="descripcion pt" />
+      </field>
     </table>
     <table id="explo_general_cat">
       <phrase id="tblcaption" value="explo general cat" />
@@ -2203,6 +2471,15 @@
       </field>
       <field id="descripcion">
         <phrase id="fldcaption" value="descripcion" />
+      </field>
+      <field id="descripcion_en">
+        <phrase id="fldcaption" value="descripcion en" />
+      </field>
+      <field id="descripcion_fr">
+        <phrase id="fldcaption" value="descripcion fr" />
+      </field>
+      <field id="descripcion_pt">
+        <phrase id="fldcaption" value="descripcion pt" />
       </field>
     </table>
     <table id="explo_general_registro">
@@ -4122,6 +4399,9 @@
       </field>
       <field id="acode">
         <phrase id="fldcaption" value="Acode-Lima" />
+      </field>
+      <field id="hospital">
+        <phrase id="fldcaption" value="hospital" />
       </field>
     </table>
     <table id="valida_pge">

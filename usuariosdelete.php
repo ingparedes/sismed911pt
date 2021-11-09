@@ -100,6 +100,9 @@ $usuarios_delete->showMessage();
 <?php if ($usuarios_delete->acode->Visible) { // acode ?>
 		<th class="<?php echo $usuarios_delete->acode->headerCellClass() ?>"><span id="elh_usuarios_acode" class="usuarios_acode"><?php echo $usuarios_delete->acode->caption() ?></span></th>
 <?php } ?>
+<?php if ($usuarios_delete->hospital->Visible) { // hospital ?>
+		<th class="<?php echo $usuarios_delete->hospital->headerCellClass() ?>"><span id="elh_usuarios_hospital" class="usuarios_hospital"><?php echo $usuarios_delete->hospital->caption() ?></span></th>
+<?php } ?>
 	</tr>
 	</thead>
 	<tbody>
@@ -188,6 +191,13 @@ while (!$usuarios_delete->Recordset->EOF) {
 		<td <?php echo $usuarios_delete->acode->cellAttributes() ?>>
 <span id="el<?php echo $usuarios_delete->RowCount ?>_usuarios_acode" class="usuarios_acode">
 <span<?php echo $usuarios_delete->acode->viewAttributes() ?>><?php echo $usuarios_delete->acode->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($usuarios_delete->hospital->Visible) { // hospital ?>
+		<td <?php echo $usuarios_delete->hospital->cellAttributes() ?>>
+<span id="el<?php echo $usuarios_delete->RowCount ?>_usuarios_hospital" class="usuarios_hospital">
+<span<?php echo $usuarios_delete->hospital->viewAttributes() ?>><?php echo $usuarios_delete->hospital->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

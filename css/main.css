@@ -1,14 +1,28 @@
-#accordionForms
+.dataTables_wrapper table,
+.dataTables_wrapper tbody,
+.dataTables_wrapper tfoot,
+.dataTables_wrapper thead,
+.dataTables_wrapper tr,
+.dataTables_wrapper th,
+.dataTables_wrapper td {
+  font-size: 12px !important;
+}
+
+.dataTables_wrapper .btn-dataTable {
+  float: left;
+}
+
+.accordionForms
   input[type="text"]:not([size]):not([name="pageno"]):not(.cke_dialog_ui_input_text):not(.form-control-plaintext),
 input[type="password"]:not([size]) {
   min-width: auto !important;
 }
 
-#accordionForms .form-control:not(textarea) {
+.accordionForms .form-control:not(textarea) {
   width: inherit !important;
 }
 
-#accordionForms .input-group > .form-control,
+.accordionForms .input-group > .form-control,
 .input-group > .form-control-plaintext,
 .input-group > .custom-select,
 .input-group > .custom-file {
@@ -19,4 +33,51 @@ input[type="password"]:not([size]) {
 
 .modal ul#segNote {
   padding: 0 30px;
+}
+
+form#form_admission .form-control {
+  display: block;
+}
+
+#tableEmergency td,
+#tableUrgency td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table .card-body {
+  padding: 0.7rem;
+}
+
+.timer_parent .countdown-wrapper {
+  margin: 0 auto;
+}
+
+.timer_parent .countdown-wrapper .countdown {
+  text-shadow: 1px 1px 5px black;
+}
+
+.timer_parent .countdown-wrapper .countdown .timer {
+  padding: 0 20px;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.timer_parent .countdown-wrapper .countdown .countdown-section {
+  float: left;
+  font-size: 70%;
+  text-align: center;
+}
+
+.timer_parent
+  .countdown-wrapper
+  .countdown
+  .countdown-section
+  .countdown-period {
+  color: black;
+  text-shadow: none;
+}
+
+#form_admission span.fa-stack {
+  cursor: pointer;
 }

@@ -4,6 +4,7 @@ $(function () {
     id_evalC,
     focus_value,
     dataSelect,
+    cod_ambulance,
     language = {
       language: localStorage.getItem("language"),
       new_case: localStorage.getItem("language_new_case"),
@@ -17,29 +18,21 @@ $(function () {
       url: "lang/" + language["language"] + ".json",
     },
     ajax: {
-      url: "./bd/crud.php",
+      url: "bd/crud.php",
       method: "POST",
-      data: { option: "selectPrehMaestro" },
+      data: { option: "selectInterhMaestro" },
       dataSrc: "",
     },
     deferRender: true,
     columns: [
-      { data: "cod_casopreh" },
-      { data: "fecha" },
+      { data: "cod_casointerh" },
+      { data: "fechahorainterh" },
       { defaultContent: "" },
-      { data: "direccion_maestro" },
-      { defaultContent: "" },
-      { data: "prioridad" },
-      { data: "nombre1" },
+      { data: "nombre_tiposervicion_es" },
       { data: "nombre_hospital" },
-      { data: "nombre_medico" },
-      { data: "telefono_maestro" },
-      { data: "nombre_reporta" },
-      {
-        defaultContent:
-          '<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modalSeg"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></button>',
-      },
-      { defaultContent: "" },
+      { data: "nombre_hospital_destino" },
+      { data: "prioridadinterh" },
+      { data: "nombre_accion_es" },
       {
         defaultContent:
           '<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modalR"><i class="fa fa-times-circle" aria-hidden="true"></i></button>',
@@ -48,7 +41,7 @@ $(function () {
     columnDefs: [
       {
         render: function (data, type, row) {
-          var diff = Math.abs(new Date() - new Date(row.fecha));
+          var diff = Math.abs(new Date() - new Date(row.fechahorainterh));
           var minutes = Math.floor(diff / 1000 / 60);
           return (
             '<i class="fa fa-clock-o" aria-hidden="true"></i> ' +
@@ -60,43 +53,40 @@ $(function () {
       },
       {
         render: function (data, type, row) {
-          var name = row.nombre_es;
+          var name = row.nombre_tiposervicion_es;
           switch (language["language"]) {
             case "en":
-              name = row.nombre_en;
+              name = row.nombre_tiposervicion_en;
               break;
             case "pt":
-              name = row.nombre_pt;
+              name = row.nombre_tiposervicion_pr;
               break;
             case "fr":
-              name = row.nombre_fr;
+              name = row.nombre_tiposervicion_fr;
               break;
           }
           return name;
         },
-        targets: 4,
-      },
-      {
-        render: function (data, type, row) {
-          return (
-            "<button " +
-            (row.accion == 2 ? "hidden" : "") +
-            ' type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-dispatch"><i class="fa fa-ambulance" aria-hidden="true"></i></button>'
-          );
-        },
-        targets: 12,
+        targets: 3,
       },
     ],
     //rowId: 'extn',
     dom: "Bfrtip",
     initComplete: function () {
       $("#tableMaestro_wrapper").prepend(
-        "<div class='btn-dataTable d-flex'><a class='btn btn-secondary mr-3' href='preh_maestroadd.php' role='button'><i class='fa fa-clinic-medical'> " +
+        "<div class='btn-dataTable d-flex'><a class='btn btn-secondary mr-3 new-case' href='preh_maestroadd.php' role='button'><i class='fa fa-clinic-medical'> " +
           language["new_case"] +
           "</i></a><a class='btn btn-secondary map' href='http://144.126.134.106:8082/' role='button'><i class='fa fa-map-marked-alt'> " +
           language["map"] +
           "</i></a></div>"
       );
+      $("#tableMaestro_wrapper .btn.new-case").on("click", function () {
+        return ew.modalDialogShow({
+          lnk: this,
+          btn: "AddBtn",
+          url: "interh_maestroadd.php",
+        });
+      });
     },
   });
 
@@ -108,9 +98,10 @@ $(function () {
     $(".form-control").removeClass("is-invalid");
     if (type === "row") {
       dataSelect = tableMaestro.rows(indexes).data()[0];
-      id_maestro = dataSelect.cod_casopreh;
+      id_maestro = dataSelect.cod_casointerh;
       id_patient = dataSelect.id_paciente;
       id_evalC = dataSelect.id_evaluacionclinica;
+      cod_ambulance = dataSelect.cod_ambulancia;
 
       $("span.case").text(" - Caso: " + id_maestro);
 
@@ -211,6 +202,7 @@ $(function () {
         .fail(function () {
           console.log("error");
         });
+
       //Se actualiza formulario paciente
       $("#form_paciente").trigger("reset");
       $("#p_number").val(dataSelect.num_doc);
@@ -266,12 +258,39 @@ $(function () {
 
       //Se actualiza formulario hospital
       $("#form_hospital").trigger("reset");
-      if (dataSelect.hospital_destino)
+      if (dataSelect.hospital_destinointerh)
         $("#hosp_dest").val(
-          dataSelect.hospital_destino + " " + dataSelect.nombre_hospital
+          dataSelect.hospital_destinointerh +
+            " " +
+            dataSelect.nombre_hospital_destino
         );
-      $("#hosp_nomMed").val(dataSelect.nombre_medico);
-      $("#hosp_telMed").val(dataSelect.telefono_maestro);
+      $("#hosp_nomMed").val(dataSelect.nombre_recibe);
+      $("#hosp_telMed").val(dataSelect.telefonointerh);
+
+      //Se actualiza formulario ambulancia
+      $("#form_ambulance").trigger("reset");
+      if (dataSelect.hora_asigna)
+        $("#date_asig").val(dataSelect.hora_asigna.replace(" ", "T"));
+      if (dataSelect.hora_llegada)
+        $("#date_lleg").val(dataSelect.hora_llegada.replace(" ", "T"));
+      if (dataSelect.hora_inicio)
+        $("#date_ini").val(dataSelect.hora_inicio.replace(" ", "T"));
+      if (dataSelect.hora_destino)
+        $("#date_dest").val(dataSelect.hora_destino.replace(" ", "T"));
+      if (dataSelect.hora_preposicion)
+        $("#date_base").val(dataSelect.hora_preposicion.replace(" ", "T"));
+      $("#conductor").val(dataSelect.conductor);
+      $("#medico").val(dataSelect.medico);
+      $("#paramedico").val(dataSelect.paramedico);
+      $("#obs").html(dataSelect.observacion_ambulancia);
+      if (dataSelect.cod_ambulancia) {
+        $("#serviceAmbulance").val(
+          dataSelect.cod_ambulancias + " - " + dataSelect.placas
+        );
+        $(".change").prop("disabled", false);
+      } else {
+        $(".change").prop("disabled", true);
+      }
 
       $("#collapseOne").collapse("show");
     }
@@ -280,16 +299,16 @@ $(function () {
   function crud_ajax(field, val, option) {
     if (focus_value != val) {
       $.ajax({
-        url: "./bd/crud.php",
+        url: "bd/crud.php",
         method: "POST",
         data: {
           option: option,
           idM: id_maestro,
           idP: id_patient,
           idEC: id_evalC,
+          codA: cod_ambulance,
           setField: val,
           field: field,
-          language: language["language"],
         },
       })
         .done(function () {
@@ -494,68 +513,68 @@ $(function () {
       crud_ajax(
         "triage",
         $("#ec_triage option:selected").val(),
-        "updatePrehEC"
+        "updateInterhEC"
       );
   });
 
   $("#ec_ta").focusout(function () {
-    crud_ajax("sv_tx", $(this).val(), "updatePrehEC");
+    crud_ajax("sv_tx", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_fc").focusout(function () {
-    crud_ajax("sv_fc", $(this).val(), "updatePrehEC");
+    crud_ajax("sv_fc", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_fr").focusout(function () {
-    crud_ajax("sv_fr", $(this).val(), "updatePrehEC");
+    crud_ajax("sv_fr", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_temp").focusout(function () {
-    crud_ajax("sv_temp", $(this).val(), "updatePrehEC");
+    crud_ajax("sv_temp", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_gl").focusout(function () {
-    crud_ajax("sv_gl", $(this).val(), "updatePrehEC");
+    crud_ajax("sv_gl", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_sato2").focusout(function () {
-    crud_ajax("sv_sato2", $(this).val(), "updatePrehEC");
+    crud_ajax("sv_sato2", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_gli").focusout(function () {
-    crud_ajax("sv_gli", $(this).val(), "updatePrehEC");
+    crud_ajax("sv_gli", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_talla").focusout(function () {
-    crud_ajax("talla", $(this).val(), "updatePrehEC");
+    crud_ajax("talla", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_peso").focusout(function () {
-    crud_ajax("peso", $(this).val(), "updatePrehEC");
+    crud_ajax("peso", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_cuadro").focusout(function () {
-    crud_ajax("c_clinico", $(this).val(), "updatePrehEC");
+    crud_ajax("c_clinico", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_examen").focusout(function () {
-    crud_ajax("examen_fisico", $(this).val(), "updatePrehEC");
+    crud_ajax("examen_fisico", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_antec").focusout(function () {
-    crud_ajax("antecedentes", $(this).val(), "updatePrehEC");
+    crud_ajax("antecedentes", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_parac").focusout(function () {
-    crud_ajax("paraclinicos", $(this).val(), "updatePrehEC");
+    crud_ajax("paraclinicos", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_tratam").focusout(function () {
-    crud_ajax("tratamiento", $(this).val(), "updatePrehEC");
+    crud_ajax("tratamiento", $(this).val(), "updateInterhEC");
   });
 
   $("#ec_inform").focusout(function () {
-    crud_ajax("diagnos_txt", $(this).val(), "updatePrehEC");
+    crud_ajax("diagnos_txt", $(this).val(), "updateInterhEC");
   });
   //end formulario evaluación clínica
 
@@ -569,13 +588,99 @@ $(function () {
   });
 
   $("#hosp_nomMed").focusout(function () {
-    crud_ajax("nombre_medico", $(this).val(), "updatePrehM");
+    crud_ajax("nombre_recibe", $(this).val(), "updateInterhM");
   });
 
   $("#hosp_telMed").focusout(function () {
-    crud_ajax("telefono", $(this).val(), "updatePrehM");
+    crud_ajax("telefonointerh", $(this).val(), "updateInterhM");
   });
   //end formulario hospital
+
+  //Formulario ambulancia
+  $("#date_asig").on("focus", function () {
+    focus_value = $(this).val().replace("T", " ");
+  });
+
+  $("#date_lleg").on("focus", function () {
+    focus_value = $(this).val().replace("T", " ");
+  });
+
+  $("#date_ini").on("focus", function () {
+    focus_value = $(this).val().replace("T", " ");
+  });
+
+  $("#date_dest").on("focus", function () {
+    focus_value = $(this).val().replace("T", " ");
+  });
+
+  $("#date_base").on("focus", function () {
+    focus_value = $(this).val().replace("T", " ");
+  });
+
+  $("#conductor").on("focus", function () {
+    focus_value = $(this).val();
+  });
+
+  $("#medico").on("focus", function () {
+    focus_value = $(this).val();
+  });
+
+  $("#paramedico").on("focus", function () {
+    focus_value = $(this).val();
+  });
+
+  $("#obs").on("focus", function () {
+    focus_value = $(this).val();
+  });
+
+  $("#date_asig").on("focusout", function () {
+    crud_ajax("hora_asigna", $(this).val().replace("T", " "), "updateInterhSA");
+  });
+
+  $("#date_lleg").on("focusout", function () {
+    crud_ajax(
+      "hora_llegada",
+      $(this).val().replace("T", " "),
+      "updateInterhSA"
+    );
+  });
+
+  $("#date_ini").on("focusout", function () {
+    crud_ajax("hora_inicio", $(this).val().replace("T", " "), "updateInterhSA");
+  });
+
+  $("#date_dest").on("focusout", function () {
+    crud_ajax(
+      "hora_destino",
+      $(this).val().replace("T", " "),
+      "updateInterhSA"
+    );
+  });
+
+  $("#date_base").on("focusout", function () {
+    crud_ajax(
+      "hora_preposicion",
+      $(this).val().replace("T", " "),
+      "updateInterhSA"
+    );
+  });
+
+  $("#conductor").on("focusout", function () {
+    crud_ajax("conductor", $(this).val(), "updateInterhSA");
+  });
+
+  $("#medico").on("focusout", function () {
+    crud_ajax("medico", $(this).val(), "updateInterhSA");
+  });
+
+  $("#paramedico").on("focusout", function () {
+    crud_ajax("paramedico", $(this).val(), "updateInterhSA");
+  });
+
+  $("#obs").on("focusout", function () {
+    crud_ajax("observaciones", $(this).val(), "updateInterhSA");
+  });
+  //end formulario ambulancia
 
   var tableCIE10 = $("#tableCIE10").DataTable({
     select: "single",
@@ -583,7 +688,7 @@ $(function () {
       url: "lang/" + language["language"] + ".json",
     },
     ajax: {
-      url: "./bd/crud.php",
+      url: "bd/crud.php",
       method: "POST",
       data: { option: "selectCIE10" },
       dataSrc: "",
@@ -630,7 +735,7 @@ $(function () {
     $("#ec_cie10").val(
       dataSelectCIE10[0].codigo_cie + " " + dataSelectCIE10[0].diagnostico
     );
-    crud_ajax("cod_diag_cie", dataSelectCIE10[0].codigo_cie, "updatePrehEC");
+    crud_ajax("cod_diag_cie", dataSelectCIE10[0].codigo_cie, "updateInterhEC");
   });
 
   var tableHosp = $("#tableHosp").DataTable({
@@ -639,7 +744,7 @@ $(function () {
       url: "lang/" + language["language"] + ".json",
     },
     ajax: {
-      url: "./bd/crud.php",
+      url: "bd/crud.php",
       method: "POST",
       data: { option: "selectHosp" },
       dataSrc: "",
@@ -666,39 +771,11 @@ $(function () {
     $("#hosp_dest").val(
       dataSelectHosp[0].id_hospital + " " + dataSelectHosp[0].nombre_hospital
     );
-    crud_ajax("hospital_destino", dataSelectHosp[0].id_hospital, "updatePrehM");
-  });
-
-  $("#modalSeg").on("show.bs.modal", function () {
-    $("#noteInput").val("");
-    $.ajax({
-      url: "./bd/crud.php",
-      method: "POST",
-      dataType: "json",
-      data: {
-        option: "selectSeguimPreh",
-        idM: id_maestro,
-      },
-    })
-      .done(function (data) {
-        $("#segNote").empty();
-        $.each(data, function (index, value) {
-          $("#segNote").append("<li>" + value.seguimento + "</li>");
-        });
-      })
-      .fail(function () {
-        console.log("error");
-      });
-  });
-
-  $("#noteInput").keyup(function () {
-    $(this).val().length > 0
-      ? $(".btnNote").prop("disabled", false)
-      : $(".btnNote").prop("disabled", true);
-  });
-
-  $(".btnNote").on("click", function () {
-    crud_ajax("seguimento", $("#noteInput").val(), "updatePrehSeguim");
+    crud_ajax(
+      "hospital_destinointerh",
+      dataSelectHosp[0].id_hospital,
+      "updateInterhM"
+    );
   });
 
   $("#modalR").on("show.bs.modal", function () {
@@ -745,10 +822,10 @@ $(function () {
 
   $(".btnRazon").on("click", function () {
     $.ajax({
-      url: "./bd/crud.php",
+      url: "bd/crud.php",
       method: "POST",
       data: {
-        option: "cerrarPrehCaso",
+        option: "cerrarInterhCaso",
         idM: id_maestro,
         setField: $("#selectRazon").val(),
         reason: $("#razon").val(),
@@ -760,6 +837,48 @@ $(function () {
       .fail(function () {
         console.log("error");
       });
+  });
+
+  var tableAmbulance = $("#tableAmbulance").DataTable({
+    select: "single",
+    language: {
+      url: "lang/" + language["language"] + ".json",
+    },
+    ajax: {
+      url: "bd/crud.php",
+      method: "POST",
+      data: { option: "selectAmbulance" },
+      dataSrc: "",
+    },
+    deferRender: true,
+    columns: [{ data: "cod_ambulancias" }, { data: "placas" }],
+    //dom: 'Bfrtip'
+  });
+
+  $("#modalAmbulance").on("show.bs.modal", function () {
+    tableAmbulance.ajax.reload();
+  });
+
+  tableAmbulance.on("select", function (e, dt, type, indexes) {
+    $(".btnAmbulance").prop("disabled", false);
+  });
+
+  tableAmbulance.on("deselect", function (e, dt, type, indexes) {
+    $(".btnAmbulance").prop("disabled", true);
+  });
+
+  $(".btnAmbulance").on("click", function () {
+    var dataSelectAmbulance = tableAmbulance.rows(".selected").data();
+    var option = dataSelect.cod_ambulancia
+      ? "updateInterhSA"
+      : "insertInterhSA";
+    $("#serviceAmbulance").val(
+      dataSelectAmbulance[0].cod_ambulancias +
+        " - " +
+        dataSelectAmbulance[0].placas
+    );
+    crud_ajax("cod_ambulancia", dataSelectAmbulance[0].cod_ambulancias, option);
+    $(".change").prop("disabled", false);
   });
 
   /* Validación de número de cédula dominicana
@@ -797,11 +916,6 @@ $(function () {
 
   $("#p_phone").mask("(999) 999-9999");
   $("#hosp_telMed").mask("(999) 999-9999");
-
-  $(".btn-dispatch").on("click", function () {
-    focus_value = 0;
-    crud_ajax("accion", 2, "updatePrehM");
-  });
 
   setInterval(function () {
     tableMaestro.ajax.reload();

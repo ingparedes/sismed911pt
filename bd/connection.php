@@ -1,19 +1,19 @@
 <?php
 class connection
 {
-    public $host;
-    public $db;
-    public $user;
-    public $pass;
-    public $connect;
-    public $url;
+    private $host;
+    private $db;
+    private $user;
+    private $pass;
+    private $connect;
+    private $url;
 
     function __construct()
     {
         $this->host = "localhost";
         $this->db = "sismed911";
         $this->user = "postgres";
-        $this->pass = "12345";
+        $this->pass = "root";
         $this->connect = "host=" . $this->host . " dbname=" . $this->db . " user=" . $this->user . " password=" . $this->pass;
     }
 
