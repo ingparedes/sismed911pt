@@ -42,7 +42,7 @@
     <phrase id="fp_title" value="Paciente" />
     <phrase id="fp_select" value="-- Seleccione --" />
     <phrase id="fp_invalidfeedback" value="Por favor, ingrese un número válido" />
-    <phrase id="fp_ide" value="IDE" />
+    <phrase id="fp_ide" value="Documento de identidad" />
     <phrase id="fp_number" value="Número" />
     <phrase id="fp_record" value="Expediente" />
     <phrase id="fp_datebirth" value="Fecha de nacimiento" />
@@ -80,6 +80,7 @@
     <phrase id="fec_parac" value="Paraclínicos" />
     <phrase id="fec_treatment" value="Tratamiento" />
     <phrase id="fec_information" value="Información DX" />
+    <phrase id="fec_typepatient" value="Tipo de paciente" />
     <!-- Formulario hospital -->
     <phrase id="fh_title" value="Hospital" />
     <!-- Formulario ambulancia -->
@@ -89,9 +90,9 @@
     <phrase id="fa_start" value="H. Inicia" />
     <phrase id="fa_destiny" value="H. Destino" />
     <phrase id="fa_base" value="H. Base" />
-    <phrase id="fa_driver" value="Conductor" />
+    <phrase id="fa_driver" value="Téc. de transporte sanitario" />
     <phrase id="fa_doctor" value="Médico" />
-    <phrase id="fa_paramedic" value="Paramédico" />
+    <phrase id="fa_paramedic" value="Téc. de emergencias médicas" />
     <!-- Modals -->
     <phrase id="m_cie10title" value="Por favor, seleccione el CIE10" />
     <phrase id="m_cie10code" value="Código" />

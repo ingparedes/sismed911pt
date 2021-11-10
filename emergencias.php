@@ -89,25 +89,25 @@ Page_Rendering();
 										<div class="form-group col-lg-3">
 											<label for="general"><?php echo $Language->Phrase("em_general"); ?>:</label>
 											<select class="form-control" id="general">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="cabeza"><?php echo $Language->Phrase("em_cabeza"); ?>:</label>
 											<select class="form-control" id="cabeza">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="ojo"><?php echo $Language->Phrase("em_ojo"); ?>:</label>
 											<select class="form-control" id="ojo">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="otorrino"><?php echo $Language->Phrase("em_otorrino"); ?>:</label>
 											<select class="form-control" id="otorrino">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 									</div>
@@ -115,25 +115,25 @@ Page_Rendering();
 										<div class="form-group col-lg-3">
 											<label for="boca"><?php echo $Language->Phrase("em_boca"); ?>:</label>
 											<select class="form-control" id="boca">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="cuello"><?php echo $Language->Phrase("em_cuello"); ?>:</label>
 											<select class="form-control" id="cuello">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="torax"><?php echo $Language->Phrase("em_torax"); ?>:</label>
 											<select class="form-control" id="torax">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="corazon"><?php echo $Language->Phrase("em_corazon"); ?>:</label>
 											<select class="form-control" id="corazon">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 									</div>
@@ -141,25 +141,25 @@ Page_Rendering();
 										<div class="form-group col-lg-3">
 											<label for="pulmon"><?php echo $Language->Phrase("em_pulmon"); ?>:</label>
 											<select class="form-control" id="pulmon">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="abdomen"><?php echo $Language->Phrase("em_abdomen"); ?>:</label>
 											<select class="form-control" id="abdomen">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="pelvis"><?php echo $Language->Phrase("em_pelvis"); ?>:</label>
 											<select class="form-control" id="pelvis">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="rectal"><?php echo $Language->Phrase("em_rectal"); ?>:</label>
 											<select class="form-control" id="rectal">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 									</div>
@@ -167,25 +167,25 @@ Page_Rendering();
 										<div class="form-group col-lg-3">
 											<label for="genital"><?php echo $Language->Phrase("em_genital"); ?>:</label>
 											<select class="form-control" id="genital">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="extremidad"><?php echo $Language->Phrase("em_extremidad"); ?>:</label>
 											<select class="form-control" id="extremidad">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="neuro"><?php echo $Language->Phrase("em_neuro"); ?>:</label>
 											<select class="form-control" id="neuro">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 										<div class="form-group col-lg-3">
 											<label for="piel"><?php echo $Language->Phrase("em_piel"); ?>:</label>
 											<select class="form-control" id="piel">
-												<option>-- Seleccione una opción --</option>
+												<option><?php echo $Language->Phrase("fp_select"); ?></option>
 											</select>
 										</div>
 									</div>

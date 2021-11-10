@@ -8,6 +8,7 @@ $(function () {
       language: localStorage.getItem("language"),
       new_case: localStorage.getItem("language_new_case"),
       map: localStorage.getItem("language_map"),
+      select: localStorage.getItem("language_select"),
     };
 
   var tableMaestro = $("#tableMaestro").DataTable({
@@ -27,10 +28,10 @@ $(function () {
       { data: "cod_casopreh" },
       { data: "fecha" },
       { defaultContent: "" },
+      { defaultContent: "" },
       { data: "direccion_maestro" },
       { defaultContent: "" },
       { data: "prioridad" },
-      { data: "nombre1" },
       { data: "nombre_hospital" },
       { data: "nombre_medico" },
       { data: "telefono_maestro" },
@@ -60,6 +61,20 @@ $(function () {
       },
       {
         render: function (data, type, row) {
+          return row.nombre1
+            ? row.nombre1
+            : "" + " " + row.nombre2
+            ? row.nombre2
+            : "" + " " + row.apellido1
+            ? row.apellido1
+            : "" + " " + row.apellido2
+            ? row.apellido2
+            : "";
+        },
+        targets: 3,
+      },
+      {
+        render: function (data, type, row) {
           var name = row.nombre_es;
           switch (language["language"]) {
             case "en":
@@ -74,7 +89,7 @@ $(function () {
           }
           return name;
         },
-        targets: 4,
+        targets: 5,
       },
       {
         render: function (data, type, row) {
@@ -84,7 +99,7 @@ $(function () {
             ' type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-dispatch"><i class="fa fa-ambulance" aria-hidden="true"></i></button>'
           );
         },
-        targets: 12,
+        targets: 13,
       },
     ],
     //rowId: 'extn',
@@ -108,6 +123,7 @@ $(function () {
     $(".form-control").removeClass("is-invalid");
     if (type === "row") {
       dataSelect = tableMaestro.rows(indexes).data()[0];
+      console.log(dataSelect);
       id_maestro = dataSelect.cod_casopreh;
       id_patient = dataSelect.id_paciente;
       id_evalC = dataSelect.id_evaluacionclinica;
@@ -125,7 +141,9 @@ $(function () {
         .done(function (data) {
           var name = "";
           $("#p_ide").empty();
-          $("#p_ide").append($("<option value='0'>Seleccione...</option>"));
+          $("#p_ide").append(
+            $("<option value='0'>" + language["select"] + "</option>")
+          );
           $.each(data["ide"], function (index, value) {
             switch (language["language"]) {
               case "es":
@@ -153,7 +171,9 @@ $(function () {
           });
 
           $("#p_typeage").empty();
-          $("#p_typeage").append($("<option value='0'>Seleccione...</option>"));
+          $("#p_typeage").append(
+            $("<option value='0'>" + language["select"] + "</option>")
+          );
           $.each(data["age"], function (index, value) {
             switch (language["language"]) {
               case "es":
@@ -181,7 +201,14 @@ $(function () {
           });
 
           $("#ec_triage").empty();
-          $("#ec_triage").append($("<option value='0'>Seleccione...</option>"));
+          $("#ec_triage").append(
+            $(
+              "<option value='0' style='color: initial'>" +
+                language["select"] +
+                "</option>"
+            )
+          );
+          var color = "";
           $.each(data["triage"], function (index, value) {
             switch (language["language"]) {
               case "es":
@@ -190,22 +217,80 @@ $(function () {
               case "en":
                 name = value.nombre_triage_en;
                 break;
-              case "pt":
+              case "pr":
                 name = value.nombre_triage_pr;
                 break;
               case "fr":
                 name = value.nombre_triage_fr;
                 break;
             }
+            switch (value.nombre_triage_es) {
+              case "Crítico":
+                color = "red";
+                break;
+              case "Severo":
+                color = "orange";
+                break;
+              case "Moderado":
+                color = "yellow";
+                break;
+              case "Leve":
+                color = "green";
+                break;
+            }
             $("#ec_triage").append(
-              $("<option value='" + value.id_triage + "'>" + name + "</option>")
+              $(
+                "<option value='" +
+                  value.id_triage +
+                  "'class='fa' style='color: " +
+                  color +
+                  "'>&#xf0c8; " +
+                  name +
+                  "</option>"
+              )
             );
-            if (dataSelect.triage == value.id_triage) {
+            if (dataSelect.triage == value.id_triage)
               $("#ec_triage option[value=" + value.id_triage + "]").attr(
                 "selected",
                 true
               );
-            }
+            paintSelect();
+
+            $("#ec_type").empty();
+            $("#ec_type").append(
+              $("<option value='0'>" + language["select"] + "</option>")
+            );
+            $.each(data["type"], function (index, value) {
+              switch (language["language"]) {
+                case "es":
+                  name = value.nombre_tipopaciente;
+                  break;
+                case "en":
+                  name = value.nombre_tipopaciente_en;
+                  break;
+                case "pt":
+                  name = value.nombre_tipopaciente_pr;
+                  break;
+                case "fr":
+                  name = value.nombre_tipopaciente_fr;
+                  break;
+              }
+              $("#ec_type").append(
+                $(
+                  "<option value='" +
+                    value.id_tipopaciente +
+                    "'>" +
+                    name +
+                    "</option>"
+                )
+              );
+              if (dataSelect.id_tipopaciente == value.id_tipopaciente) {
+                $("#ec_type option[value=" + value.id_tipopaciente + "]").attr(
+                  "selected",
+                  true
+                );
+              }
+            });
           });
         })
         .fail(function () {
@@ -309,6 +394,26 @@ $(function () {
     }
   }
 
+  function paintSelect() {
+    switch ($("#ec_triage option:selected").text().split(" ")[1]) {
+      case "Crítico":
+        $("#ec_triage").css("color", "red");
+        break;
+      case "Severo":
+        $("#ec_triage").css("color", "orange");
+        break;
+      case "Moderado":
+        $("#ec_triage").css("color", "yellow");
+        break;
+      case "Leve":
+        $("#ec_triage").css("color", "green");
+        break;
+      default:
+        $("#ec_triage").css("color", "initial");
+        break;
+    }
+  }
+
   //formulario paciente
   $("#p_number").focus(function () {
     focus_value = $(this).val();
@@ -324,7 +429,7 @@ $(function () {
 
   $("#p_age").focus(function () {
     focus_value = $(this).val();
-  });  
+  });
 
   $("#p_name1").focus(function () {
     focus_value = $(this).val();
@@ -369,7 +474,7 @@ $(function () {
   $("#p_ide").on("change", function () {
     if ($("#p_ide option:selected").val() != 0)
       crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
-  });  
+  });
 
   /* Validación de número de cédula dominicana */
   $("#p_number").on("focusout", function () {
@@ -517,15 +622,6 @@ $(function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_triage").on("change", function () {
-    if ($("#ec_triage option:selected").val() != 0)
-      crud_ajax(
-        "triage",
-        $("#ec_triage option:selected").val(),
-        "updatePrehEC"
-      );
-  });
-
   $("#ec_ta").focusout(function () {
     crud_ajax("sv_tx", $(this).val(), "updatePrehEC");
   });
@@ -560,6 +656,25 @@ $(function () {
 
   $("#ec_peso").focusout(function () {
     crud_ajax("peso", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_triage").on("change", function () {
+    paintSelect();
+    if ($("#ec_triage option:selected").val() != 0)
+      crud_ajax(
+        "triage",
+        $("#ec_triage option:selected").val(),
+        "updatePrehEC"
+      );
+  });
+
+  $("#ec_type").on("change", function () {
+    if ($("#ec_type option:selected").val() != 0)
+      crud_ajax(
+        "tipo_paciente",
+        $("#ec_type option:selected").val(),
+        "updatePrehEC"
+      );
   });
 
   $("#ec_cuadro").focusout(function () {
@@ -741,7 +856,9 @@ $(function () {
     })
       .done(function (data) {
         $("#selectRazon").empty();
-        $("#selectRazon").append($("<option value='0'>Seleccione...</option>"));
+        $("#selectRazon").append(
+          $("<option value='0'>" + language["select"] + "</option>")
+        );
         $.each(data, function (index, value) {
           $("#selectRazon").append(
             $(

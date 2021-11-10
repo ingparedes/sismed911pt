@@ -37,6 +37,7 @@ global $Language;
 	localStorage.setItem("language", "<?php echo CurrentLanguageID(); ?>");
 	localStorage.setItem("language_new_case", "<?php echo $Language->Phrase('dt_newcase'); ?>");
 	localStorage.setItem("language_map", "<?php echo $Language->Phrase('dt_map'); ?>");
+	localStorage.setItem("language_select", "<?php echo $Language->Phrase('fp_select'); ?>");
 </script>
 
 <div class="row mb-3">
@@ -47,7 +48,7 @@ global $Language;
 					<th><?php echo $Language->Phrase("dt_case"); ?></th>
 					<th><?php echo $Language->Phrase("dt_date"); ?></th>
 					<th><?php echo $Language->Phrase("dt_time"); ?></th>
-					<th><?php echo $Language->Phrase("dt_service"); ?></th>
+					<th><?php echo $Language->Phrase("dt_patient"); ?></th>
 					<th><?php echo $Language->Phrase("dt_originhospital"); ?></th>
 					<th><?php echo $Language->Phrase("dt_destinationhospital"); ?></th>
 					<th><?php echo $Language->Phrase("dt_priority"); ?></th>
@@ -187,14 +188,8 @@ global $Language;
 
 									<!-- Formulario Evaluación clínica -->
 									<div class="tab-pane fade" id="evaluacion" role="tabpanel" aria-labelledby="evaluacion-tab">
-										<form id="form_evalClinic" class="needs-validation" novalidate>
+										<form id="form_evalClinic">
 											<div class="form-row">
-												<div class="form-group col-lg-3">
-													<label for="ec_triage"><?php echo $Language->Phrase("fec_triage"); ?>:</label>
-													<select class="form-control" id="ec_triage" required>
-														<option><?php echo $Language->Phrase("fp_select"); ?></option>
-													</select>
-												</div>
 												<div class="form-group col-lg-2">
 													<label for="ec_ta"><?php echo $Language->Phrase("fec_ta"); ?>:</label>
 													<input type="text" class="form-control" id="ec_ta" placeholder="<?php echo $Language->Phrase("fec_ta"); ?>" />
@@ -235,7 +230,19 @@ global $Language;
 												</div>
 											</div>
 											<div class="form-row">
-												<div class="form-group col-lg-10">
+												<div class="form-group col-lg-3">
+													<label for="ec_triage"><?php echo $Language->Phrase("fec_triage"); ?>:</label>
+													<select class="form-control fa" id="ec_triage">
+														<option><?php echo $Language->Phrase("fp_select"); ?></option>
+													</select>
+												</div>
+												<div class="form-group col-lg-3">
+													<label for="ec_triage"><?php echo $Language->Phrase("fec_typepatient"); ?>:</label>
+													<select class="form-control" id="ec_type">
+														<option><?php echo $Language->Phrase("fp_select"); ?></option>
+													</select>
+												</div>
+												<div class="form-group col-lg-6">
 													<label for="ec_cie10"><?php echo $Language->Phrase("fec_cie10"); ?>:</label>
 													<div class="input-group">
 														<input type="text" class="form-control" id="ec_cie10" placeholder="<?php echo $Language->Phrase("fec_cie10"); ?>" />

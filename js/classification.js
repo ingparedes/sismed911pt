@@ -2,6 +2,7 @@ $(function () {
   var dataSelect,
     language = {
       language: localStorage.getItem("language"),
+      select: localStorage.getItem("language_select"),
     };
   var tableAdmission = $("#tableAdmission").DataTable({
     select: "single",
@@ -17,9 +18,9 @@ $(function () {
     },
     deferRender: true,
     columns: [
-      { data: "expendiente" },
-      { defaultContent: "" },
       { data: "fecha_admision" },
+      { data: "expendiente" },
+      { defaultContent: "" },      
       { defaultContent: "" },
       { data: "cod911" },
       { data: "genero" },
@@ -34,7 +35,7 @@ $(function () {
           patient += row.apellido2 ? " " + row.apellido2 : "";
           return patient;
         },
-        targets: 1,
+        targets: 2,
       },
       {
         render: function (data, type, row) {
@@ -130,10 +131,6 @@ $(function () {
     $("#signalDescription").html(dataSelect.signos_sintomas);
   });
 
-  tableAdmission.on("deselect", function (e, dt, type, indexes) {
-    //$("#collapseOne").collapse("hide");
-  });
-
   $.ajax({
     url: "bd/admission.php",
     method: "POST",
@@ -145,22 +142,22 @@ $(function () {
     .done(function (data) {
       $("#attention").empty();
       $("#attention").append(
-        $("<option value='0'>-- Seleccione una opción --</option>")
+        $("<option value='0'>" + language["select"] + "</option>")
       );
 
       $("#locationTrauma").empty();
       $("#locationTrauma").append(
-        $("<option value='0'>-- Seleccione una opción --</option>")
+        $("<option value='0'>" + language["select"] + "</option>")
       );
 
       $("#causeTrauma").empty();
       $("#causeTrauma").append(
-        $("<option value='0'>-- Seleccione una opción --</option>")
+        $("<option value='0'>" + language["select"] + "</option>")
       );
 
       $("#system").empty();
       $("#system").append(
-        $("<option value='0'>-- Seleccione una opción --</option>")
+        $("<option value='0'>" + language["select"] + "</option>")
       );
 
       $.each(data["attention"], function (index, value) {
