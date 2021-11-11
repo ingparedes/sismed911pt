@@ -91,8 +91,8 @@
     <phrase id="fa_destiny" value="H. Destino" />
     <phrase id="fa_base" value="H. Base" />
     <phrase id="fa_driver" value="Téc. de transporte sanitario" />
-    <phrase id="fa_doctor" value="Médico" />
-    <phrase id="fa_paramedic" value="Téc. de emergencias médicas" />
+    <phrase id="fa_doctor" value="Médico general" />
+    <phrase id="fa_paramedic" value="Téc. de emergencias médicas/Aux. enfermería/Lic. enfermería" />
     <!-- Modals -->
     <phrase id="m_cie10title" value="Por favor, seleccione el CIE10" />
     <phrase id="m_cie10code" value="Código" />

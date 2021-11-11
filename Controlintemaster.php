@@ -366,7 +366,7 @@ global $Language;
 												</div>
 											</div>
 											<div class="form-row">
-												<div class="form-group col-md-3">
+												<div class="form-group col-md-6">
 													<label for="paramedico"><?php echo $Language->Phrase("fa_paramedic"); ?>:</label>
 													<input type="text" class="form-control change" id="paramedico" placeholder="<?php echo $Language->Phrase("fa_paramedic"); ?>" />
 												</div>
