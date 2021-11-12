@@ -63,9 +63,9 @@ switch ($option) {
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'selectPrehServiceAmbulance':
-        $sql = "SELECT *, preh_maestro.cod_casopreh, preh_servicio_ambulancia.observaciones as observacion_ambulancia FROM preh_maestro
+        $sql = "SELECT *, preh_maestro.cod_casopreh AS casopreh, preh_servicio_ambulancia.observaciones as observacion_ambulancia FROM preh_maestro
         LEFT JOIN preh_servicio_ambulancia ON preh_maestro.cod_casopreh = preh_servicio_ambulancia.cod_casopreh
-        LEFT JOIN ambulancias ON preh_servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
+        INNER JOIN ambulancias ON preh_servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
         WHERE preh_maestro.accion=2 AND preh_maestro.estado!=0
         ORDER BY preh_maestro.cod_casopreh";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);

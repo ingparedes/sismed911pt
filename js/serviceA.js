@@ -21,7 +21,7 @@ $(function () {
     },
     deferRender: true,
     columns: [
-      { data: "cod_casopreh" },
+      { data: "casopreh" },
       { data: "fecha" },
       { data: "incidente" },
       { defaultContent: "" },

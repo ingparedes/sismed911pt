@@ -11,7 +11,7 @@ class connection
     function __construct()
     {
         $this->host = "localhost";
-        $this->db = "sismed911";
+        $this->db = "sisme911";
         $this->user = "postgres";
         $this->pass = "root";
         $this->connect = "host=" . $this->host . " dbname=" . $this->db . " user=" . $this->user . " password=" . $this->pass;
