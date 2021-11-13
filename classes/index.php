@@ -1,4 +1,5 @@
 <?php
+
 namespace PHPMaker2020\sismed911;
 
 /**
@@ -214,7 +215,8 @@ class index
 	public $CheckToken;
 
 	// Constructor
-	public function __construct() {
+	public function __construct()
+	{
 		$this->CheckToken = Config("CHECK_TOKEN");
 	}
 
@@ -513,6 +515,8 @@ class index
 			$this->terminate("emergencias.php");
 		if ($Security->allowList(CurrentProjectID() . 'despachoambpreh.php'))
 			$this->terminate("despachoambpreh.php");
+		if ($Security->allowList(CurrentProjectID() . 'report.php'))
+			$this->terminate("report.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {
@@ -521,19 +525,22 @@ class index
 	}
 
 	// Page Load event
-	function Page_Load() {
+	function Page_Load()
+	{
 
 		//echo "Page Load";
 	}
 
 	// Page Unload event
-	function Page_Unload() {
+	function Page_Unload()
+	{
 
 		//echo "Page Unload";
 	}
 
 	// Page Redirecting event
-	function Page_Redirecting(&$url) {
+	function Page_Redirecting(&$url)
+	{
 
 		// Example:
 		//$url = "your URL";
@@ -542,9 +549,9 @@ class index
 
 	// Message Showing event
 	// $type = ''|'success'|'failure'
-	function Message_Showing(&$msg, $type) {
+	function Message_Showing(&$msg, $type)
+	{
 
 		// Example:
-		}
+	}
 }
-?>

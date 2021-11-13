@@ -4459,5 +4459,8 @@
     <table id="despachoambpreh">
       <phrase id="tblcaption" value="despacho" />
     </table>
+    <table id="report">
+      <phrase id="tblcaption" value="Reportes" />
+    </table>
   </project>
 </ew-language>
