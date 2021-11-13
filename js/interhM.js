@@ -415,90 +415,98 @@ $(function () {
   }
 
   //formulario paciente
-  $("#p_number").focus(function () {
+  $("#p_number").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_exp").focus(function () {
+  $("#p_exp").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_date").focus(function () {
+  $("#p_date").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_age").focus(function () {
+  $("#p_age").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_name1").focus(function () {
+  $("#p_name1").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_name2").focus(function () {
+  $("#p_name2").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_lastname1").focus(function () {
+  $("#p_lastname1").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_lastname2").focus(function () {
+  $("#p_lastname2").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_nickname").focus(function () {
+  $("#p_nickname").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_nationality").focus(function () {
+  $("#p_nationality").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_phone").focus(function () {
+  $("#p_phone").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_segS").focus(function () {
+  $("#p_segS").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_address").focus(function () {
+  $("#p_address").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_obs").focus(function () {
+  $("#p_obs").on("focus", function () {
     focus_value = $(this).val();
   });
 
   $("#p_ide").on("change", function () {
-    if ($("#p_ide option:selected").val() != 0)
-      crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+    if ($("#p_ide option:selected").val() != 0) {
+      if ($("#p_ide option:selected").val() == 1) {
+        if (number_validate($("#p_number").val()))
+          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+      } else {
+        $(".form-control#p_number").removeClass("is-invalid");
+        crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+        crud_ajax("num_doc", $("#p_number").val(), "updateP");
+      }
+    } else {
+      $(".form-control#p_number").removeClass("is-invalid");
+    }
   });
 
   /* Validación de número de cédula dominicana */
-  $("#p_number").on("focusout", function () {
+  $("#p_number").on("keyup", function () {
     if ($("#p_ide option:selected").val() == 1) {
       if (number_validate($(this).val())) {
-        $(".form-control#p_number").removeClass("is-invalid");
         crud_ajax("num_doc", $(this).val(), "updateP");
-      } else {
-        $(".form-control#p_number").addClass("is-invalid");
+        crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
       }
     } else {
       crud_ajax("num_doc", $(this).val(), "updateP");
     }
   });
 
-  $("#p_exp").focusout(function () {
+  $("#p_exp").on("focusout", function () {
     crud_ajax("expendiente", $(this).val(), "updateP");
   });
 
-  $("#p_date").focusout(function () {
+  $("#p_date").on("focusout", function () {
     crud_ajax("fecha_nacido", $(this).val(), "updateP");
   });
 
-  $("#p_age").focusout(function () {
+  $("#p_age").on("focusout", function () {
     crud_ajax("edad", $(this).val(), "updateP");
   });
 
@@ -507,19 +515,19 @@ $(function () {
       crud_ajax("cod_edad", $("#p_typeage option:selected").val(), "updateP");
   });
 
-  $("#p_name1").focusout(function () {
+  $("#p_name1").on("focusout", function () {
     crud_ajax("nombre1", $(this).val(), "updateP");
   });
 
-  $("#p_name2").focusout(function () {
+  $("#p_name2").on("focusout", function () {
     crud_ajax("nombre2", $(this).val(), "updateP");
   });
 
-  $("#p_lastname1").focusout(function () {
+  $("#p_lastname1").on("focusout", function () {
     crud_ajax("apellido1", $(this).val(), "updateP");
   });
 
-  $("#p_lastname2").focusout(function () {
+  $("#p_lastname2").on("focusout", function () {
     crud_ajax("apellido2", $(this).val(), "updateP");
   });
 
@@ -536,125 +544,125 @@ $(function () {
       crud_ajax("genero", $("input:checked").val(), "updateP");
   });
 
-  $("#p_nickname").focusout(function () {
+  $("#p_nickname").on("focusout", function () {
     crud_ajax("apodo", $(this).val(), "updateP");
   });
 
-  $("#p_nationality").focusout(function () {
+  $("#p_nationality").on("focusout", function () {
     crud_ajax("nacionalidad", $(this).val(), "updateP");
   });
 
-  $("#p_phone").focusout(function () {
+  $("#p_phone").on("focusout", function () {
     crud_ajax("telefono", $(this).val(), "updateP");
   });
 
-  $("#p_segS").focusout(function () {
+  $("#p_segS").on("focusout", function () {
     crud_ajax("aseguradro", $(this).val(), "updateP");
   });
 
-  $("#p_address").focusout(function () {
+  $("#p_address").on("focusout", function () {
     crud_ajax("direccion", $(this).val(), "updateP");
   });
 
-  $("#p_obs").focusout(function () {
+  $("#p_obs").on("focusout", function () {
     crud_ajax("observacion", $(this).val(), "updateP");
   });
   //end formulario paciente
 
   //formulario evaluación clínica
-  $("#ec_ta").focus(function () {
+  $("#ec_ta").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_fc").focus(function () {
+  $("#ec_fc").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_fr").focus(function () {
+  $("#ec_fr").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_temp").focus(function () {
+  $("#ec_temp").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_gl").focus(function () {
+  $("#ec_gl").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_sato2").focus(function () {
+  $("#ec_sato2").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_gli").focus(function () {
+  $("#ec_gli").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_talla").focus(function () {
+  $("#ec_talla").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_peso").focus(function () {
+  $("#ec_peso").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_cuadro").focus(function () {
+  $("#ec_cuadro").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_examen").focus(function () {
+  $("#ec_examen").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_antec").focus(function () {
+  $("#ec_antec").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_parac").focus(function () {
+  $("#ec_parac").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_tratam").focus(function () {
+  $("#ec_tratam").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_inform").focus(function () {
+  $("#ec_inform").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_ta").focusout(function () {
+  $("#ec_ta").on("focusout", function () {
     crud_ajax("sv_tx", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_fc").focusout(function () {
+  $("#ec_fc").on("focusout", function () {
     crud_ajax("sv_fc", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_fr").focusout(function () {
+  $("#ec_fr").on("focusout", function () {
     crud_ajax("sv_fr", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_temp").focusout(function () {
+  $("#ec_temp").on("focusout", function () {
     crud_ajax("sv_temp", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_gl").focusout(function () {
+  $("#ec_gl").on("focusout", function () {
     crud_ajax("sv_gl", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_sato2").focusout(function () {
+  $("#ec_sato2").on("focusout", function () {
     crud_ajax("sv_sato2", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_gli").focusout(function () {
+  $("#ec_gli").on("focusout", function () {
     crud_ajax("sv_gli", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_talla").focusout(function () {
+  $("#ec_talla").on("focusout", function () {
     crud_ajax("talla", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_peso").focusout(function () {
+  $("#ec_peso").on("focusout", function () {
     crud_ajax("peso", $(this).val(), "updateInterhEC");
   });
 
@@ -678,45 +686,45 @@ $(function () {
       );
   });
 
-  $("#ec_cuadro").focusout(function () {
+  $("#ec_cuadro").on("focusout", function () {
     crud_ajax("c_clinico", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_examen").focusout(function () {
+  $("#ec_examen").on("focusout", function () {
     crud_ajax("examen_fisico", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_antec").focusout(function () {
+  $("#ec_antec").on("focusout", function () {
     crud_ajax("antecedentes", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_parac").focusout(function () {
+  $("#ec_parac").on("focusout", function () {
     crud_ajax("paraclinicos", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_tratam").focusout(function () {
+  $("#ec_tratam").on("focusout", function () {
     crud_ajax("tratamiento", $(this).val(), "updateInterhEC");
   });
 
-  $("#ec_inform").focusout(function () {
+  $("#ec_inform").on("focusout", function () {
     crud_ajax("diagnos_txt", $(this).val(), "updateInterhEC");
   });
   //end formulario evaluación clínica
 
   //formulario hospital
-  $("#hosp_nomMed").focus(function () {
+  $("#hosp_nomMed").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#hosp_telMed").focus(function () {
+  $("#hosp_telMed").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#hosp_nomMed").focusout(function () {
+  $("#hosp_nomMed").on("focusout", function () {
     crud_ajax("nombre_recibe", $(this).val(), "updateInterhM");
   });
 
-  $("#hosp_telMed").focusout(function () {
+  $("#hosp_telMed").on("focusout", function () {
     crud_ajax("telefonointerh", $(this).val(), "updateInterhM");
   });
   //end formulario hospital
@@ -1020,6 +1028,7 @@ $(function () {
     var suma = 0;
     var numberValidate = false;
     if (num.length < 11) {
+      $(".form-control#p_number").addClass("is-invalid");
       return false;
     }
     for (i = 0; i < number.length; i++) {
@@ -1038,6 +1047,10 @@ $(function () {
     if (el_numero == verificador && number.substr(0, 3) != "000") {
       numberValidate = true;
     }
+    numberValidate
+      ? $(".form-control#p_number").removeClass("is-invalid")
+      : $(".form-control#p_number").addClass("is-invalid");
+
     return numberValidate;
   }
 

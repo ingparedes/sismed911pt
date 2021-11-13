@@ -995,17 +995,6 @@ $(function () {
 
           doc.save("orden_admision.pdf");
         });
-
-        /*img = new Image();
-        img.src = "images/body.png";
-        doc.addImage(
-          img,
-          "png",
-          doc.internal.pageSize.getWidth() / 2 - 20,
-          doc.autoTable.previous.finalY + 5,
-          50,
-          100
-        );*/
       })
       .fail(function () {
         console.log("error");
@@ -1045,11 +1034,11 @@ $(function () {
     focus_value = $(this).val();
   });
 
-  $("#p_nickname").focus(function () {
+  $("#p_nickname").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_nationality").focus(function () {
+  $("#p_nationality").on("focus", function () {
     focus_value = $(this).val();
   });
 
@@ -1070,21 +1059,30 @@ $(function () {
   });
 
   $("#p_ide").on("change", function () {
-    if (updatePatient && $("#p_ide option:selected").val() != 0)
-      crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
-  });
-
-  /* Validación de número de cédula dominicana */
-  $("#p_number").on("focusout", function () {
-    if ($("#p_ide option:selected").val() == 1) {
-      if (number_validate($(this).val())) {
-        $(".form-control#p_number").removeClass("is-invalid");
-        if (updatePatient) crud_ajax("num_doc", $(this).val(), "updateP");
+    if ($("#p_ide option:selected").val() != 0) {
+      if ($("#p_ide option:selected").val() == 1) {
+        if (number_validate($("#p_number").val()) && updatePatient)
+          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
       } else {
-        $(".form-control#p_number").addClass("is-invalid");
+        $(".form-control#p_number").removeClass("is-invalid");
+        if (updatePatient) {
+          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+          crud_ajax("num_doc", $("#p_number").val(), "updateP");
+        }
       }
     } else {
       $(".form-control#p_number").removeClass("is-invalid");
+    }
+  });
+
+  /* Validación de número de cédula dominicana */
+  $("#p_number").on("keyup", function () {
+    if ($("#p_ide option:selected").val() == 1) {
+      if (number_validate($(this).val()) && updatePatient) {
+        crud_ajax("num_doc", $(this).val(), "updateP");
+        crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+      }
+    } else {
       if (updatePatient) crud_ajax("num_doc", $(this).val(), "updateP");
     }
   });
@@ -1145,15 +1143,15 @@ $(function () {
       crud_ajax("genero", $("input:checked").val(), "updateP");
   });
 
-  $("#p_nickname").focusout(function () {
+  $("#p_nickname").on("focusout", function () {
     crud_ajax("apodo", $(this).val(), "updateP");
   });
 
-  $("#p_nationality").focusout(function () {
+  $("#p_nationality").on("focusout", function () {
     crud_ajax("nacionalidad", $(this).val(), "updateP");
   });
 
-  $("#p_phone").focusout(function () {
+  $("#p_phone").on("focusout", function () {
     crud_ajax("telefono", $(this).val(), "updateP");
   });
 
@@ -1182,6 +1180,7 @@ $(function () {
     var suma = 0;
     var numberValidate = false;
     if (num.length < 11) {
+      $(".form-control#p_number").addClass("is-invalid");
       return false;
     }
     for (i = 0; i < number.length; i++) {
@@ -1200,6 +1199,10 @@ $(function () {
     if (el_numero == verificador && number.substr(0, 3) != "000") {
       numberValidate = true;
     }
+    numberValidate
+      ? $(".form-control#p_number").removeClass("is-invalid")
+      : $(".form-control#p_number").addClass("is-invalid");
+
     return numberValidate;
   }
 

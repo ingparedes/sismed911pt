@@ -258,6 +258,7 @@ Page_Rendering();
 												<textarea class="form-control" id="p_obs" placeholder="<?php echo $Language->Phrase("fp_observation"); ?>"></textarea>
 											</div>
 										</div>
+										<button type="button" class="btn btn-primary" id="btnAddPatient">Guardar</button>
 									</form>
 								</div>
 								<!-- end form paciente-->

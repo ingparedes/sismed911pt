@@ -59,8 +59,8 @@
     <phrase id="fp_observation" value="Observaciones" />
     <phrase id="fp_nickname" value="Apodo" />
     <phrase id="fp_nationality" value="Nacionalidad" />
-    <phrase id="fp_male" value="Masculino" />
-    <phrase id="fp_female" value="Femenino" />
+    <phrase id="fp_male" value="M" />
+    <phrase id="fp_female" value="F" />
     <!-- Formulario evaluación clínica -->
     <phrase id="fec_title" value="Evaluación clínica" />
     <phrase id="fec_triage" value="Triage" />
