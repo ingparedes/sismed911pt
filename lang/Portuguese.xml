@@ -11,6 +11,7 @@
     <!-- Datatable -->
     <phrase id="dt_newcase" value="Nuevo Caso" />
     <phrase id="dt_map" value="Mapa" />
+    <phrase id="dt_number" value="No." />
     <phrase id="dt_case" value="No. Caso" />
     <phrase id="dt_date" value="Fecha" />
     <phrase id="dt_time" value="Tiempo" />
@@ -97,6 +98,7 @@
     <phrase id="m_cie10title" value="Por favor, seleccione el CIE10" />
     <phrase id="m_cie10code" value="Código" />
     <phrase id="m_ambulanceplaca" value="Placa" />
+    <phrase id="m_ambulancemark" value="Marca" />
     <phrase id="m_cie10diag" value="Diagnóstico" />
     <phrase id="m_hosptitle" value="Por favor, seleccione el hospital" />
     <phrase id="m_hospid" value="Id" />
@@ -125,6 +127,7 @@
     <phrase id="m_test" value="Exámenes" />
     <phrase id="m_agresstitle" value="Egreso" />
     <phrase id="m_agresslabel" value="Disposición" />
+    <phrase id="m_state" value="Estado" />
     <!-- Admission -->
     <phrase id="adm_egress" value="Tipo de ingreso" />
     <phrase id="adm_companion" value="Acompañante" />

@@ -35,33 +35,46 @@ global $Language;
 
 <script>
 	localStorage.setItem("language", "<?php echo CurrentLanguageID(); ?>");
-	localStorage.setItem("language_new_case", "<?php echo $Language->Phrase('dt_newcase'); ?>");
-	localStorage.setItem("language_map", "<?php echo $Language->Phrase('dt_map'); ?>");
 	localStorage.setItem("language_select", "<?php echo $Language->Phrase('fp_select'); ?>");
 </script>
 
 <div class="row mb-3">
 	<div class="col-lg-12">
-		<table id="tableMaestro" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
-			<thead>
-				<tr>
-					<th><?php echo $Language->Phrase("dt_case"); ?></th>
-					<th><?php echo $Language->Phrase("dt_date"); ?></th>
-					<th><?php echo $Language->Phrase("dt_time"); ?></th>
-					<th><?php echo $Language->Phrase("dt_patient"); ?></th>
-					<th><?php echo $Language->Phrase("dt_originhospital"); ?></th>
-					<th><?php echo $Language->Phrase("dt_destinationhospital"); ?></th>
-					<th><?php echo $Language->Phrase("dt_priority"); ?></th>
-					<th><?php echo $Language->Phrase("dt_action"); ?></th>
-					<th><?php echo $Language->Phrase("dt_close"); ?></th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<a class="nav-link active" id="ambulance-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+					<?php echo $Language->Phrase('fa_ambulance'); ?>
+				</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+			</li>
+		</ul>
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="ambulance-tab">
+				<table id="tableAmbulance" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+					<thead>
+						<tr>
+							<th><?php echo $Language->Phrase('fa_ambulance'); ?></th>
+							<th><?php echo $Language->Phrase('m_ambulanceplaca'); ?></th>
+							<th><?php echo $Language->Phrase('m_ambulancemark'); ?></th>
+							<th><?php echo $Language->Phrase('m_state'); ?></th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<div class="mt-5 mx-5">
+					<canvas id="myChart"></canvas>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+			<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+		</div>
 	</div>
 </div>
-
-<?php include_once "modals.php"; ?>
 
 <script>
 	ew.ready("makerjs", "<?php echo $RELATIVE_PATH ?>js/report.js", "report");

@@ -173,4 +173,4 @@ switch ($option) {
         break;
 }
 
-$conexion = null;
+$connection = null;
