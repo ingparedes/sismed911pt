@@ -17,14 +17,15 @@ switch ($option) {
     case 'selectPrehMaestro':
         $sql = "SELECT *, preh_maestro.cod_casopreh as cod_casopreh, preh_maestro.direccion as direccion_maestro, preh_maestro.telefono as telefono_maestro, preh_maestro.observacion as observacion_maestro, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente, cie10.diagnostico as cie10_diagnostico, cie10.diagnostico_en as cie10_diagnostico_en, cie10.diagnostico_pr as cie10_diagnostico_pr, cie10.diagnostico_fr as cie10_diagnostico_fr
         FROM preh_maestro
-        LEFT JOIN pacientegeneral ON preh_maestro.cod_casopreh = pacientegeneral.cod_casointerh
+        INNER JOIN pacientegeneral ON preh_maestro.cod_casopreh = pacientegeneral.cod_casointerh
+        INNER JOIN preh_evaluacionclinica ON preh_maestro.cod_casopreh = preh_evaluacionclinica.cod_casopreh
         LEFT JOIN hospitalesgeneral ON preh_maestro.hospital_destino = hospitalesgeneral.id_hospital
-        LEFT JOIN incidentes ON preh_maestro.incidente = incidentes.id_incidente        
-        LEFT JOIN preh_evaluacionclinica ON preh_maestro.cod_casopreh = preh_evaluacionclinica.cod_casopreh
+        LEFT JOIN incidentes ON preh_maestro.incidente = incidentes.id_incidente
+        LEFT JOIN tipo_paciente ON preh_evaluacionclinica.tipo_paciente = tipo_paciente.id_tipopaciente
         LEFT JOIN tipo_id ON pacientegeneral.tipo_doc = tipo_id.id_tipo
-        LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad        
+        LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
         LEFT JOIN cie10 ON preh_evaluacionclinica.cod_diag_cie = cie10.codigo_cie
-        LEFT JOIN triage ON preh_evaluacionclinica.triage = triage.id_triage        
+        LEFT JOIN triage ON preh_evaluacionclinica.triage = triage.id_triage
         WHERE pacientegeneral.prehospitalario = '1' AND preh_maestro.estado!=0
         ORDER BY preh_maestro.cod_casopreh";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
@@ -32,14 +33,15 @@ switch ($option) {
     case 'selectInterhMaestro':
         $sql = "SELECT *, interh_maestro.cod_casointerh as cod_casointerh, pacientegeneral.direccion as direccion_paciente, pacientegeneral.telefono as telefono_paciente, pacientegeneral.observacion as observacion_paciente, cie10.diagnostico as cie10_diagnostico, cie10.diagnostico_en as cie10_diagnostico_en, cie10.diagnostico_pr as cie10_diagnostico_pr, cie10.diagnostico_fr as cie10_diagnostico_fr, servicio_ambulancia.observaciones as observacion_ambulancia
             FROM interh_maestro 
+            INNER JOIN pacientegeneral ON interh_maestro.cod_casointerh = pacientegeneral.cod_casointerh
+            INNER JOIN interh_evaluacionclinica ON interh_maestro.cod_casointerh = interh_evaluacionclinica.cod_casointerh
             LEFT JOIN interh_tiposervicio ON interh_maestro.tipo_serviciointerh = interh_tiposervicio.id_tiposervicion
             LEFT JOIN hospitalesgeneral ON interh_maestro.hospital_origneinterh = hospitalesgeneral.id_hospital
-            LEFT JOIN interh_accion ON interh_maestro.accioninterh = interh_accion.id_accion
-            LEFT JOIN pacientegeneral ON interh_maestro.cod_casointerh = pacientegeneral.cod_casointerh
+            LEFT JOIN interh_accion ON interh_maestro.accioninterh = interh_accion.id_accion                        
             LEFT JOIN servicio_ambulancia ON interh_maestro.cod_casointerh = servicio_ambulancia.cod_casointerh
             LEFT JOIN tipo_id ON pacientegeneral.tipo_doc = tipo_id.id_tipo
-            LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
-            LEFT JOIN interh_evaluacionclinica ON interh_maestro.cod_casointerh = interh_evaluacionclinica.cod_casointerh
+            LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad            
+            LEFT JOIN tipo_paciente ON interh_evaluacionclinica.tipo_paciente = tipo_paciente.id_tipopaciente
             LEFT JOIN cie10 ON interh_evaluacionclinica.cod_diag_cie = cie10.codigo_cie
             LEFT JOIN triage ON interh_evaluacionclinica.triage = triage.id_triage
             LEFT JOIN ambulancias ON servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
@@ -61,9 +63,9 @@ switch ($option) {
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'selectPrehServiceAmbulance':
-        $sql = "SELECT *, preh_maestro.cod_casopreh, preh_servicio_ambulancia.observaciones as observacion_ambulancia FROM preh_maestro
+        $sql = "SELECT *, preh_maestro.cod_casopreh AS casopreh, preh_servicio_ambulancia.observaciones as observacion_ambulancia FROM preh_maestro
         LEFT JOIN preh_servicio_ambulancia ON preh_maestro.cod_casopreh = preh_servicio_ambulancia.cod_casopreh
-        LEFT JOIN ambulancias ON preh_servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
+        INNER JOIN ambulancias ON preh_servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
         WHERE preh_maestro.accion=2 AND preh_maestro.estado!=0
         ORDER BY preh_maestro.cod_casopreh";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
@@ -98,6 +100,9 @@ switch ($option) {
         $sql = "SELECT * FROM triage ORDER BY id_triage";
         $data['triage'] = pg_fetch_all($connection->execute($connect, $sql));
 
+        $sql = "SELECT * FROM tipo_paciente ORDER BY id_tipopaciente";
+        $data['type'] = pg_fetch_all($connection->execute($connect, $sql));
+
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'insertPrehSA':
@@ -123,11 +128,11 @@ switch ($option) {
         echo $connection->execute($connect, $sql);
         break;
     case 'updatePrehEC':
-        $sql = "UPDATE preh_evaluacionclinica SET " . $field . "='" . $setField . "' WHERE id_evaluacionclinica=" . $id_evalC;
+        $sql = "UPDATE preh_evaluacionclinica SET $field='$setField' WHERE id_evaluacionclinica=$id_evalC";
         echo $connection->execute($connect, $sql);
         break;
     case 'updateInterhEC':
-        $sql = "UPDATE interh_evaluacionclinica SET " . $field . "='" . $setField . "' WHERE id_evaluacionclinica=" . $id_evalC;;
+        $sql = "UPDATE interh_evaluacionclinica SET $field='$setField' WHERE id_evaluacionclinica=$id_evalC";
         echo $connection->execute($connect, $sql);
         break;
     case 'updatePrehSeguim':
@@ -168,4 +173,4 @@ switch ($option) {
         break;
 }
 
-$conexion = null;
+$connection = null;

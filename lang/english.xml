@@ -11,6 +11,7 @@
     <!-- Datatable -->
     <phrase id="dt_newcase" value="Nuevo Caso" />
     <phrase id="dt_map" value="Mapa" />
+    <phrase id="dt_number" value="No." />
     <phrase id="dt_case" value="No. Caso" />
     <phrase id="dt_date" value="Fecha" />
     <phrase id="dt_time" value="Tiempo" />
@@ -42,7 +43,7 @@
     <phrase id="fp_title" value="Paciente" />
     <phrase id="fp_select" value="-- Seleccione --" />
     <phrase id="fp_invalidfeedback" value="Por favor, ingrese un número válido" />
-    <phrase id="fp_ide" value="IDE" />
+    <phrase id="fp_ide" value="Documento de identidad" />
     <phrase id="fp_number" value="Número" />
     <phrase id="fp_record" value="Expediente" />
     <phrase id="fp_datebirth" value="Fecha de nacimiento" />
@@ -52,11 +53,15 @@
     <phrase id="fp_name2" value="Nombre 2" />
     <phrase id="fp_lastname1" value="Apellido 1" />
     <phrase id="fp_lastname2" value="Apellido 2" />
-    <phrase id="fp_gender" value="Género" />
+    <phrase id="fp_gender" value="Sex" />
     <phrase id="fp_phone" value="Teléfono" />
     <phrase id="fp_social" value="No. seguro social" />
     <phrase id="fp_address" value="Dirección" />
     <phrase id="fp_observation" value="Observaciones" />
+    <phrase id="fp_nickname" value="Apodo" />
+    <phrase id="fp_nationality" value="Nacionalidad" />
+    <phrase id="fp_male" value="M" />
+    <phrase id="fp_female" value="F" />
     <!-- Formulario evaluación clínica -->
     <phrase id="fec_title" value="Evaluación clínica" />
     <phrase id="fec_triage" value="Triage" />
@@ -76,6 +81,7 @@
     <phrase id="fec_parac" value="Paraclínicos" />
     <phrase id="fec_treatment" value="Tratamiento" />
     <phrase id="fec_information" value="Información DX" />
+    <phrase id="fec_typepatient" value="Tipo de paciente" />
     <!-- Formulario hospital -->
     <phrase id="fh_title" value="Hospital" />
     <!-- Formulario ambulancia -->
@@ -85,13 +91,14 @@
     <phrase id="fa_start" value="H. Inicia" />
     <phrase id="fa_destiny" value="H. Destino" />
     <phrase id="fa_base" value="H. Base" />
-    <phrase id="fa_driver" value="Conductor" />
-    <phrase id="fa_doctor" value="Médico" />
-    <phrase id="fa_paramedic" value="Paramédico" />
+    <phrase id="fa_driver" value="Téc. de transporte sanitario" />
+    <phrase id="fa_doctor" value="Médico general" />
+    <phrase id="fa_paramedic" value="Téc. de emergencias médicas/Aux. enfermería/Lic. enfermería" />
     <!-- Modals -->
     <phrase id="m_cie10title" value="Por favor, seleccione el CIE10" />
     <phrase id="m_cie10code" value="Código" />
     <phrase id="m_ambulanceplaca" value="Placa" />
+    <phrase id="m_ambulancemark" value="Marca" />
     <phrase id="m_cie10diag" value="Diagnóstico" />
     <phrase id="m_hosptitle" value="Por favor, seleccione el hospital" />
     <phrase id="m_hospid" value="Id" />
@@ -120,6 +127,7 @@
     <phrase id="m_test" value="Exámenes" />
     <phrase id="m_agresstitle" value="Egreso" />
     <phrase id="m_agresslabel" value="Disposición" />
+    <phrase id="m_state" value="Estado" />
     <!-- Admission -->
     <phrase id="adm_egress" value="Tipo de ingreso" />
     <phrase id="adm_companion" value="Acompañante" />
@@ -4457,6 +4465,9 @@
     </table>
     <table id="despachoambpreh">
       <phrase id="tblcaption" value="despacho" />
+    </table>
+    <table id="report">
+      <phrase id="tblcaption" value="Reportes" />
     </table>
   </project>
 </ew-language>

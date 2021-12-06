@@ -8,6 +8,7 @@ $(function () {
       language: localStorage.getItem("language"),
       new_case: localStorage.getItem("language_new_case"),
       map: localStorage.getItem("language_map"),
+      select: localStorage.getItem("language_select"),
     };
 
   var tableMaestro = $("#tableMaestro").DataTable({
@@ -27,10 +28,10 @@ $(function () {
       { data: "cod_casopreh" },
       { data: "fecha" },
       { defaultContent: "" },
+      { defaultContent: "" },
       { data: "direccion_maestro" },
       { defaultContent: "" },
       { data: "prioridad" },
-      { data: "nombre1" },
       { data: "nombre_hospital" },
       { data: "nombre_medico" },
       { data: "telefono_maestro" },
@@ -60,6 +61,20 @@ $(function () {
       },
       {
         render: function (data, type, row) {
+          return row.nombre1
+            ? row.nombre1
+            : "" + " " + row.nombre2
+            ? row.nombre2
+            : "" + " " + row.apellido1
+            ? row.apellido1
+            : "" + " " + row.apellido2
+            ? row.apellido2
+            : "";
+        },
+        targets: 3,
+      },
+      {
+        render: function (data, type, row) {
           var name = row.nombre_es;
           switch (language["language"]) {
             case "en":
@@ -74,7 +89,7 @@ $(function () {
           }
           return name;
         },
-        targets: 4,
+        targets: 5,
       },
       {
         render: function (data, type, row) {
@@ -84,7 +99,7 @@ $(function () {
             ' type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-dispatch"><i class="fa fa-ambulance" aria-hidden="true"></i></button>'
           );
         },
-        targets: 12,
+        targets: 13,
       },
     ],
     //rowId: 'extn',
@@ -108,6 +123,7 @@ $(function () {
     $(".form-control").removeClass("is-invalid");
     if (type === "row") {
       dataSelect = tableMaestro.rows(indexes).data()[0];
+      console.log(dataSelect);
       id_maestro = dataSelect.cod_casopreh;
       id_patient = dataSelect.id_paciente;
       id_evalC = dataSelect.id_evaluacionclinica;
@@ -125,7 +141,9 @@ $(function () {
         .done(function (data) {
           var name = "";
           $("#p_ide").empty();
-          $("#p_ide").append($("<option value='0'>Seleccione...</option>"));
+          $("#p_ide").append(
+            $("<option value='0'>" + language["select"] + "</option>")
+          );
           $.each(data["ide"], function (index, value) {
             switch (language["language"]) {
               case "es":
@@ -153,7 +171,9 @@ $(function () {
           });
 
           $("#p_typeage").empty();
-          $("#p_typeage").append($("<option value='0'>Seleccione...</option>"));
+          $("#p_typeage").append(
+            $("<option value='0'>" + language["select"] + "</option>")
+          );
           $.each(data["age"], function (index, value) {
             switch (language["language"]) {
               case "es":
@@ -181,7 +201,14 @@ $(function () {
           });
 
           $("#ec_triage").empty();
-          $("#ec_triage").append($("<option value='0'>Seleccione...</option>"));
+          $("#ec_triage").append(
+            $(
+              "<option value='0' style='color: initial'>" +
+                language["select"] +
+                "</option>"
+            )
+          );
+          var color = "";
           $.each(data["triage"], function (index, value) {
             switch (language["language"]) {
               case "es":
@@ -190,22 +217,80 @@ $(function () {
               case "en":
                 name = value.nombre_triage_en;
                 break;
-              case "pt":
+              case "pr":
                 name = value.nombre_triage_pr;
                 break;
               case "fr":
                 name = value.nombre_triage_fr;
                 break;
             }
+            switch (value.nombre_triage_es) {
+              case "Crítico":
+                color = "red";
+                break;
+              case "Severo":
+                color = "orange";
+                break;
+              case "Moderado":
+                color = "yellow";
+                break;
+              case "Leve":
+                color = "green";
+                break;
+            }
             $("#ec_triage").append(
-              $("<option value='" + value.id_triage + "'>" + name + "</option>")
+              $(
+                "<option value='" +
+                  value.id_triage +
+                  "'class='fa' style='color: " +
+                  color +
+                  "'>&#xf0c8; " +
+                  name +
+                  "</option>"
+              )
             );
-            if (dataSelect.triage == value.id_triage) {
+            if (dataSelect.triage == value.id_triage)
               $("#ec_triage option[value=" + value.id_triage + "]").attr(
                 "selected",
                 true
               );
-            }
+            paintSelect();
+
+            $("#ec_type").empty();
+            $("#ec_type").append(
+              $("<option value='0'>" + language["select"] + "</option>")
+            );
+            $.each(data["type"], function (index, value) {
+              switch (language["language"]) {
+                case "es":
+                  name = value.nombre_tipopaciente;
+                  break;
+                case "en":
+                  name = value.nombre_tipopaciente_en;
+                  break;
+                case "pt":
+                  name = value.nombre_tipopaciente_pr;
+                  break;
+                case "fr":
+                  name = value.nombre_tipopaciente_fr;
+                  break;
+              }
+              $("#ec_type").append(
+                $(
+                  "<option value='" +
+                    value.id_tipopaciente +
+                    "'>" +
+                    name +
+                    "</option>"
+                )
+              );
+              if (dataSelect.id_tipopaciente == value.id_tipopaciente) {
+                $("#ec_type option[value=" + value.id_tipopaciente + "]").attr(
+                  "selected",
+                  true
+                );
+              }
+            });
           });
         })
         .fail(function () {
@@ -217,16 +302,24 @@ $(function () {
       $("#p_exp").val(dataSelect.expendiente);
       $("#p_date").val(dataSelect.fecha_nacido);
       $("#p_age").val(dataSelect.edad);
-      if (dataSelect.genero == 1) {
-        $("#p_genM").prop("checked", true);
-      } else if (dataSelect.genero == 2) {
-        $("#p_genF").prop("checked", true);
-      }
-      $("#p_phone").val(dataSelect.telefono_paciente);
       $("#p_name1").val(dataSelect.nombre1);
       $("#p_name2").val(dataSelect.nombre2);
       $("#p_lastname1").val(dataSelect.apellido1);
       $("#p_lastname2").val(dataSelect.apellido2);
+      switch (dataSelect.genero) {
+        case "1":
+          $("#p_genM").prop("checked", true);
+          break;
+        case "2":
+          $("#p_genF").prop("checked", true);
+          break;
+        case "3":
+          $("#p_genO").prop("checked", true);
+          break;
+      }
+      $("#p_nickname").val(dataSelect.apodo);
+      $("#p_nationality").val(dataSelect.nacionalidad);
+      $("#p_phone").val(dataSelect.telefono_paciente);
       $("#p_segS").val(dataSelect.aseguradro);
       $("#p_address").val(dataSelect.direccion_paciente);
       $("#p_obs").html(dataSelect.observacion_paciente);
@@ -301,58 +394,120 @@ $(function () {
     }
   }
 
+  function paintSelect() {
+    switch ($("#ec_triage option:selected").text().split(" ")[1]) {
+      case "Crítico":
+        $("#ec_triage").css("color", "red");
+        break;
+      case "Severo":
+        $("#ec_triage").css("color", "orange");
+        break;
+      case "Moderado":
+        $("#ec_triage").css("color", "yellow");
+        break;
+      case "Leve":
+        $("#ec_triage").css("color", "green");
+        break;
+      default:
+        $("#ec_triage").css("color", "initial");
+        break;
+    }
+  }
+
   //formulario paciente
-  $("#p_number").focus(function () {
+  $("#p_number").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_exp").focus(function () {
+  $("#p_exp").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_date").focus(function () {
+  $("#p_date").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_age").focus(function () {
+  $("#p_age").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_phone").focus(function () {
+  $("#p_name1").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_name1").focus(function () {
+  $("#p_name2").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_name2").focus(function () {
+  $("#p_lastname1").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_lastname1").focus(function () {
+  $("#p_lastname2").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_lastname2").focus(function () {
+  $("#p_nickname").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_segS").focus(function () {
+  $("#p_nationality").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_address").focus(function () {
+  $("#p_phone").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#p_obs").focus(function () {
+  $("#p_segS").on("focus", function () {
+    focus_value = $(this).val();
+  });
+
+  $("#p_address").on("focus", function () {
+    focus_value = $(this).val();
+  });
+
+  $("#p_obs").on("focus", function () {
     focus_value = $(this).val();
   });
 
   $("#p_ide").on("change", function () {
-    if ($("#p_ide option:selected").val() != 0)
-      crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+    if ($("#p_ide option:selected").val() != 0) {
+      if ($("#p_ide option:selected").val() == 1) {
+        if (number_validate($("#p_number").val()))
+          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+      } else {
+        $(".form-control#p_number").removeClass("is-invalid");
+        crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+        crud_ajax("num_doc", $("#p_number").val(), "updateP");
+      }
+    } else {
+      $(".form-control#p_number").removeClass("is-invalid");
+    }
+  });
+
+  /* Validación de número de cédula dominicana */
+  $("#p_number").on("keyup", function () {
+    if ($("#p_ide option:selected").val() == 1) {
+      if (number_validate($(this).val())) {
+        crud_ajax("num_doc", $(this).val(), "updateP");
+        crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+      }
+    } else {
+      crud_ajax("num_doc", $(this).val(), "updateP");
+    }
+  });
+
+  $("#p_exp").on("focusout", function () {
+    crud_ajax("expendiente", $(this).val(), "updateP");
+  });
+
+  $("#p_date").on("focusout", function () {
+    crud_ajax("fecha_nacido", $(this).val(), "updateP");
+  });
+
+  $("#p_age").on("focusout", function () {
+    crud_ajax("edad", $(this).val(), "updateP");
   });
 
   $("#p_typeage").on("change", function () {
@@ -360,136 +515,159 @@ $(function () {
       crud_ajax("cod_edad", $("#p_typeage option:selected").val(), "updateP");
   });
 
-  /* Validación de número de cédula dominicana */
-  $("#p_number").on("focusout", function () {
-    if ($("#p_ide option:selected").val() == 1) {
-      if (number_validate($(this).val())) {
-        $(".form-control#p_number").removeClass("is-invalid");
-        crud_ajax("num_doc", $(this).val(), "updateP");
-      } else {
-        $(".form-control#p_number").addClass("is-invalid");
-      }
-    } else {
-      crud_ajax("num_doc", $(this).val(), "updateP");
-    }
+  $("#p_name1").on("focusout", function () {
+    crud_ajax("nombre1", $(this).val(), "updateP");
   });
 
-  $("#p_exp").focusout(function () {
-    crud_ajax("expendiente", $(this).val(), "updateP");
+  $("#p_name2").on("focusout", function () {
+    crud_ajax("nombre2", $(this).val(), "updateP");
   });
 
-  $("#p_date").focusout(function () {
-    crud_ajax("fecha_nacido", $(this).val(), "updateP");
+  $("#p_lastname1").on("focusout", function () {
+    crud_ajax("apellido1", $(this).val(), "updateP");
   });
 
-  $("#p_age").focusout(function () {
-    crud_ajax("edad", $(this).val(), "updateP");
+  $("#p_lastname2").on("focusout", function () {
+    crud_ajax("apellido2", $(this).val(), "updateP");
   });
 
   $(".gender").on("click", function () {
     if (
       !dataSelect.genero ||
-      (dataSelect.genero == 1 && $("input:checked").val() == 2) ||
-      (dataSelect.genero == 2 && $("input:checked").val() == 1)
+      (dataSelect.genero == 1 &&
+        ($("input:checked").val() == 2 || $("input:checked").val() == 3)) ||
+      (dataSelect.genero == 2 &&
+        ($("input:checked").val() == 1 || $("input:checked").val() == 3)) ||
+      (dataSelect.genero == 3 &&
+        ($("input:checked").val() == 1 || $("input:checked").val() == 2))
     )
       crud_ajax("genero", $("input:checked").val(), "updateP");
   });
 
-  $("#p_phone").focusout(function () {
+  $("#p_nickname").on("focusout", function () {
+    crud_ajax("apodo", $(this).val(), "updateP");
+  });
+
+  $("#p_nationality").on("focusout", function () {
+    crud_ajax("nacionalidad", $(this).val(), "updateP");
+  });
+
+  $("#p_phone").on("focusout", function () {
     crud_ajax("telefono", $(this).val(), "updateP");
   });
 
-  $("#p_name1").focusout(function () {
-    crud_ajax("nombre1", $(this).val(), "updateP");
-  });
-
-  $("#p_name2").focusout(function () {
-    crud_ajax("nombre2", $(this).val(), "updateP");
-  });
-
-  $("#p_lastname1").focusout(function () {
-    crud_ajax("apellido1", $(this).val(), "updateP");
-  });
-
-  $("#p_lastname2").focusout(function () {
-    crud_ajax("apellido2", $(this).val(), "updateP");
-  });
-
-  $("#p_segS").focusout(function () {
+  $("#p_segS").on("focusout", function () {
     crud_ajax("aseguradro", $(this).val(), "updateP");
   });
 
-  $("#p_address").focusout(function () {
+  $("#p_address").on("focusout", function () {
     crud_ajax("direccion", $(this).val(), "updateP");
   });
 
-  $("#p_obs").focusout(function () {
+  $("#p_obs").on("focusout", function () {
     crud_ajax("observacion", $(this).val(), "updateP");
   });
   //end formulario paciente
 
   //formulario evaluación clínica
-  $("#ec_ta").focus(function () {
+  $("#ec_ta").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_fc").focus(function () {
+  $("#ec_fc").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_fr").focus(function () {
+  $("#ec_fr").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_temp").focus(function () {
+  $("#ec_temp").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_gl").focus(function () {
+  $("#ec_gl").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_sato2").focus(function () {
+  $("#ec_sato2").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_gli").focus(function () {
+  $("#ec_gli").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_talla").focus(function () {
+  $("#ec_talla").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_peso").focus(function () {
+  $("#ec_peso").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_cuadro").focus(function () {
+  $("#ec_cuadro").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_examen").focus(function () {
+  $("#ec_examen").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_antec").focus(function () {
+  $("#ec_antec").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_parac").focus(function () {
+  $("#ec_parac").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_tratam").focus(function () {
+  $("#ec_tratam").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#ec_inform").focus(function () {
+  $("#ec_inform").on("focus", function () {
     focus_value = $(this).val();
+  });
+
+  $("#ec_ta").on("focusout", function () {
+    crud_ajax("sv_tx", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_fc").on("focusout", function () {
+    crud_ajax("sv_fc", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_fr").on("focusout", function () {
+    crud_ajax("sv_fr", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_temp").on("focusout", function () {
+    crud_ajax("sv_temp", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_gl").on("focusout", function () {
+    crud_ajax("sv_gl", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_sato2").on("focusout", function () {
+    crud_ajax("sv_sato2", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_gli").on("focusout", function () {
+    crud_ajax("sv_gli", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_talla").on("focusout", function () {
+    crud_ajax("talla", $(this).val(), "updatePrehEC");
+  });
+
+  $("#ec_peso").on("focusout", function () {
+    crud_ajax("peso", $(this).val(), "updatePrehEC");
   });
 
   $("#ec_triage").on("change", function () {
+    paintSelect();
     if ($("#ec_triage option:selected").val() != 0)
       crud_ajax(
         "triage",
@@ -498,81 +676,54 @@ $(function () {
       );
   });
 
-  $("#ec_ta").focusout(function () {
-    crud_ajax("sv_tx", $(this).val(), "updatePrehEC");
+  $("#ec_type").on("change", function () {
+    if ($("#ec_type option:selected").val() != 0)
+      crud_ajax(
+        "tipo_paciente",
+        $("#ec_type option:selected").val(),
+        "updatePrehEC"
+      );
   });
 
-  $("#ec_fc").focusout(function () {
-    crud_ajax("sv_fc", $(this).val(), "updatePrehEC");
-  });
-
-  $("#ec_fr").focusout(function () {
-    crud_ajax("sv_fr", $(this).val(), "updatePrehEC");
-  });
-
-  $("#ec_temp").focusout(function () {
-    crud_ajax("sv_temp", $(this).val(), "updatePrehEC");
-  });
-
-  $("#ec_gl").focusout(function () {
-    crud_ajax("sv_gl", $(this).val(), "updatePrehEC");
-  });
-
-  $("#ec_sato2").focusout(function () {
-    crud_ajax("sv_sato2", $(this).val(), "updatePrehEC");
-  });
-
-  $("#ec_gli").focusout(function () {
-    crud_ajax("sv_gli", $(this).val(), "updatePrehEC");
-  });
-
-  $("#ec_talla").focusout(function () {
-    crud_ajax("talla", $(this).val(), "updatePrehEC");
-  });
-
-  $("#ec_peso").focusout(function () {
-    crud_ajax("peso", $(this).val(), "updatePrehEC");
-  });
-
-  $("#ec_cuadro").focusout(function () {
+  $("#ec_cuadro").on("focusout", function () {
     crud_ajax("c_clinico", $(this).val(), "updatePrehEC");
   });
 
-  $("#ec_examen").focusout(function () {
+  $("#ec_examen").on("focusout", function () {
     crud_ajax("examen_fisico", $(this).val(), "updatePrehEC");
   });
 
-  $("#ec_antec").focusout(function () {
+  $("#ec_antec").on("focusout", function () {
     crud_ajax("antecedentes", $(this).val(), "updatePrehEC");
   });
 
-  $("#ec_parac").focusout(function () {
+  $("#ec_parac").on("focusout", function () {
     crud_ajax("paraclinicos", $(this).val(), "updatePrehEC");
   });
 
-  $("#ec_tratam").focusout(function () {
+  $("#ec_tratam").on("focusout", function () {
     crud_ajax("tratamiento", $(this).val(), "updatePrehEC");
   });
 
-  $("#ec_inform").focusout(function () {
+  $("#ec_inform").on("focusout", function () {
     crud_ajax("diagnos_txt", $(this).val(), "updatePrehEC");
   });
   //end formulario evaluación clínica
 
   //formulario hospital
-  $("#hosp_nomMed").focus(function () {
+  $("#hosp_nomMed").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#hosp_telMed").focus(function () {
+  $("#hosp_telMed").on("focus", function () {
     focus_value = $(this).val();
   });
 
-  $("#hosp_nomMed").focusout(function () {
+  $("#hosp_nomMed").on("focusout", function () {
     crud_ajax("nombre_medico", $(this).val(), "updatePrehM");
   });
 
-  $("#hosp_telMed").focusout(function () {
+  $("#hosp_telMed").on("focusout", function () {
     crud_ajax("telefono", $(this).val(), "updatePrehM");
   });
   //end formulario hospital
@@ -713,7 +864,9 @@ $(function () {
     })
       .done(function (data) {
         $("#selectRazon").empty();
-        $("#selectRazon").append($("<option value='0'>Seleccione...</option>"));
+        $("#selectRazon").append(
+          $("<option value='0'>" + language["select"] + "</option>")
+        );
         $.each(data, function (index, value) {
           $("#selectRazon").append(
             $(
@@ -774,6 +927,7 @@ $(function () {
     var suma = 0;
     var numberValidate = false;
     if (num.length < 11) {
+      $(".form-control#p_number").addClass("is-invalid");
       return false;
     }
     for (i = 0; i < number.length; i++) {
@@ -792,6 +946,10 @@ $(function () {
     if (el_numero == verificador && number.substr(0, 3) != "000") {
       numberValidate = true;
     }
+    numberValidate
+      ? $(".form-control#p_number").removeClass("is-invalid")
+      : $(".form-control#p_number").addClass("is-invalid");
+
     return numberValidate;
   }
 

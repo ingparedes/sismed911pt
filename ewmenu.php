@@ -37,6 +37,7 @@ $sideMenu->addMenuItem(17, "mi_hospitalesgeneral", $MenuLanguage->MenuPhrase("17
 $sideMenu->addMenuItem(438, "mci_registro", $MenuLanguage->MenuPhrase("438", "MenuText"), $MenuRelativePath . "censo_camasadd.php", 335, "", TRUE, FALSE, TRUE, "icofont-play", "", FALSE);
 $sideMenu->addMenuItem(804, "mci_reportes", $MenuLanguage->MenuPhrase("804", "MenuText"), "", 335, "", TRUE, FALSE, TRUE, "icofont-play", "", FALSE);
 $sideMenu->addMenuItem(121, "mi_tabla_disp", $MenuLanguage->MenuPhrase("121", "MenuText"), $MenuRelativePath . "tabla_displist.php", 804, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}tabla_disp'), FALSE, FALSE, "icofont-play", "", FALSE);
+$sideMenu->addMenuItem(126, "report", $MenuLanguage->MenuPhrase("804", "MenuText"), $MenuRelativePath . "report.php", 804, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}report'), FALSE, FALSE, "icofont-play", "", FALSE);
 $sideMenu->addMenuItem(614, "mci_Configuración", $MenuLanguage->MenuPhrase("614", "MenuText"), "", 335, "", TRUE, FALSE, TRUE, "icofont-play", "", FALSE);
 $sideMenu->addMenuItem(387, "mci_config", $MenuLanguage->MenuPhrase("387", "MenuText"), $MenuRelativePath . "alerta_censoadd.php", 614, "", TRUE, FALSE, TRUE, "icofont-play", "", FALSE);
 $sideMenu->addMenuItem(530, "mi_muestra_bloques", $MenuLanguage->MenuPhrase("530", "MenuText"), $MenuRelativePath . "muestra_bloques.php", 614, "", AllowListMenu('{17BEB368-DB80-46DC-8EC5-730EB11B94E5}muestra_bloques.php'), FALSE, FALSE, "icofont-play", "", FALSE);

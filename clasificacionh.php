@@ -34,6 +34,7 @@ Page_Rendering();
 
 <script>
 	localStorage.setItem("language", "<?php echo CurrentLanguageID(); ?>");
+	localStorage.setItem("language_select", "<?php echo $Language->Phrase('fp_select'); ?>");
 </script>
 
 <div class="row mb-3">
@@ -41,9 +42,9 @@ Page_Rendering();
 		<table id="tableAdmission" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
 			<thead>
 				<tr>
+					<th><?php echo $Language->Phrase("dt_date"); ?></th>
 					<th><?php echo $Language->Phrase("dt_hc"); ?></th>
 					<th><?php echo $Language->Phrase("fp_title"); ?></th>
-					<th><?php echo $Language->Phrase("dt_date"); ?></th>
 					<th><?php echo $Language->Phrase("adm_egress"); ?></th>
 					<th><?php echo $Language->Phrase("dt_911"); ?></th>
 					<th><?php echo $Language->Phrase("fp_gender"); ?></th>

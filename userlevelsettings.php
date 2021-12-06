@@ -261,7 +261,9 @@ $USER_LEVEL_PRIVS = [["{17BEB368-DB80-46DC-8EC5-730EB11B94E5}a_parametriza_hospt
 	["{17BEB368-DB80-46DC-8EC5-730EB11B94E5}emergencias.php","-2","0"],
 	["{17BEB368-DB80-46DC-8EC5-730EB11B94E5}emergencias.php","0","0"],
 	["{17BEB368-DB80-46DC-8EC5-730EB11B94E5}despachoambpreh.php","-2","0"],
-	["{17BEB368-DB80-46DC-8EC5-730EB11B94E5}despachoambpreh.php","0","0"]];
+	["{17BEB368-DB80-46DC-8EC5-730EB11B94E5}despachoambpreh.php","0","0"],
+	["{17BEB368-DB80-46DC-8EC5-730EB11B94E5}report.php","-2","0"],
+	["{17BEB368-DB80-46DC-8EC5-730EB11B94E5}report.php","0","0"]];
 
 // User level table info
 $USER_LEVEL_TABLES = [["a_parametriza_hosptl.php","a_parametriza_hosptl","a_parametriza_hosptl",true,"{17BEB368-DB80-46DC-8EC5-730EB11B94E5}"],
@@ -389,4 +391,5 @@ $USER_LEVEL_TABLES = [["a_parametriza_hosptl.php","a_parametriza_hosptl","a_para
 	["clasificacionh.php","clasificacionh","clasificacion",true,"{17BEB368-DB80-46DC-8EC5-730EB11B94E5}"],
 	["urgencias.php","urgencias","urgencias",true,"{17BEB368-DB80-46DC-8EC5-730EB11B94E5}"],
 	["emergencias.php","emergencias","emergencias",true,"{17BEB368-DB80-46DC-8EC5-730EB11B94E5}"],
-	["despachoambpreh.php","despachoambpreh","despacho",true,"{17BEB368-DB80-46DC-8EC5-730EB11B94E5}"]];
+	["despachoambpreh.php","despachoambpreh","despacho",true,"{17BEB368-DB80-46DC-8EC5-730EB11B94E5}"],
+	["report.php","report","Reportes",true,"{17BEB368-DB80-46DC-8EC5-730EB11B94E5}"]];
