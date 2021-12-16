@@ -99,7 +99,7 @@ $(function () {
             ' type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-dispatch"><i class="fa fa-ambulance" aria-hidden="true"></i></button>'
           );
         },
-        targets: 13,
+        targets: 12,
       },
     ],
     //rowId: 'extn',
