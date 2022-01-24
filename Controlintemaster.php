@@ -99,8 +99,15 @@ global $Language;
 												</div>
 												<div class="form-group col-lg-2">
 													<label for="p_number"><?php echo $Language->Phrase("fp_number"); ?>:</label>
-													<input type="text" class="form-control" id="p_number" placeholder="<?php echo $Language->Phrase("fp_number"); ?>" />
-													<div class="invalid-feedback"><?php echo $Language->Phrase("fp_invalidfeedback"); ?></div>
+													<div class="input-group mb-3">
+														<input type="text" class="form-control" id="p_number" placeholder="<?php echo $Language->Phrase("fp_number"); ?>" />
+														<div class="input-group-append">
+															<span class="input-group-text search_data_user d-none" style="cursor: pointer;">
+																<i class="fa fa-search" aria-hidden="true"></i>
+															</span>
+														</div>
+														<div class="invalid-feedback"><?php echo $Language->Phrase("fp_invalidfeedback"); ?></div>
+													</div>
 												</div>
 												<div class="form-group col-lg-2">
 													<label for="p_exp"><?php echo $Language->Phrase("fp_record"); ?>:</label>

@@ -139,6 +139,7 @@ $(function () {
                 "selected",
                 true
               );
+              changeIDE(false);
             }
           });
 
@@ -414,6 +415,87 @@ $(function () {
     }
   }
 
+  function changeIDE(crud) {
+    if ($("#p_ide option:selected").val() != 0) {
+      if ($("#p_ide option:selected").val() == 1) {
+        if (number_validate($("#p_number").val())) {
+          $(".search_data_user").removeClass("d-none").addClass("d-flex");
+          if (crud)
+            crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+        }
+      } else {
+        $(".search_data_user").removeClass("d-flex").addClass("d-none");
+        $(".form-control#p_number").removeClass("is-invalid");
+        if (crud) {
+          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+          crud_ajax("num_doc", $("#p_number").val(), "updateP");
+        }
+      }
+    } else {
+      $(".search_data_user").removeClass("d-flex").addClass("d-none");
+      $(".form-control#p_number").removeClass("is-invalid");
+    }
+  }
+
+  function load_token() {
+    var key = "d2eb62eb-5d9f-4c3f-95d2-47d5d9df934b";
+    var token = null;
+    $.ajax({
+      type: "GET",
+      url: "bd/getDataUser.php",
+      data: {
+        option: "gettoken",
+        key: key,
+      },
+      dataType: "html",
+      async: false,
+    })
+      .done(function (response) {
+        token = response;
+      })
+      .fail(function (error) {
+        console.log(error);
+      });
+    return token;
+  }
+
+  function load_datos() {    
+    var token = load_token();
+    if (token) {
+      $.ajax({
+        type: "POST",
+        url: "bd/getDataUser.php",
+        data: {
+          option: "getdatos",
+          cd: $("#p_number").val(),
+          token: token,
+        },
+        dataType: "JSON",
+      })
+        .done(function (response) {
+          if (response) {
+            var names = response.nombres.split(" ");
+            $("#p_name1").val(names[0]);
+            if (names.length > 1) $("#p_name2").val(names[1]);
+            $("#p_lastname1").val(apellido1);
+            $("#p_lastname2").val(apellido2);
+            if (sexo == "M") {
+              $("#p_genM").prop("checked", true);
+            } else if (sexo == "F") {
+              $("#p_genF").prop("checked", true);
+            }
+            $("#p_nationality").val(nacionalidad);
+            $("#p_age").val(fecha_nacimiento);
+          } else {
+            console.log("error");
+          }
+        })
+        .fail(function (error) {
+          console.log(error);
+        });
+    }
+  }
+
   //formulario paciente
   $("#p_number").on("focus", function () {
     focus_value = $(this).val();
@@ -472,30 +554,28 @@ $(function () {
   });
 
   $("#p_ide").on("change", function () {
-    if ($("#p_ide option:selected").val() != 0) {
-      if ($("#p_ide option:selected").val() == 1) {
-        if (number_validate($("#p_number").val()))
-          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
-      } else {
-        $(".form-control#p_number").removeClass("is-invalid");
-        crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
-        crud_ajax("num_doc", $("#p_number").val(), "updateP");
-      }
-    } else {
-      $(".form-control#p_number").removeClass("is-invalid");
-    }
+    changeIDE(true);
   });
 
   /* Validación de número de cédula dominicana */
   $("#p_number").on("keyup", function () {
     if ($("#p_ide option:selected").val() == 1) {
       if (number_validate($(this).val())) {
+        $(".search_data_user").removeClass("d-none").addClass("d-flex");
         crud_ajax("num_doc", $(this).val(), "updateP");
         crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+      } else {
+        $(".search_data_user").removeClass("d-flex").addClass("d-none");
       }
     } else {
+      $(".search_data_user").removeClass("d-flex").addClass("d-none");
       crud_ajax("num_doc", $(this).val(), "updateP");
     }
+  });
+  /* fin validación */
+
+  $(".search_data_user").on("click", function () {
+    load_datos();
   });
 
   $("#p_exp").on("focusout", function () {
