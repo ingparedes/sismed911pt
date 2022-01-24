@@ -459,7 +459,7 @@ $(function () {
     return token;
   }
 
-  function load_datos() {    
+  function load_datos() {
     var token = load_token();
     if (token) {
       $.ajax({
