@@ -437,11 +437,68 @@ $(function () {
     }
   }
 
+  function edad(fecha) {
+    var hoy = new Date();
+    var cumpleanos = new Date(fecha);
+    var edad, tipo;
+
+    //Calculamos años
+    var anno = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+      anno--;
+    }
+
+    // calculamos los meses
+    var meses = 0;
+    if (hoy.getMonth() > cumpleanos.getMonth()) {
+      meses = hoy.getMonth() - cumpleanos.getMonth();
+    } else if (hoy.getMonth() < cumpleanos.getMonth()) {
+      meses = 12 - (cumpleanos.getMonth() - hoy.getMonth());
+    } else if (
+      hoy.getMonth() == cumpleanos.getMonth() &&
+      hoy.getDate() > cumpleanos.getDate()
+    ) {
+      if (hoy.getMonth() - cumpleanos.getMonth() == 0) {
+        meses = 0;
+      } else {
+        meses = 11;
+      }
+    }
+
+    // Obtener días: día actual - día de cumpleaños
+    let dias = hoy.getDate() - cumpleanos.getDate();
+    if (dias < 0) {
+      // Si días es negativo, día actual es mayor al de cumpleaños,
+      // hay que restar 1 mes, si resulta menor que cero, poner en 11
+      meses = meses - 1 < 0 ? 11 : meses - 1;
+      // Y obtener días faltantes
+      dias = 30 + dias;
+    }
+
+    if (anno > 0) {
+      edad = anno;
+      tipo = 1;
+      console.log(`Tu edad es de ${anno} años`);
+    } else if (meses > 0) {
+      edad = meses;
+      tipo = 2;
+      console.log(`Tu edad es de ${meses} meses`);
+    } else {
+      edad = dias;
+      tipo = 3;
+      console.log(`Tu edad es de ${dias} días`);
+    }
+    $("#p_age").val(edad);
+    $("#p_typeage").val(tipo);
+    console.log(`Tu edad es de ${anno} años, ${meses} meses, ${dias} días`);
+  }
+
   function load_token() {
     var key = "d2eb62eb-5d9f-4c3f-95d2-47d5d9df934b";
     var token = null;
     $.ajax({
-      type: "GET",
+      type: "POST",
       url: "bd/getDataUser.php",
       data: {
         option: "gettoken",
@@ -477,15 +534,41 @@ $(function () {
             var names = response.nombres.split(" ");
             $("#p_name1").val(names[0]);
             if (names.length > 1) $("#p_name2").val(names[1]);
-            $("#p_lastname1").val(apellido1);
-            $("#p_lastname2").val(apellido2);
-            if (sexo == "M") {
+            $("#p_lastname1").val(response.apellido1);
+            $("#p_lastname2").val(response.apellido2);
+            if (response.sexo == "M") {
               $("#p_genM").prop("checked", true);
             } else if (sexo == "F") {
               $("#p_genF").prop("checked", true);
             }
-            $("#p_nationality").val(nacionalidad);
-            $("#p_age").val(fecha_nacimiento);
+            $("#p_nationality").val(response.nacionalidad);
+            $("#p_date").val(response.fecha_nacimiento);
+            edad(response.fecha_nacimiento);
+            $.ajax({
+              url: "bd/crud.php",
+              method: "POST",
+              data: {
+                option: "updatePatient",
+                idP: id_patient,
+                user: JSON.stringify({
+                  name1: $("#p_name1").val(),
+                  name2: $("#p_name2").val(),
+                  lastname1: $("#p_lastname1").val(),
+                  lastname2: $("#p_lastname2").val(),
+                  gender: $("input:checked").val(),
+                  nationality: $("#p_nationality").val(),
+                  date: $("#p_date").val(),
+                  age: $("#p_age").val(),
+                  typeage: $("#p_typeage").val(),
+                }),
+              },
+            })
+              .done(function (response) {
+                console.log(response);
+              })
+              .fail(function (error) {
+                console.log(error);
+              });
           } else {
             console.log("error");
           }

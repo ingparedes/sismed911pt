@@ -171,6 +171,7 @@ $(function () {
                 "selected",
                 true
               );
+              changeIDE(false);
             }
           }
         });
@@ -266,6 +267,167 @@ $(function () {
     });
   }
 
+  function changeIDE(crud) {
+    if ($("#p_ide option:selected").val() != 0) {
+      if ($("#p_ide option:selected").val() == 1) {
+        if (number_validate($("#p_number").val())) {
+          $(".search_data_user").removeClass("d-none").addClass("d-flex");
+          if (crud)
+            crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+        }
+      } else {
+        $(".search_data_user").removeClass("d-flex").addClass("d-none");
+        $(".form-control#p_number").removeClass("is-invalid");
+        if (crud) {
+          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+          crud_ajax("num_doc", $("#p_number").val(), "updateP");
+        }
+      }
+    } else {
+      $(".search_data_user").removeClass("d-flex").addClass("d-none");
+      $(".form-control#p_number").removeClass("is-invalid");
+    }
+  }
+
+  function edad(fecha) {
+    var hoy = new Date();
+    var cumpleanos = new Date(fecha);
+    var edad, tipo;
+
+    //Calculamos años
+    var anno = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+      anno--;
+    }
+
+    // calculamos los meses
+    var meses = 0;
+    if (hoy.getMonth() > cumpleanos.getMonth()) {
+      meses = hoy.getMonth() - cumpleanos.getMonth();
+    } else if (hoy.getMonth() < cumpleanos.getMonth()) {
+      meses = 12 - (cumpleanos.getMonth() - hoy.getMonth());
+    } else if (
+      hoy.getMonth() == cumpleanos.getMonth() &&
+      hoy.getDate() > cumpleanos.getDate()
+    ) {
+      if (hoy.getMonth() - cumpleanos.getMonth() == 0) {
+        meses = 0;
+      } else {
+        meses = 11;
+      }
+    }
+
+    // Obtener días: día actual - día de cumpleaños
+    let dias = hoy.getDate() - cumpleanos.getDate();
+    if (dias < 0) {
+      // Si días es negativo, día actual es mayor al de cumpleaños,
+      // hay que restar 1 mes, si resulta menor que cero, poner en 11
+      meses = meses - 1 < 0 ? 11 : meses - 1;
+      // Y obtener días faltantes
+      dias = 30 + dias;
+    }
+
+    if (anno > 0) {
+      edad = anno;
+      tipo = 1;
+    } else if (meses > 0) {
+      edad = meses;
+      tipo = 2;
+    } else {
+      edad = dias;
+      tipo = 3;
+    }
+    $("#p_age").val(edad);
+    $("#p_typeage").val(tipo);
+    //console.log(`Tu edad es de ${anno} años, ${meses} meses, ${dias} días`);
+  }
+
+  function load_token() {
+    var key = "d2eb62eb-5d9f-4c3f-95d2-47d5d9df934b";
+    var token = null;
+    $.ajax({
+      type: "POST",
+      url: "bd/getDataUser.php",
+      data: {
+        option: "gettoken",
+        key: key,
+      },
+      dataType: "html",
+      async: false,
+    })
+      .done(function (response) {
+        token = response;
+      })
+      .fail(function (error) {
+        console.log(error);
+      });
+    return token;
+  }
+
+  function load_datos() {
+    var token = load_token();
+    if (token) {
+      $.ajax({
+        type: "POST",
+        url: "bd/getDataUser.php",
+        data: {
+          option: "getdatos",
+          cd: $("#p_number").val(),
+          token: token,
+        },
+        dataType: "JSON",
+      })
+        .done(function (response) {
+          if (response) {
+            var names = response.nombres.split(" ");
+            $("#p_name1").val(names[0]);
+            if (names.length > 1) $("#p_name2").val(names[1]);
+            $("#p_lastname1").val(response.apellido1);
+            $("#p_lastname2").val(response.apellido2);
+            if (response.sexo == "M") {
+              $("#p_genM").prop("checked", true);
+            } else if (sexo == "F") {
+              $("#p_genF").prop("checked", true);
+            }
+            $("#p_nationality").val(response.nacionalidad);
+            $("#p_date").val(response.fecha_nacimiento);
+            edad(response.fecha_nacimiento);
+            $.ajax({
+              url: "bd/crud.php",
+              method: "POST",
+              data: {
+                option: "updatePatient",
+                idP: id_patient,
+                user: JSON.stringify({
+                  name1: $("#p_name1").val(),
+                  name2: $("#p_name2").val(),
+                  lastname1: $("#p_lastname1").val(),
+                  lastname2: $("#p_lastname2").val(),
+                  gender: $("input:checked").val(),
+                  nationality: $("#p_nationality").val(),
+                  date: $("#p_date").val(),
+                  age: $("#p_age").val(),
+                  typeage: $("#p_typeage").val(),
+                }),
+              },
+            })
+              .done(function (response) {
+                //console.log(response);
+              })
+              .fail(function (error) {
+                console.log(error);
+              });
+          } else {
+            console.log("error");
+          }
+        })
+        .fail(function (error) {
+          console.log(error);
+        });
+    }
+  }
+
   $.ajax({
     url: "bd/admission.php",
     method: "POST",
@@ -326,16 +488,13 @@ $(function () {
       data: {
         option: "insertAdmission",
         ingress: $("#ingress option:selected").val(),
-        cod911: $("#code").val() == "" ? "null" : $("#code").val(),
+        cod911: $("#code").val() == "" ? null : $("#code").val(),
         idP: id_patient,
-        companion:
-          $("#companion").val() == ""
-            ? "null"
-            : "'" + $("#companion").val() + "'",
+        companion: $("#companion").val() == "" ? null : $("#companion").val(),
         phone_companion:
           $("#phone_companion").val() == ""
-            ? "null"
-            : "'" + $("#phone_companion").val() + "'",
+            ? null
+            : $("#phone_companion").val(),
       },
     })
       .done(function () {
@@ -1059,32 +1218,28 @@ $(function () {
   });
 
   $("#p_ide").on("change", function () {
-    if ($("#p_ide option:selected").val() != 0) {
-      if ($("#p_ide option:selected").val() == 1) {
-        if (number_validate($("#p_number").val()) && updatePatient)
-          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
-      } else {
-        $(".form-control#p_number").removeClass("is-invalid");
-        if (updatePatient) {
-          crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
-          crud_ajax("num_doc", $("#p_number").val(), "updateP");
-        }
-      }
-    } else {
-      $(".form-control#p_number").removeClass("is-invalid");
-    }
+    changeIDE(true);
   });
 
   /* Validación de número de cédula dominicana */
   $("#p_number").on("keyup", function () {
     if ($("#p_ide option:selected").val() == 1) {
-      if (number_validate($(this).val()) && updatePatient) {
+      if (number_validate($(this).val())) {
+        $(".search_data_user").removeClass("d-none").addClass("d-flex");
         crud_ajax("num_doc", $(this).val(), "updateP");
         crud_ajax("tipo_doc", $("#p_ide option:selected").val(), "updateP");
+      } else {
+        $(".search_data_user").removeClass("d-flex").addClass("d-none");
       }
     } else {
-      if (updatePatient) crud_ajax("num_doc", $(this).val(), "updateP");
+      $(".search_data_user").removeClass("d-flex").addClass("d-none");
+      crud_ajax("num_doc", $(this).val(), "updateP");
     }
+  });
+  /* fin validación */
+
+  $(".search_data_user").on("click", function () {
+    load_datos();
   });
 
   $("#p_exp").on("focusout", function () {

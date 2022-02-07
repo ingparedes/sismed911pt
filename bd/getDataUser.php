@@ -1,7 +1,7 @@
 <?php
-if ($_GET['option'] == 'gettoken') {
+if ($_POST['option'] == 'gettoken') {
     try {
-        echo file_get_contents('https://sns-intranet-imp.azurewebsites.net/token?key=' . $_GET['key']);
+        echo file_get_contents('https://sns-intranet-imp.azurewebsites.net/token?key=' . $_POST['key']);
     } catch (\Throwable $th) {
         echo "Hubo un problema";
     }

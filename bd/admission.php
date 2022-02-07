@@ -232,8 +232,10 @@ switch ($option) {
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'insertAdmission':
-        $sql = "INSERT INTO sala_admission (id_ingreso, id_paciente, acompañante, telefono_acompañante, fecha_admision, cod911)
-                VALUES (" . $id_ingress . ", " . $id_patient . ", " . $companion . ", " . $phone_companion . ", '" . date('d-m-Y H:i:s') . "'," . $cod911 . ")";
+        $sql = "INSERT INTO sala_admission
+                    (id_ingreso,id_paciente," . ($companion ? 'acompañante,' : '') . ($phone_companion ? 'telefono_acompañante,' : '') . ($cod911 ? 'cod911,' : '') . "fecha_admision)
+                VALUES
+                    ($id_ingress,$id_patient," . ($companion ? "'$companion'," : '') . ($phone_companion ? "'$phone_companion'," : '') . ($cod911 ? "$cod911," : '') . "'" . date('d-m-Y H:i:s') . "')";
         echo $connection->execute($connect, $sql);
         break;
     case 'insertPatient':

@@ -127,6 +127,23 @@ switch ($option) {
         $sql = "UPDATE pacientegeneral SET " . $field . "='" . $setField . "' WHERE id_paciente=" . $id_patient;
         echo $connection->execute($connect, $sql);
         break;
+    case 'updatePatient':
+        $user = json_decode($_POST['user']);
+        $sql = "UPDATE pacientegeneral SET
+                nombre1='$user->name1',
+                nombre2='$user->name2',
+                apellido1='$user->lastname1',
+                apellido2='$user->lastname2',
+                genero='$user->gender',
+                nacionalidad='$user->nationality',
+                fecha_nacido='$user->date',
+                edad='$user->age',
+                cod_edad='$user->typeage',
+                edad='$user->age',
+                cod_edad=$user->typeage
+            WHERE id_paciente=$id_patient";
+        echo $connection->execute($connect, $sql);
+        break;
     case 'updatePrehEC':
         $sql = "UPDATE preh_evaluacionclinica SET $field='$setField' WHERE id_evaluacionclinica=$id_evalC";
         echo $connection->execute($connect, $sql);
