@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Santo_Domingo');
+
 include_once 'connection.php';
 
 $connection = new connection();

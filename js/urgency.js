@@ -6,41 +6,41 @@ $(function () {
     focus_value,
     name_hospital,
     language = {
-      language: localStorage.getItem("language"),
-      MedicalOrden: localStorage.getItem("pdf_medicalorden"),
-      testOrden: localStorage.getItem("pdf_testorden"),
-      hospitalName: localStorage.getItem("pdf_hospitalname"),
-      expireDate: localStorage.getItem("pdf_expiredate"),
-      patientName: localStorage.getItem("pdf_patientname"),
-      identity: localStorage.getItem("pdf_identity"),
-      code: localStorage.getItem("pdf_code"),
-      doctor: localStorage.getItem("pdf_doctor"),
-      age: localStorage.getItem("fp_age"),
-      medical: localStorage.getItem("m_medicalsearch"),
-      dosis: localStorage.getItem("m_medicallabel2"),
-      test: localStorage.getItem("m_test"),
+      language: localStorage.getItem('language'),
+      MedicalOrden: localStorage.getItem('pdf_medicalorden'),
+      testOrden: localStorage.getItem('pdf_testorden'),
+      hospitalName: localStorage.getItem('pdf_hospitalname'),
+      expireDate: localStorage.getItem('pdf_expiredate'),
+      patientName: localStorage.getItem('pdf_patientname'),
+      identity: localStorage.getItem('pdf_identity'),
+      code: localStorage.getItem('pdf_code'),
+      doctor: localStorage.getItem('pdf_doctor'),
+      age: localStorage.getItem('fp_age'),
+      medical: localStorage.getItem('m_medicalsearch'),
+      dosis: localStorage.getItem('m_medicallabel2'),
+      test: localStorage.getItem('m_test'),
     };
-  var tableUrgency = $("#tableUrgency").DataTable({
-    select: "single",
+  var tableUrgency = $('#tableUrgency').DataTable({
+    select: 'single',
     pageLength: 5,
-    order: [[0, "desc"]],
+    order: [[0, 'desc']],
     language: {
-      url: "lang/" + language["language"] + ".json",
+      url: 'lang/' + language['language'] + '.json',
     },
     ajax: {
-      url: "bd/admission.php",
-      method: "POST",
-      data: { option: "selectUrgency" },
-      dataSrc: "",
+      url: 'bd/admission.php',
+      method: 'POST',
+      data: { option: 'selectUrgency' },
+      dataSrc: '',
     },
     deferRender: true,
     columns: [
-      { data: "clasificacion_admision" },
-      { defaultContent: "" },
-      { data: "fecha_clasificacion" },
-      { data: "expendiente" },
-      { defaultContent: "" },
-      { defaultContent: "" },
+      { data: 'clasificacion_admision' },
+      { defaultContent: '' },
+      { data: 'fecha_clasificacion' },
+      { data: 'expendiente' },
+      { defaultContent: '' },
+      { defaultContent: '' },
       {
         defaultContent:
           '<button type="button" class="btn btn-secondary egress-btn" data-toggle="modal" data-target="#modal-egress">Egreso</button>',
@@ -50,15 +50,15 @@ $(function () {
       {
         render: function (data, type, row) {
           var fond =
-            row.clasificacion_admision == "Azul"
-              ? "text-white bg-blue"
-              : "text-white bg-green";
+            row.clasificacion_admision == 'Azul'
+              ? 'text-white bg-blue'
+              : 'text-white bg-green';
           return (
             "<div class='card card-classification mb-0 " +
             fond +
             "'><div class='card-body'>" +
             row.clasificacion_admision +
-            "</div></div>"
+            '</div></div>'
           );
         },
         targets: 0,
@@ -79,10 +79,10 @@ $(function () {
       },
       {
         render: function (data, type, row) {
-          var patient = row.nombre1 ? row.nombre1 : "";
-          patient += row.nombre2 ? " " + row.nombre2 : "";
-          patient += row.apellido1 ? " " + row.apellido1 : "";
-          patient += row.apellido2 ? " " + row.apellido2 : "";
+          var patient = row.nombre1 ? row.nombre1 : '';
+          patient += row.nombre2 ? ' ' + row.nombre2 : '';
+          patient += row.apellido1 ? ' ' + row.apellido1 : '';
+          patient += row.apellido2 ? ' ' + row.apellido2 : '';
           return patient;
         },
         targets: 4,
@@ -90,14 +90,14 @@ $(function () {
       {
         render: function (data, type, row) {
           var name = row.nombre_motivoatencion;
-          switch (language["language"]) {
-            case "en":
+          switch (language['language']) {
+            case 'en':
               name = row.nombre_motivoatencion_en;
               break;
-            case "pt":
+            case 'pt':
               name = row.nombre_motivoatencion_pt;
               break;
-            case "fr":
+            case 'fr':
               name = row.nombre_motivoatencion_fr;
               break;
           }
@@ -106,35 +106,50 @@ $(function () {
         targets: 5,
       },
     ],
-    dom: "Bfrtip",
-    initComplete: function () {
-      $("#tableUrgency tr").each(function (index, value) {
-        if (index > 0) {
-          var date = new Date();
-          var date_classification = new Date(
-            tableUrgency.rows(index - 1).data()[0].fecha_clasificacion
-          );
+    dom: 'Bfrtip',
+    initComplete: function (setting, json) {
+      if (json)
+        json.map((val) => {
+          console.log(moment());
+          console.log(moment(val.fecha_clasificacion));
+          /*var date = new Date();
+          var date_classification = new Date(val.fecha_clasificacion);
           var diff = Math.abs(date - date_classification);
-          var minutes = Math.floor(diff / 1000 / 60);
-          switch ($(this).find("td .card-classification").text()) {
-            case "Azul":
+          var minutes = Math.floor(diff / 1000 / 60);*/
+          let minutes = moment().diff(
+            moment(val.fecha_clasificacion),
+            'minutes'
+          );
+          switch ($(this).find('td .card-classification').text()) {
+            case 'Azul':
               var _this = this;
-              var min_blue = 45 - minutes;
-              var seg_blue =
+              let min_blue = 45 - minutes;
+              /*var seg_blue =
                 date.getSeconds() - date_classification.getSeconds() < 0
-                  ? 60 - date_classification.getSeconds() + date.getSeconds()
-                  : date.getSeconds() - date_classification.getSeconds();
+                  ? date_classification.getSeconds() + date.getSeconds()
+                  : date.getSeconds() - date_classification.getSeconds();*/
+              let seg_blue =
+                60 -
+                (moment().seconds() -
+                  moment(val.fecha_clasificacion).seconds());
+              if (seg_blue < 0) {
+                seg_blue =
+                  moment().seconds() +
+                  moment(val.fecha_clasificacion).seconds();
+              } else {
+                min_blue--;
+              }
               setInterval(function () {
                 if (min_blue >= 0) {
                   $(_this)
-                    .find(".countdown .min")
+                    .find('.countdown .min')
                     .html(
-                      min_blue > 0 && min_blue < 10 ? "0" + min_blue : min_blue
+                      min_blue > 0 && min_blue < 10 ? '0' + min_blue : min_blue
                     );
                   $(_this)
-                    .find(".countdown .sec")
+                    .find('.countdown .sec')
                     .html(
-                      seg_blue > 0 && seg_blue < 10 ? "0" + seg_blue : seg_blue
+                      seg_blue > 0 && seg_blue < 10 ? '0' + seg_blue : seg_blue
                     );
                   seg_blue--;
                   if (seg_blue == 0) {
@@ -144,20 +159,28 @@ $(function () {
                 }
               }, 1000);
               break;
-            case "Verde":
+            case 'Verde':
               var _this = this;
               var min_green = 30 - minutes;
-              var seg_green =
+              /*var seg_green =
                 date.getSeconds() - date_classification.getSeconds() < 0
                   ? 60 - date_classification.getSeconds() + date.getSeconds()
-                  : date.getSeconds() - date_classification.getSeconds();
+                  : date.getSeconds() - date_classification.getSeconds();*/
+              let seg_green =
+                moment().seconds() - moment(val.fecha_clasificacion).seconds();
+              if (seg_green < 0) {
+                min_green--;
+                seg_green =
+                  moment().seconds() +
+                  moment(val.fecha_clasificacion).seconds();
+              }
               setInterval(function () {
                 if (min_green >= 0) {
                   $(_this)
-                    .find(".countdown .min")
+                    .find('.countdown .min')
                     .html(
                       min_green > 0 && min_green < 10
-                        ? "0" + min_green
+                        ? '0' + min_green
                         : min_green
                     );
                   seg_green--;
@@ -166,152 +189,151 @@ $(function () {
                     min_green--;
                   }
                   $(_this)
-                    .find(".countdown .sec")
+                    .find('.countdown .sec')
                     .html(
                       seg_green > 0 && seg_green < 10
-                        ? "0" + seg_green
+                        ? '0' + seg_green
                         : seg_green
                     );
                 }
               }, 1000);
               break;
           }
-        }
-      });
+        });
     },
   });
 
-  tableUrgency.on("select", function (e, dt, type, indexes) {
+  tableUrgency.on('select', function (e, dt, type, indexes) {
     dataSelect = tableUrgency.rows(indexes).data()[0];
     idMA = dataSelect.id_atencionmedica;
 
     $.ajax({
-      url: "bd/admission.php",
-      method: "POST",
-      dataType: "json",
+      url: 'bd/admission.php',
+      method: 'POST',
+      dataType: 'json',
       data: {
-        option: "selectAttentionMedical",
+        option: 'selectAttentionMedical',
         idMA: idMA,
       },
     })
       .done(function (data) {
-        $("#tableMedical>tbody").empty();
+        $('#tableMedical>tbody').empty();
         appendTableMedical(data);
         data
-          ? $("#print-medical").prop("disabled", false)
-          : $("#print-medical").prop("disabled", true);
+          ? $('#print-medical').prop('disabled', false)
+          : $('#print-medical').prop('disabled', true);
       })
       .fail(function () {
-        console.log("error");
+        console.log('error');
       });
 
     $.ajax({
-      url: "bd/admission.php",
-      method: "POST",
-      dataType: "json",
+      url: 'bd/admission.php',
+      method: 'POST',
+      dataType: 'json',
       data: {
-        option: "selectAttentionExamen",
+        option: 'selectAttentionExamen',
         idMA: idMA,
       },
     })
       .done(function (data) {
-        $("#tableExamen>tbody").empty();
+        $('#tableExamen>tbody').empty();
         appendTableExamen(data);
         data
-          ? $("#print-examen").prop("disabled", false)
-          : $("#print-examen").prop("disabled", true);
+          ? $('#print-examen').prop('disabled', false)
+          : $('#print-examen').prop('disabled', true);
       })
       .fail(function () {
-        console.log("error");
+        console.log('error');
       });
 
-    $("#collapseOne").collapse("show");
+    $('#collapseOne').collapse('show');
 
     /* Se actualiza el fromulario */
-    $("#form_urgency").trigger("reset");
-    $("select option").attr("selected", false);
-    $("#general option[value=" + dataSelect.id_general + "]").attr(
-      "selected",
+    $('#form_urgency').trigger('reset');
+    $('select option').attr('selected', false);
+    $('#general option[value=' + dataSelect.id_general + ']').attr(
+      'selected',
       true
     );
-    $("#cabeza option[value=" + dataSelect.id_cabeza + "]").attr(
-      "selected",
+    $('#cabeza option[value=' + dataSelect.id_cabeza + ']').attr(
+      'selected',
       true
     );
-    $("#ojo option[value=" + dataSelect.id_ojo + "]").attr("selected", true);
-    $("#otorrino option[value=" + dataSelect.id_otorrino + "]").attr(
-      "selected",
+    $('#ojo option[value=' + dataSelect.id_ojo + ']').attr('selected', true);
+    $('#otorrino option[value=' + dataSelect.id_otorrino + ']').attr(
+      'selected',
       true
     );
-    $("#boca option[value=" + dataSelect.id_boca + "]").attr("selected", true);
-    $("#cuello option[value=" + dataSelect.id_cuello + "]").attr(
-      "selected",
+    $('#boca option[value=' + dataSelect.id_boca + ']').attr('selected', true);
+    $('#cuello option[value=' + dataSelect.id_cuello + ']').attr(
+      'selected',
       true
     );
-    $("#torax option[value=" + dataSelect.id_torax + "]").attr(
-      "selected",
+    $('#torax option[value=' + dataSelect.id_torax + ']').attr(
+      'selected',
       true
     );
-    $("#corazon option[value=" + dataSelect.id_corazon + "]").attr(
-      "selected",
+    $('#corazon option[value=' + dataSelect.id_corazon + ']').attr(
+      'selected',
       true
     );
-    $("#pulmon option[value=" + dataSelect.id_pulmon + "]").attr(
-      "selected",
+    $('#pulmon option[value=' + dataSelect.id_pulmon + ']').attr(
+      'selected',
       true
     );
-    $("#abdomen option[value=" + dataSelect.id_abdomen + "]").attr(
-      "selected",
+    $('#abdomen option[value=' + dataSelect.id_abdomen + ']').attr(
+      'selected',
       true
     );
-    $("#pelvis option[value=" + dataSelect.id_pelvis + "]").attr(
-      "selected",
+    $('#pelvis option[value=' + dataSelect.id_pelvis + ']').attr(
+      'selected',
       true
     );
-    $("#rectal option[value=" + dataSelect.id_rectal + "]").attr(
-      "selected",
+    $('#rectal option[value=' + dataSelect.id_rectal + ']').attr(
+      'selected',
       true
     );
-    $("#genital option[value=" + dataSelect.id_genital + "]").attr(
-      "selected",
+    $('#genital option[value=' + dataSelect.id_genital + ']').attr(
+      'selected',
       true
     );
-    $("#extremidad option[value=" + dataSelect.id_extremidad + "]").attr(
-      "selected",
+    $('#extremidad option[value=' + dataSelect.id_extremidad + ']').attr(
+      'selected',
       true
     );
-    $("#neuro option[value=" + dataSelect.id_neuro + "]").attr(
-      "selected",
+    $('#neuro option[value=' + dataSelect.id_neuro + ']').attr(
+      'selected',
       true
     );
-    $("#piel option[value=" + dataSelect.id_piel + "]").attr("selected", true);
+    $('#piel option[value=' + dataSelect.id_piel + ']').attr('selected', true);
     if (dataSelect.cod_cie10) {
       var name = dataSelect.diagnostico;
-      switch (language["language"]) {
-        case "en":
+      switch (language['language']) {
+        case 'en':
           name = dataSelect.diagnostico_en;
           break;
-        case "pt":
+        case 'pt':
           name = dataSelect.diagnostico_pt;
           break;
-        case "fr":
+        case 'fr':
           name = dataSelect.diagnostico_fr;
           break;
       }
-      $("#ec_cie10").val(dataSelect.cod_cie10 + " " + name);
+      $('#ec_cie10').val(dataSelect.cod_cie10 + ' ' + name);
     } else {
-      $("#ec_cie10").val("");
+      $('#ec_cie10').val('');
     }
-    $("#sign").html(dataSelect.sintomas);
-    $("#description").html(dataSelect.descripcion_diagnostico);
-    $("#other").html(dataSelect.otros);
+    $('#sign').html(dataSelect.sintomas);
+    $('#description').html(dataSelect.descripcion_diagnostico);
+    $('#other').html(dataSelect.otros);
   });
 
   function crud_ajax(field, val, option) {
     if (focus_value != val) {
       $.ajax({
-        url: "bd/admission.php",
-        method: "POST",
+        url: 'bd/admission.php',
+        method: 'POST',
         data: {
           option: option,
           field: field,
@@ -323,27 +345,27 @@ $(function () {
           tableUrgency.ajax.reload();
         })
         .fail(function () {
-          console.log("error");
+          console.log('error');
         });
     }
   }
 
   function appendTableMedical(data) {
-    if (data)
+    if (data) {
       $.each(data, function (index, value) {
         var name = value.producto;
-        switch (language["language"]) {
-          case "en":
+        switch (language['language']) {
+          case 'en':
             name = value.producto_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.producto_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.producto_fr;
             break;
         }
-        $("#tableMedical>tbody").append(
+        $('#tableMedical>tbody').append(
           "<tr id='" +
             value.id_atencionmedica_medicamentos +
             "'><td class='name'>" +
@@ -353,24 +375,26 @@ $(function () {
             "</td><td><button type='button' class='btn btn-danger delete-medical'><i class='fa fa-trash'></i> Eliminar</button></td></tr>"
         );
       });
+      $('#print-medical').prop('disabled', false);
+    }
   }
 
   function appendTableExamen(data) {
-    if (data)
+    if (data) {
       $.each(data, function (index, value) {
         var name = value.nombre_examen;
-        switch (language["language"]) {
-          case "en":
+        switch (language['language']) {
+          case 'en':
             name = value.nombre_examen_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_examen_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_examen_fr;
             break;
         }
-        $("#tableExamen>tbody").append(
+        $('#tableExamen>tbody').append(
           "<tr id='" +
             value.id_atencionmedica_examen +
             "'><td class='name'>" +
@@ -378,34 +402,36 @@ $(function () {
             "</td><td><button type='button' class='btn btn-danger delete-examen'><i class='fa fa-trash'></i> Eliminar</button></td></tr>"
         );
       });
+      $('#print-examen').prop('disabled', false);
+    }
   }
 
   function createDataTableMedical() {
-    return $("#table-medical").DataTable({
-      select: "single",
+    return $('#table-medical').DataTable({
+      select: 'single',
       language: {
-        url: "lang/" + language["language"] + ".json",
+        url: 'lang/' + language['language'] + '.json',
       },
       ajax: {
-        url: "bd/admission.php",
-        method: "POST",
-        data: { option: "selectMedical", idMA: idMA },
-        dataSrc: "",
+        url: 'bd/admission.php',
+        method: 'POST',
+        data: { option: 'selectMedical', idMA: idMA },
+        dataSrc: '',
       },
       deferRender: true,
-      columns: [{ defaultContent: "" }],
+      columns: [{ defaultContent: '' }],
       columnDefs: [
         {
           render: function (data, type, row) {
             var name = row.producto;
-            switch (language["language"]) {
-              case "en":
+            switch (language['language']) {
+              case 'en':
                 name = row.producto_en;
                 break;
-              case "pt":
+              case 'pt':
                 name = row.producto_pt;
                 break;
-              case "fr":
+              case 'fr':
                 name = row.producto_fr;
                 break;
             }
@@ -419,31 +445,31 @@ $(function () {
   }
 
   function createDataTableExamen() {
-    return $("#table-examen").DataTable({
-      select: "multiple",
+    return $('#table-examen').DataTable({
+      select: 'multiple',
       language: {
-        url: "lang/" + language["language"] + ".json",
+        url: 'lang/' + language['language'] + '.json',
       },
       ajax: {
-        url: "bd/admission.php",
-        method: "POST",
-        data: { option: "selectExamen", idMA: idMA },
-        dataSrc: "",
+        url: 'bd/admission.php',
+        method: 'POST',
+        data: { option: 'selectExamen', idMA: idMA },
+        dataSrc: '',
       },
       deferRender: true,
-      columns: [{ defaulContent: "" }],
+      columns: [{ defaulContent: '' }],
       columnDefs: [
         {
           render: function (data, type, row) {
             var name = row.nombre_examen;
-            switch (language["language"]) {
-              case "en":
+            switch (language['language']) {
+              case 'en':
                 name = row.nombre_examen_en;
                 break;
-              case "pt":
+              case 'pt':
                 name = row.nombre_examen_pt;
                 break;
-              case "fr":
+              case 'fr':
                 name = row.nombre_examen_fr;
                 break;
             }
@@ -457,494 +483,526 @@ $(function () {
   }
 
   $.ajax({
-    url: "bd/admission.php",
-    method: "POST",
-    dataType: "json",
+    url: 'bd/admission.php',
+    method: 'POST',
+    dataType: 'json',
     data: {
-      option: "loadSelectMedicalAttention",
-      idH: $("#data-user").data("hospital"),
+      option: 'loadSelectMedicalAttention',
+      idH: $('#data-user').data('hospital'),
     },
   })
     .done(function (data) {
-      if (data["name_hospital"])
-        name_hospital = data["name_hospital"][0].nombre_hospital;
-      $("#general").empty();
-      $("#general").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#cabeza").empty();
-      $("#cabeza").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#ojo").empty();
-      $("#ojo").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#otorrino").empty();
-      $("#otorrino").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#boca").empty();
-      $("#boca").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#cuello").empty();
-      $("#cuello").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#torax").empty();
-      $("#torax").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#corazon").empty();
-      $("#corazon").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#pulmon").empty();
-      $("#pulmon").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#abdomen").empty();
-      $("#abdomen").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#pelvis").empty();
-      $("#pelvis").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#rectal").empty();
-      $("#rectal").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#genital").empty();
-      $("#genital").append($("<option>-- Seleccione una opción --</option>"));
-
-      $("#extremidad").empty();
-      $("#extremidad").append(
-        $("<option>-- Seleccione una opción --</option>")
+      if (data['name_hospital'])
+        name_hospital = data['name_hospital'][0].nombre_hospital;
+      $('#general').empty();
+      $('#general').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
       );
 
-      $("#neuro").empty();
-      $("#neuro").append($("<option>-- Seleccione una opción --</option>"));
+      $('#cabeza').empty();
+      $('#cabeza').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
 
-      $("#piel").empty();
-      $("#piel").append($("<option>-- Seleccione una opción --</option>"));
+      $('#ojo').empty();
+      $('#ojo').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
 
-      $("#disposal").empty();
-      $("#disposal").append($("<option>-- Seleccione una opción --</option>"));
+      $('#otorrino').empty();
+      $('#otorrino').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
 
-      var name = "";
+      $('#boca').empty();
+      $('#boca').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
 
-      $.each(data["general"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $('#cuello').empty();
+      $('#cuello').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#torax').empty();
+      $('#torax').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#corazon').empty();
+      $('#corazon').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#pulmon').empty();
+      $('#pulmon').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#abdomen').empty();
+      $('#abdomen').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#pelvis').empty();
+      $('#pelvis').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#rectal').empty();
+      $('#rectal').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#genital').empty();
+      $('#genital').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#extremidad').empty();
+      $('#extremidad').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#neuro').empty();
+      $('#neuro').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#piel').empty();
+      $('#piel').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      $('#disposal').empty();
+      $('#disposal').append(
+        $('<option value="0">-- Seleccione una opción --</option>')
+      );
+
+      var name = '';
+
+      $.each(data['general'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_general;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_general_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_general_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_general_fr;
             break;
         }
-        $("#general").append(
-          $("<option value=" + value.id_general + ">" + name + "</option>")
+        $('#general').append(
+          $('<option value=' + value.id_general + '>' + name + '</option>')
         );
       });
 
-      $.each(data["cabeza"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['cabeza'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_cabeza;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_cabeza_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_cabeza_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_cabeza_fr;
             break;
         }
-        $("#cabeza").append(
-          $("<option value=" + value.id_cabeza + ">" + name + "</option>")
+        $('#cabeza').append(
+          $('<option value=' + value.id_cabeza + '>' + name + '</option>')
         );
       });
 
-      $.each(data["ojo"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['ojo'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_ojo;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_ojo_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_ojo_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_ojo_fr;
             break;
         }
-        $("#ojo").append(
-          $("<option value=" + value.id_ojo + ">" + name + "</option>")
+        $('#ojo').append(
+          $('<option value=' + value.id_ojo + '>' + name + '</option>')
         );
       });
 
-      $.each(data["otorrino"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['otorrino'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_otorrino;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_otorrino_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_otorrino_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_otorrino_fr;
             break;
         }
-        $("#otorrino").append(
-          $("<option value=" + value.id_otorrino + ">" + name + "</option>")
+        $('#otorrino').append(
+          $('<option value=' + value.id_otorrino + '>' + name + '</option>')
         );
       });
 
-      $.each(data["boca"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['boca'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_boca;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_boca_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_boca_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_boca_fr;
             break;
         }
-        $("#boca").append(
-          $("<option value=" + value.id_boca + ">" + name + "</option>")
+        $('#boca').append(
+          $('<option value=' + value.id_boca + '>' + name + '</option>')
         );
       });
 
-      $.each(data["cuello"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['cuello'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_cuello;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_cuello_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_cuello_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_cuello_fr;
             break;
         }
-        $("#cuello").append(
-          $("<option value=" + value.id_cuello + ">" + name + "</option>")
+        $('#cuello').append(
+          $('<option value=' + value.id_cuello + '>' + name + '</option>')
         );
       });
 
-      $.each(data["torax"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['torax'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_torax;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_torax_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_torax_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_torax_fr;
             break;
         }
-        $("#torax").append(
-          $("<option value=" + value.id_torax + ">" + name + "</option>")
+        $('#torax').append(
+          $('<option value=' + value.id_torax + '>' + name + '</option>')
         );
       });
 
-      $.each(data["corazon"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['corazon'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_corazon;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_corazon_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_corazon_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_corazon_fr;
             break;
         }
-        $("#corazon").append(
-          $("<option value=" + value.id_corazon + ">" + name + "</option>")
+        $('#corazon').append(
+          $('<option value=' + value.id_corazon + '>' + name + '</option>')
         );
       });
 
-      $.each(data["pulmon"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['pulmon'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_pulmon;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_pulmon_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_pulmon_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_pulmon_fr;
             break;
         }
-        $("#pulmon").append(
-          $("<option value=" + value.id_pulmon + ">" + name + "</option>")
+        $('#pulmon').append(
+          $('<option value=' + value.id_pulmon + '>' + name + '</option>')
         );
       });
 
-      $.each(data["abdomen"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['abdomen'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_abdomen;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_abdomen_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_abdomen_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_abdomen_fr;
             break;
         }
-        $("#abdomen").append(
-          $("<option value=" + value.id_abdomen + ">" + name + "</option>")
+        $('#abdomen').append(
+          $('<option value=' + value.id_abdomen + '>' + name + '</option>')
         );
       });
 
-      $.each(data["pelvis"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['pelvis'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_pelvis;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_pelvis_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_pelvis_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_pelvis_fr;
             break;
         }
-        $("#pelvis").append(
-          $("<option value=" + value.id_pelvis + ">" + name + "</option>")
+        $('#pelvis').append(
+          $('<option value=' + value.id_pelvis + '>' + name + '</option>')
         );
       });
 
-      $.each(data["rectal"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['rectal'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_rectal;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_rectal_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_rectal_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_rectal_fr;
             break;
         }
-        $("#rectal").append(
-          $("<option value=" + value.id_rectal + ">" + name + "</option>")
+        $('#rectal').append(
+          $('<option value=' + value.id_rectal + '>' + name + '</option>')
         );
       });
 
-      $.each(data["genital"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['genital'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_genital;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_genital_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_genital_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_genital_fr;
             break;
         }
-        $("#genital").append(
-          $("<option value=" + value.id_genital + ">" + name + "</option>")
+        $('#genital').append(
+          $('<option value=' + value.id_genital + '>' + name + '</option>')
         );
       });
 
-      $.each(data["extremidad"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['extremidad'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_extremidad;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_extremidad_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_extremidad_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_extremidad_fr;
             break;
         }
-        $("#extremidad").append(
-          $("<option value=" + value.id_extremidad + ">" + name + "</option>")
+        $('#extremidad').append(
+          $('<option value=' + value.id_extremidad + '>' + name + '</option>')
         );
       });
 
-      $.each(data["neuro"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['neuro'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_neuro;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_neuro_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_neuro_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_neuro_fr;
             break;
         }
-        $("#neuro").append(
-          $("<option value=" + value.id_neuro + ">" + name + "</option>")
+        $('#neuro').append(
+          $('<option value=' + value.id_neuro + '>' + name + '</option>')
         );
       });
 
-      $.each(data["piel"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['piel'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.nombre_piel;
             break;
-          case "en":
+          case 'en':
             name = value.nombre_piel_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.nombre_piel_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.nombre_piel_fr;
             break;
         }
-        $("#piel").append(
-          $("<option value=" + value.id_piel + ">" + name + "</option>")
+        $('#piel').append(
+          $('<option value=' + value.id_piel + '>' + name + '</option>')
         );
       });
 
-      $.each(data["disposal"], function (index, value) {
-        switch (language["language"]) {
-          case "es":
+      $.each(data['disposal'], function (index, value) {
+        switch (language['language']) {
+          case 'es':
             name = value.estado_alta;
             break;
-          case "en":
+          case 'en':
             name = value.estado_alta_en;
             break;
-          case "pt":
+          case 'pt':
             name = value.estado_alta_pt;
             break;
-          case "fr":
+          case 'fr':
             name = value.estado_alta_fr;
             break;
         }
-        $("#disposal").append(
-          $("<option value=" + value.id_estadoalta + ">" + name + "</option>")
+        $('#disposal').append(
+          $('<option value=' + value.id_estadoalta + '>' + name + '</option>')
         );
       });
     })
     .fail(function () {
-      console.log("error");
+      console.log('error');
     });
 
-  $("select").on("change", function (e) {
-    if (e.target.value != 0 && e.target.id != "disposal") {
-      crud_ajax("id_" + e.target.id, e.target.value, "updateMedicalAttention");
+  $('select').on('change', function (e) {
+    if (e.target.value != 0 && e.target.id != 'disposal') {
+      crud_ajax('id_' + e.target.id, e.target.value, 'updateMedicalAttention');
     }
   });
 
-  $("#modal-egress").on("show.bs.modal", function () {
-    $("#disposal option").attr("selected", false);
-    $("#disposal option[value='0']").attr("selected", true);
+  $('#modal-egress').on('hide.bs.modal', function () {
+    $('#disposal').val(0);
   });
 
-  $("#disposal").on("change", function (e) {
+  $('#disposal').on('change', function (e) {
     e.target.value == 0
-      ? $(".btn-egress").prop("disabled", true)
-      : $(".btn-egress").prop("disabled", false);
+      ? $('.btn-egress').prop('disabled', true)
+      : $('.btn-egress').prop('disabled', false);
   });
 
-  $(".btn-egress").on("click", function () {
+  $('.btn-egress').on('click', function () {
     crud_ajax(
-      "id_estadoalta",
-      $("#disposal option:selected").val(),
-      "updateMedicalAttention"
+      'id_estadoalta',
+      $('#disposal option:selected').val(),
+      'updateMedicalAttention'
     );
+    $('#collapseOne').collapse('hide');
   });
 
-  $("#sign").on("focus", function () {
+  $('#sign').on('focus', function () {
     focus_value = $(this).val();
   });
 
-  $("#description").on("focus", function () {
+  $('#description').on('focus', function () {
     focus_value = $(this).val();
   });
 
-  $("#other").on("focus", function () {
+  $('#other').on('focus', function () {
     focus_value = $(this).val();
   });
 
-  $("#sign").on("focusout", function () {
-    crud_ajax("sintomas", $(this).val(), "updateMedicalAttention");
+  $('#sign').on('focusout', function () {
+    crud_ajax('sintomas', $(this).val(), 'updateMedicalAttention');
   });
 
-  $("#description").on("focusout", function () {
+  $('#description').on('focusout', function () {
     crud_ajax(
-      "descripcion_diagnostico",
+      'descripcion_diagnostico',
       $(this).val(),
-      "updateMedicalAttention"
+      'updateMedicalAttention'
     );
   });
 
-  $("#other").on("focusout", function () {
-    crud_ajax("otros", $(this).val(), "updateMedicalAttention");
+  $('#other').on('focusout', function () {
+    crud_ajax('otros', $(this).val(), 'updateMedicalAttention');
   });
 
-  var tableCIE10 = $("#tableCIE10").DataTable({
-    select: "single",
+  var tableCIE10 = $('#tableCIE10').DataTable({
+    select: 'single',
     language: {
-      url: "lang/" + language["language"] + ".json",
+      url: 'lang/' + language['language'] + '.json',
     },
     ajax: {
-      url: "bd/admission.php",
-      method: "POST",
-      data: { option: "selectCIE10" },
-      dataSrc: "",
+      url: 'bd/admission.php',
+      method: 'POST',
+      data: { option: 'selectCIE10' },
+      dataSrc: '',
     },
     deferRender: true,
-    columns: [{ data: "codigo_cie" }, { defaultContent: "" }],
+    columns: [{ data: 'codigo_cie' }, { defaultContent: '' }],
     columnDefs: [
       {
         render: function (data, type, row) {
           var name = row.diagnostico;
-          switch (language["language"]) {
-            case "en":
+          switch (language['language']) {
+            case 'en':
               name = row.diagnostico_en;
               break;
-            case "pt":
+            case 'pt':
               name = row.diagnostico_pr;
               break;
-            case "fr":
+            case 'fr':
               name = row.diagnostico_fr;
               break;
           }
@@ -956,60 +1014,60 @@ $(function () {
     //dom: 'Bfrtip'
   });
 
-  $("#CIE10").on("show.bs.modal", function () {
+  $('#CIE10').on('show.bs.modal', function () {
     //tableCIE10.ajax.reload();
   });
 
-  tableCIE10.on("select", function (e, dt, type, indexes) {
-    $(".btnCIE10").prop("disabled", false);
+  tableCIE10.on('select', function (e, dt, type, indexes) {
+    $('.btnCIE10').prop('disabled', false);
   });
 
-  tableCIE10.on("deselect", function (e, dt, type, indexes) {
-    $(".btnCIE10").prop("disabled", true);
+  tableCIE10.on('deselect', function (e, dt, type, indexes) {
+    $('.btnCIE10').prop('disabled', true);
   });
 
-  $(".btnCIE10").on("click", function () {
-    var dataSelectCIE10 = tableCIE10.rows(".selected").data()[0];
+  $('.btnCIE10').on('click', function () {
+    var dataSelectCIE10 = tableCIE10.rows('.selected').data()[0];
     var name = dataSelectCIE10.diagnostico;
-    switch (language["language"]) {
-      case "en":
+    switch (language['language']) {
+      case 'en':
         name = dataSelectCIE10.diagnostico_en;
         break;
-      case "pt":
+      case 'pt':
         name = dataSelectCIE10.diagnostico_pr;
         break;
-      case "fr":
+      case 'fr':
         name = dataSelectCIE10.diagnostico_fr;
         break;
     }
-    $("#ec_cie10").val(dataSelectCIE10.codigo_cie + " " + name);
+    $('#ec_cie10').val(dataSelectCIE10.codigo_cie + ' ' + name);
     crud_ajax(
-      "cod_cie10",
+      'cod_cie10',
       dataSelectCIE10.codigo_cie,
-      "updateMedicalAttention"
+      'updateMedicalAttention'
     );
   });
 
   var tableMedical = createDataTableMedical();
 
-  tableMedical.on("select", function (e, dt, type, indexes) {
-    $(".btn-medical-search").prop("disabled", false);
+  tableMedical.on('select', function (e, dt, type, indexes) {
+    $('.btn-medical-search').prop('disabled', false);
   });
 
-  tableMedical.on("deselect", function (e, dt, type, indexes) {
-    $(".btn-medical-search").prop("disabled", true);
+  tableMedical.on('deselect', function (e, dt, type, indexes) {
+    $('.btn-medical-search').prop('disabled', true);
   });
 
-  $(".btn-medical").on("click", function () {
+  $('.btn-medical').on('click', function () {
     $.ajax({
-      url: "bd/admission.php",
-      method: "POST",
-      dataType: "json",
+      url: 'bd/admission.php',
+      method: 'POST',
+      dataType: 'json',
       data: {
-        option: "insertMedical",
+        option: 'insertMedical',
         idMA: idMA,
         idMAM: idMedical,
-        dosis: $("#dosis").val(),
+        dosis: $('#dosis').val(),
       },
     })
       .done(function (data) {
@@ -1017,8 +1075,8 @@ $(function () {
           {
             id_atencionmedica_medicamentos:
               data[0].id_atencionmedica_medicamentos,
-            producto: $("#input-medical").val(),
-            dosis: $("#dosis").val(),
+            producto: $('#input-medical').val(),
+            dosis: $('#dosis').val(),
           },
         ]);
         //appendTableMedical
@@ -1028,196 +1086,200 @@ $(function () {
         });*/
       })
       .fail(function () {
-        console.log("error");
+        console.log('error');
       });
   });
 
-  $("#print-medical").on("click", function () {
+  $('#print-medical').on('click', function () {
     var doc = new jsPDF();
     doc.setFontSize(18);
-    doc.text(language["MedicalOrden"], 14, 22);
+    doc.text(language['MedicalOrden'], 14, 22);
     doc.setFontSize(11);
     doc.setTextColor(100);
 
     var date = new Date();
     var dateNow =
-      (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
-      "/" +
+      (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) +
+      '/' +
       (date.getMonth() + 1 < 10
-        ? "0" + (date.getMonth() + 1)
+        ? '0' + (date.getMonth() + 1)
         : date.getMonth() + 1) +
-      "/" +
+      '/' +
       date.getFullYear() +
-      " " +
+      ' ' +
       date.getHours() +
-      ":" +
+      ':' +
       date.getMinutes() +
-      ":" +
+      ':' +
       date.getSeconds();
 
     doc.autoTable({
-      head: [[language["hospitalName"], language["expireDate"]]],
+      head: [[language['hospitalName'], language['expireDate']]],
       body: [[name_hospital, dateNow]],
       startY: 30,
     });
 
     var name = dataSelect.nombre1;
-    if (dataSelect.nombre2) name += " " + dataSelect.nombre2;
-    if (dataSelect.apellido1) name += " " + dataSelect.apellido1;
-    if (dataSelect.apellido2) name += " " + dataSelect.apellido2;
-    var age = dataSelect.edad + " " + dataSelect.nombre_edad;
+    if (dataSelect.nombre2) name += ' ' + dataSelect.nombre2;
+    if (dataSelect.apellido1) name += ' ' + dataSelect.apellido1;
+    if (dataSelect.apellido2) name += ' ' + dataSelect.apellido2;
+    var age = dataSelect.edad + ' ' + dataSelect.nombre_edad;
 
     doc.autoTable({
       head: [
         [
-          language["patientName"],
-          language["identity"],
-          language["age"],
-          language["code"],
+          language['patientName'],
+          language['identity'],
+          language['age'],
+          language['code'],
         ],
       ],
       body: [[name, dataSelect.num_doc, age, dataSelect.cod_cie10]],
     });
 
     var body = [];
-    $("#tableMedical tr").each(function (index, value) {
+    $('#tableMedical tr').each(function (index, value) {
       if (index > 0) {
         body.push([
-          $(this).find("td.name").text(),
-          $(this).find("td.dosis").text(),
+          $(this).find('td.name').text(),
+          $(this).find('td.dosis').text(),
         ]);
       }
     });
 
     doc.autoTable({
-      head: [[language["medical"], language["dosis"]]],
+      head: [[language['medical'], language['dosis']]],
       body: body,
     });
 
     doc.autoTable({
-      head: [[language["doctor"]]],
-      body: [[$("#data-user").data("user")]],
+      head: [[language['doctor']]],
+      body: [[$('#data-user').data('user')]],
     });
 
-    doc.save("orden_medicamentos.pdf");
+    doc.save('orden_medicamentos.pdf');
   });
 
-  $("#modal-medical").on("show.bs.modal", function () {
+  $('#modal-medical').on('show.bs.modal', function () {
     tableMedical.destroy();
     tableMedical = createDataTableMedical();
-    $("#input-medical").val("");
-    $("#dosis").val("");
-    $(".btn-medical").prop("disabled", true);
+    $('#input-medical').val('');
+    $('#dosis').val('');
+    $('.btn-medical').prop('disabled', true);
   });
 
-  $("#modal-medical-search").on("show.bs.modal", function () {
+  $('#modal-medical-search').on('show.bs.modal', function () {
     tableMedical.ajax.reload();
-    $(".btn-medical-search").prop("disabled", true);
+    $('.btn-medical-search').prop('disabled', true);
   });
 
-  $("#dosis").on("keyup", function (e) {
-    $.trim($(this).val()) != "" && $("#input-medical").val() != 0
-      ? $(".btn-medical").prop("disabled", false)
-      : $(".btn-medical").prop("disabled", true);
+  $('#dosis').on('keyup', function (e) {
+    $.trim($(this).val()) != '' && $('#input-medical').val() != 0
+      ? $('.btn-medical').prop('disabled', false)
+      : $('.btn-medical').prop('disabled', true);
   });
 
-  $(document).on("click", ".delete-medical", function (e) {
+  $(document).on('click', '.delete-medical', function (e) {
     $.ajax({
-      url: "bd/admission.php",
-      method: "POST",
+      url: 'bd/admission.php',
+      method: 'POST',
       data: {
-        option: "deleteAttentionMedical",
+        option: 'deleteAttentionMedical',
         idMAM: e.target.parentElement.parentElement.id,
       },
     })
       .done(function (data) {
         $(e.target.parentElement.parentElement).remove();
+        if ($('#tableMedical tbody tr').length == 0)
+          $('#print-medical').prop('disabled', true);
       })
       .fail(function () {
-        console.log("error");
+        console.log('error');
       });
   });
 
-  $(".btn-medical-search").on("click", function () {
-    idMedical = tableMedical.rows(".selected").data()[0].id_medicamento;
-    var name = tableMedical.rows(".selected").data()[0].producto;
-    switch (language["language"]) {
-      case "en":
-        name = tableMedical.rows(".selected").data()[0].producto_en;
+  $('.btn-medical-search').on('click', function () {
+    idMedical = tableMedical.rows('.selected').data()[0].id_medicamento;
+    var name = tableMedical.rows('.selected').data()[0].producto;
+    switch (language['language']) {
+      case 'en':
+        name = tableMedical.rows('.selected').data()[0].producto_en;
         break;
-      case "pt":
-        name = tableMedical.rows(".selected").data()[0].producto_pt;
+      case 'pt':
+        name = tableMedical.rows('.selected').data()[0].producto_pt;
         break;
-      case "fr":
-        name = tableMedical.rows(".selected").data()[0].producto_fr;
+      case 'fr':
+        name = tableMedical.rows('.selected').data()[0].producto_fr;
         break;
     }
-    $("#input-medical").val(name);
-    if ($.trim($("#dosis").val()) != "")
-      $(".btn-medical").prop("disabled", false);
+    $('#input-medical').val(name);
+    if ($.trim($('#dosis').val()) != '')
+      $('.btn-medical').prop('disabled', false);
   });
 
   var tableExamen = createDataTableExamen();
 
-  $("#modal-examen").on("show.bs.modal", function () {
+  $('#modal-examen').on('show.bs.modal', function () {
     tableExamen.destroy();
     tableExamen = createDataTableExamen();
   });
 
-  tableExamen.on("select", function (e, dt, type, indexes) {
-    $(".btn-examen").prop("disabled", false);
+  tableExamen.on('select', function (e, dt, type, indexes) {
+    $('.btn-examen').prop('disabled', false);
   });
 
-  tableExamen.on("deselect", function (e, dt, type, indexes) {
-    if (tableExamen.rows(".selected").data().length == 0)
-      $(".btn-examen").prop("disabled", true);
+  tableExamen.on('deselect', function (e, dt, type, indexes) {
+    if (tableExamen.rows('.selected').data().length == 0)
+      $('.btn-examen').prop('disabled', true);
   });
 
-  $(document).on("click", ".delete-examen", function (e) {
+  $(document).on('click', '.delete-examen', function (e) {
     $.ajax({
-      url: "bd/admission.php",
-      method: "POST",
+      url: 'bd/admission.php',
+      method: 'POST',
       data: {
-        option: "deleteAttentionExamen",
+        option: 'deleteAttentionExamen',
         idMAE: e.target.parentElement.parentElement.id,
       },
     })
       .done(function (data) {
         $(e.target.parentElement.parentElement).remove();
+        if ($('#tableExamen tbody tr').length == 0)
+          $('#print-examen').prop('disabled', true);
       })
       .fail(function () {
-        console.log("error");
+        console.log('error');
       });
   });
 
-  $(".btn-examen").on("click", function () {
+  $('.btn-examen').on('click', function () {
     var dataSelectExamen = [];
-    $.each(tableExamen.rows(".selected").data(), function (index, value) {
+    $.each(tableExamen.rows('.selected').data(), function (index, value) {
       dataSelectExamen.push(value.id_examen);
     });
 
     $.ajax({
-      url: "bd/admission.php",
-      method: "POST",
-      dataType: "json",
+      url: 'bd/admission.php',
+      method: 'POST',
+      dataType: 'json',
       data: {
-        option: "insertExamen",
+        option: 'insertExamen',
         idMA: idMA,
         dataExamen: dataSelectExamen,
       },
     })
       .done(function (data) {
         var array = [];
-        $.each(tableExamen.rows(".selected").data(), function (index, value) {
+        $.each(tableExamen.rows('.selected').data(), function (index, value) {
           var name = value.nombre_examen;
-          switch (language["language"]) {
-            case "en":
+          switch (language['language']) {
+            case 'en':
               name = value.nombre_examen_en;
               break;
-            case "pt":
+            case 'pt':
               name = value.nombre_examen_pt;
               break;
-            case "fr":
+            case 'fr':
               name = value.nombre_examen_fr;
               break;
           }
@@ -1229,66 +1291,66 @@ $(function () {
         appendTableExamen(array);
       })
       .fail(function () {
-        console.log("error");
+        console.log('error');
       });
   });
 
-  $("#print-examen").on("click", function () {
+  $('#print-examen').on('click', function () {
     var doc = new jsPDF();
     doc.setFontSize(18);
-    doc.text(language["testorden"], 14, 22);
+    doc.text(language['testOrden'], 14, 22);
     doc.setFontSize(11);
     doc.setTextColor(100);
     var date = new Date();
     var dateNow =
-      (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
-      "/" +
+      (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) +
+      '/' +
       (date.getMonth() + 1 < 10
-        ? "0" + (date.getMonth() + 1)
+        ? '0' + (date.getMonth() + 1)
         : date.getMonth() + 1) +
-      "/" +
+      '/' +
       date.getFullYear() +
-      " " +
+      ' ' +
       date.getHours() +
-      ":" +
+      ':' +
       date.getMinutes() +
-      ":" +
+      ':' +
       date.getSeconds();
     doc.autoTable({
-      head: [[language["hospitalName"], language["expireDate"]]],
+      head: [[language['hospitalName'], language['expireDate']]],
       body: [[name_hospital, dateNow]],
       startY: 30,
     });
     var name = dataSelect.nombre1;
-    if (dataSelect.nombre2) name += " " + dataSelect.nombre2;
-    if (dataSelect.apellido1) name += " " + dataSelect.apellido1;
-    if (dataSelect.apellido2) name += " " + dataSelect.apellido2;
-    var age = dataSelect.edad + " " + dataSelect.nombre_edad;
+    if (dataSelect.nombre2) name += ' ' + dataSelect.nombre2;
+    if (dataSelect.apellido1) name += ' ' + dataSelect.apellido1;
+    if (dataSelect.apellido2) name += ' ' + dataSelect.apellido2;
+    var age = dataSelect.edad + ' ' + dataSelect.nombre_edad;
     doc.autoTable({
       head: [
         [
-          language["patientName"],
-          language["identity"],
-          language["age"],
-          language["code"],
+          language['patientName'],
+          language['identity'],
+          language['age'],
+          language['code'],
         ],
       ],
       body: [[name, dataSelect.num_doc, age, dataSelect.cod_cie10]],
     });
     var body = [];
-    $("#tableExamen tr").each(function (index, value) {
+    $('#tableExamen tr').each(function (index, value) {
       if (index > 0) {
-        body.push([$(this).find("td.name").text()]);
+        body.push([$(this).find('td.name').text()]);
       }
     });
     doc.autoTable({
-      head: [[language["test"]]],
+      head: [[language['test']]],
       body: body,
     });
     doc.autoTable({
-      head: [[language["doctor"]]],
-      body: [[$("#data-user").data("user")]],
+      head: [[language['doctor']]],
+      body: [[$('#data-user').data('user')]],
     });
-    doc.save("orden_examenes.pdf");
+    doc.save('orden_examenes.pdf');
   });
 });

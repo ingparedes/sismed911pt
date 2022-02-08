@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Havana');
+
 include_once 'connection.php';
 
 $connection = new connection();
@@ -30,17 +32,33 @@ switch ($option) {
                 INNER JOIN preh_maestro ON pacientegeneral.cod_casointerh=preh_maestro.cod_casopreh
                 LEFT JOIN tipo_id ON pacientegeneral.tipo_doc = tipo_id.id_tipo
                 LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
-                WHERE preh_maestro.hospital_destino='" . $id_hospital . "'";
+                WHERE preh_maestro.hospital_destino = '$id_hospital'
+                    AND preh_maestro.hospital_destino != ''
+                    AND preh_maestro.hospital_destino IS NOT NULL";
         $data = pg_fetch_all($connection->execute($connect, $sql));
         if (!$data) $data = [];
         $sql = "SELECT * FROM pacientegeneral
                 INNER JOIN interh_maestro ON pacientegeneral.cod_casointerh=interh_maestro.cod_casointerh
                 LEFT JOIN tipo_id ON pacientegeneral.tipo_doc = tipo_id.id_tipo
                 LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
-                WHERE interh_maestro.hospital_destinointerh='" . $id_hospital . "'";
+                WHERE interh_maestro.hospital_destinointerh = '$id_hospital'
+                    AND interh_maestro.hospital_destinointerh != ''
+                    AND interh_maestro.hospital_destinointerh IS NOT NULL";
         $interH = pg_fetch_all($connection->execute($connect, $sql));
         if ($interH)
             foreach ($interH as $valor) {
+                array_push($data, $valor);
+            }
+        if (!$data) $data = [];
+        $sql = "SELECT * FROM pacientegeneral
+                LEFT JOIN tipo_id ON pacientegeneral.tipo_doc = tipo_id.id_tipo
+                LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
+                WHERE pacientegeneral.admision_hospital= '$id_hospital'
+                    AND pacientegeneral.admision_hospital != ''
+                    AND pacientegeneral.admision_hospital IS NOT NULL";
+        $admP = pg_fetch_all($connection->execute($connect, $sql));
+        if ($admP)
+            foreach ($admP as $valor) {
                 array_push($data, $valor);
             }
         print json_encode($data, JSON_UNESCAPED_UNICODE);
@@ -239,8 +257,42 @@ switch ($option) {
         echo $connection->execute($connect, $sql);
         break;
     case 'insertPatient':
-        $sql = "INSERT INTO pacientegeneral (cod_casointerh, expendiente, num_doc, tipo_doc, nombre1, nombre2, apellido1, apellido2, genero, edad, fecha_nacido, cod_edad, telefono, direccion, aseguradro, observacion)
-                VALUES (0, '" . $patient['expendiente'] . "', '" . $patient['num_doc'] . "', '" . $patient['tipo_doc'] . "', '" . $patient['nombre1'] . "', '" . $patient['nombre2'] . "', '" . $patient['apellido1'] . "', '" . $patient['apellido2'] . "', '" . $patient['genero'] . "', '" . $patient['edad'] . "', '" . $patient['fecha_nacido'] . "', '" . $patient['cod_edad'] . "', '" . $patient['telefono'] . "', '" . $patient['direccion'] . "', '" . $patient['aseguradro'] . "', '" . $patient['observacion'] . "')
+        $sql = "INSERT INTO pacientegeneral (
+                    cod_casointerh,
+                    expendiente,
+                    num_doc,
+                    tipo_doc,
+                    nombre1,
+                    nombre2,
+                    apellido1,
+                    apellido2,
+                    genero,
+                    edad,
+                    fecha_nacido,
+                    cod_edad,
+                    telefono,
+                    direccion,
+                    aseguradro,
+                    observacion,
+                    admision_hospital)
+                VALUES (
+                    0,
+                    '" . $patient['expendiente'] . "',
+                    '" . $patient['num_doc'] . "',
+                    '" . $patient['tipo_doc'] . "',
+                    '" . $patient['nombre1'] . "',
+                    '" . $patient['nombre2'] . "',
+                    '" . $patient['apellido1'] . "',
+                    '" . $patient['apellido2'] . "',
+                    '" . $patient['genero'] . "',
+                    '" . $patient['edad'] . "',
+                    '" . $patient['fecha_nacido'] . "',
+                    '" . $patient['cod_edad'] . "',
+                    '" . $patient['telefono'] . "',
+                    '" . $patient['direccion'] . "',
+                    '" . $patient['aseguradro'] . "',
+                    '" . $patient['observacion'] . "',
+                    '$id_hospital')
                 RETURNING id_paciente";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
