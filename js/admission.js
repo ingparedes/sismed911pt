@@ -624,6 +624,7 @@ $(function () {
       .done(function (data) {
         updatePatient = true;
         $('#btnAddPatient').prop('hidden', true);
+        id_patient = data[0].id_paciente;
         $('#idP').val(
           data[0].id_paciente +
             '-' +

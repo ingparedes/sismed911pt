@@ -108,93 +108,71 @@ $(function () {
     ],
     dom: 'Bfrtip',
     initComplete: function (setting, json) {
+      let _this = this;
       if (json)
         json.map((val) => {
-          console.log(moment());
-          console.log(moment(val.fecha_clasificacion));
-          /*var date = new Date();
-          var date_classification = new Date(val.fecha_clasificacion);
-          var diff = Math.abs(date - date_classification);
-          var minutes = Math.floor(diff / 1000 / 60);*/
-          let minutes = moment().diff(
-            moment(val.fecha_clasificacion),
-            'minutes'
+          let minutes = Number(
+            moment().diff(moment(val.fecha_clasificacion), 'minutes')
           );
-          switch ($(this).find('td .card-classification').text()) {
+          let seconds =
+            60 -
+            Number(
+              moment(moment().diff(moment(val.fecha_clasificacion)))
+                .format('mm:ss')
+                .split(':')[1]
+            );
+          switch (val.clasificacion_admision) {
             case 'Azul':
-              var _this = this;
-              let min_blue = 45 - minutes;
-              /*var seg_blue =
-                date.getSeconds() - date_classification.getSeconds() < 0
-                  ? date_classification.getSeconds() + date.getSeconds()
-                  : date.getSeconds() - date_classification.getSeconds();*/
-              let seg_blue =
-                60 -
-                (moment().seconds() -
-                  moment(val.fecha_clasificacion).seconds());
-              if (seg_blue < 0) {
-                seg_blue =
-                  moment().seconds() +
-                  moment(val.fecha_clasificacion).seconds();
-              } else {
-                min_blue--;
-              }
+              let min_blue = 44 - minutes;
               setInterval(function () {
                 if (min_blue >= 0) {
                   $(_this)
-                    .find('.countdown .min')
+                    .find('.countdown #min_' + val.id_admision)
                     .html(
                       min_blue > 0 && min_blue < 10 ? '0' + min_blue : min_blue
                     );
                   $(_this)
-                    .find('.countdown .sec')
+                    .find('.countdown #sec_' + val.id_admision)
                     .html(
-                      seg_blue > 0 && seg_blue < 10 ? '0' + seg_blue : seg_blue
+                      seconds > 0 && seconds < 10 ? '0' + seconds : seconds
                     );
-                  seg_blue--;
-                  if (seg_blue == 0) {
-                    seg_blue = min_blue == 0 ? 0 : 59;
+                  seconds--;
+                  if (seconds == 0) {
+                    seconds = min_blue == 0 ? 0 : 59;
                     min_blue--;
                   }
+                } else {
+                  $(_this)
+                    .find('.countdown #sec_' + val.id_admision)
+                    .html('0');
                 }
               }, 1000);
               break;
             case 'Verde':
-              var _this = this;
-              var min_green = 30 - minutes;
-              /*var seg_green =
-                date.getSeconds() - date_classification.getSeconds() < 0
-                  ? 60 - date_classification.getSeconds() + date.getSeconds()
-                  : date.getSeconds() - date_classification.getSeconds();*/
-              let seg_green =
-                moment().seconds() - moment(val.fecha_clasificacion).seconds();
-              if (seg_green < 0) {
-                min_green--;
-                seg_green =
-                  moment().seconds() +
-                  moment(val.fecha_clasificacion).seconds();
-              }
+              let min_green = 29 - minutes;
               setInterval(function () {
                 if (min_green >= 0) {
                   $(_this)
-                    .find('.countdown .min')
+                    .find('.countdown #min_' + val.id_admision)
                     .html(
                       min_green > 0 && min_green < 10
                         ? '0' + min_green
                         : min_green
                     );
-                  seg_green--;
-                  if (seg_green == 0) {
-                    seg_green = min_green == 0 ? 0 : 60;
-                    min_green--;
-                  }
                   $(_this)
-                    .find('.countdown .sec')
+                    .find('.countdown #sec_' + val.id_admision)
                     .html(
-                      seg_green > 0 && seg_green < 10
-                        ? '0' + seg_green
-                        : seg_green
+                      seconds > 0 && seconds < 10 ? '0' + seconds : seconds
                     );
+                  seconds--;
+                  if (seconds == 0) {
+                    seconds = min_blue == 0 ? 0 : 59;
+                    min_green--;
+                  } else {
+                    $(_this)
+                      .find('.countdown #sec_' + val.id_admision)
+                      .html('0');
+                  }
                 }
               }, 1000);
               break;
