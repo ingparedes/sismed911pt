@@ -616,7 +616,7 @@ $(function () {
           telefono: $('#p_phone').val(),
           aseguradro: $('#p_segS').val(),
           direccion: $('#p_address').val(),
-          observacion: $('#p_obs').val()
+          observacion: $('#p_obs').val(),
         },
       },
     })
@@ -1290,16 +1290,17 @@ $(function () {
   });
 
   $('.gender').on('click', function () {
-    if (
-      !dataSelect.genero ||
-      (dataSelect.genero == 1 &&
-        ($('input:checked').val() == 2 || $('input:checked').val() == 3)) ||
-      (dataSelect.genero == 2 &&
-        ($('input:checked').val() == 1 || $('input:checked').val() == 3)) ||
-      (dataSelect.genero == 3 &&
-        ($('input:checked').val() == 1 || $('input:checked').val() == 2))
-    )
-      crud_ajax('genero', $('input:checked').val(), 'updateP');
+    if (updatePatient)
+      if (
+        !dataSelect.genero ||
+        (dataSelect.genero == 1 &&
+          ($('input:checked').val() == 2 || $('input:checked').val() == 3)) ||
+        (dataSelect.genero == 2 &&
+          ($('input:checked').val() == 1 || $('input:checked').val() == 3)) ||
+        (dataSelect.genero == 3 &&
+          ($('input:checked').val() == 1 || $('input:checked').val() == 2))
+      )
+        crud_ajax('genero', $('input:checked').val(), 'updateP');
   });
 
   $('#p_nickname').on('focusout', function () {
