@@ -393,31 +393,32 @@ $(function () {
             $('#p_nationality').val(response.nacionalidad);
             $('#p_date').val(response.fecha_nacimiento);
             edad(response.fecha_nacimiento);
-            $.ajax({
-              url: 'bd/crud.php',
-              method: 'POST',
-              data: {
-                option: 'updatePatient',
-                idP: id_patient,
-                user: JSON.stringify({
-                  name1: $('#p_name1').val(),
-                  name2: $('#p_name2').val(),
-                  lastname1: $('#p_lastname1').val(),
-                  lastname2: $('#p_lastname2').val(),
-                  gender: $('input:checked').val(),
-                  nationality: $('#p_nationality').val(),
-                  date: $('#p_date').val(),
-                  age: $('#p_age').val(),
-                  typeage: $('#p_typeage').val(),
-                }),
-              },
-            })
-              .done(function (response) {
-                //console.log(response);
+            if (updatePatient)
+              $.ajax({
+                url: 'bd/crud.php',
+                method: 'POST',
+                data: {
+                  option: 'updatePatient',
+                  idP: id_patient,
+                  user: JSON.stringify({
+                    name1: $('#p_name1').val(),
+                    name2: $('#p_name2').val(),
+                    lastname1: $('#p_lastname1').val(),
+                    lastname2: $('#p_lastname2').val(),
+                    gender: $('input:checked').val(),
+                    nationality: $('#p_nationality').val(),
+                    date: $('#p_date').val(),
+                    age: $('#p_age').val(),
+                    typeage: $('#p_typeage').val(),
+                  }),
+                },
               })
-              .fail(function (error) {
-                console.log(error);
-              });
+                .done(function (response) {
+                  //console.log(response);
+                })
+                .fail(function (error) {
+                  console.log(error);
+                });
           } else {
             console.log('error');
           }
@@ -1219,7 +1220,7 @@ $(function () {
   });
 
   $('#p_ide').on('change', function () {
-    changeIDE(true);
+    updatePatient ? changeIDE(true) : changeIDE(false);
   });
 
   /* Validación de número de cédula dominicana */
@@ -1227,14 +1228,16 @@ $(function () {
     if ($('#p_ide option:selected').val() == 1) {
       if (number_validate($(this).val())) {
         $('.search_data_user').removeClass('d-none').addClass('d-flex');
-        crud_ajax('num_doc', $(this).val(), 'updateP');
-        crud_ajax('tipo_doc', $('#p_ide option:selected').val(), 'updateP');
+        if (updatePatient) {
+          crud_ajax('num_doc', $(this).val(), 'updateP');
+          crud_ajax('tipo_doc', $('#p_ide option:selected').val(), 'updateP');
+        }
       } else {
         $('.search_data_user').removeClass('d-flex').addClass('d-none');
       }
     } else {
       $('.search_data_user').removeClass('d-flex').addClass('d-none');
-      crud_ajax('num_doc', $(this).val(), 'updateP');
+      if (updatePatient) crud_ajax('num_doc', $(this).val(), 'updateP');
     }
   });
   /* fin validación */
@@ -1304,15 +1307,15 @@ $(function () {
   });
 
   $('#p_nickname').on('focusout', function () {
-    crud_ajax('apodo', $(this).val(), 'updateP');
+    if (updatePatient) crud_ajax('apodo', $(this).val(), 'updateP');
   });
 
   $('#p_nationality').on('focusout', function () {
-    crud_ajax('nacionalidad', $(this).val(), 'updateP');
+    if (updatePatient) crud_ajax('nacionalidad', $(this).val(), 'updateP');
   });
 
   $('#p_phone').on('focusout', function () {
-    crud_ajax('telefono', $(this).val(), 'updateP');
+    if (updatePatient) crud_ajax('telefono', $(this).val(), 'updateP');
   });
 
   $('#p_segS').on('focusout', function () {
