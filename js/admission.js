@@ -387,7 +387,7 @@ $(function () {
             $('#p_lastname2').val(response.apellido2);
             if (response.sexo == 'M') {
               $('#p_genM').prop('checked', true);
-            } else if (sexo == 'F') {
+            } else if (response.sexo == 'F') {
               $('#p_genF').prop('checked', true);
             }
             $('#p_nationality').val(response.nacionalidad);

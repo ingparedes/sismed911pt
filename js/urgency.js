@@ -121,62 +121,65 @@ $(function () {
                 .format('mm:ss')
                 .split(':')[1]
             );
-          switch (val.clasificacion_admision) {
-            case 'Azul':
-              let min_blue = 44 - minutes;
-              setInterval(function () {
-                if (min_blue >= 0) {
-                  $(_this)
-                    .find('.countdown #min_' + val.id_admision)
-                    .html(
-                      min_blue > 0 && min_blue < 10 ? '0' + min_blue : min_blue
-                    );
-                  $(_this)
-                    .find('.countdown #sec_' + val.id_admision)
-                    .html(
-                      seconds > 0 && seconds < 10 ? '0' + seconds : seconds
-                    );
-                  seconds--;
-                  if (seconds == 0) {
-                    seconds = min_blue == 0 ? 0 : 59;
-                    min_blue--;
-                  }
-                } else {
-                  $(_this)
-                    .find('.countdown #sec_' + val.id_admision)
-                    .html('0');
-                }
-              }, 1000);
-              break;
-            case 'Verde':
-              let min_green = 29 - minutes;
-              setInterval(function () {
-                if (min_green >= 0) {
-                  $(_this)
-                    .find('.countdown #min_' + val.id_admision)
-                    .html(
-                      min_green > 0 && min_green < 10
-                        ? '0' + min_green
-                        : min_green
-                    );
-                  $(_this)
-                    .find('.countdown #sec_' + val.id_admision)
-                    .html(
-                      seconds > 0 && seconds < 10 ? '0' + seconds : seconds
-                    );
-                  seconds--;
-                  if (seconds == 0) {
-                    seconds = min_blue == 0 ? 0 : 59;
-                    min_green--;
+          if (minutes >= 0)
+            switch (val.clasificacion_admision) {
+              case 'Azul':
+                let min_blue = 44 - minutes;
+                setInterval(function () {
+                  if (min_blue >= 0) {
+                    $(_this)
+                      .find('.countdown #min_' + val.id_admision)
+                      .html(
+                        min_blue > 0 && min_blue < 10
+                          ? '0' + min_blue
+                          : min_blue
+                      );
+                    $(_this)
+                      .find('.countdown #sec_' + val.id_admision)
+                      .html(
+                        seconds > 0 && seconds < 10 ? '0' + seconds : seconds
+                      );
+                    seconds--;
+                    if (seconds == 0) {
+                      seconds = min_blue == 0 ? 0 : 59;
+                      min_blue--;
+                    }
                   } else {
                     $(_this)
                       .find('.countdown #sec_' + val.id_admision)
                       .html('0');
                   }
-                }
-              }, 1000);
-              break;
-          }
+                }, 1000);
+                break;
+              case 'Verde':
+                let min_green = 29 - minutes;
+                setInterval(function () {
+                  if (min_green >= 0) {
+                    $(_this)
+                      .find('.countdown #min_' + val.id_admision)
+                      .html(
+                        min_green > 0 && min_green < 10
+                          ? '0' + min_green
+                          : min_green
+                      );
+                    $(_this)
+                      .find('.countdown #sec_' + val.id_admision)
+                      .html(
+                        seconds > 0 && seconds < 10 ? '0' + seconds : seconds
+                      );
+                    seconds--;
+                    if (seconds == 0) {
+                      seconds = min_blue == 0 ? 0 : 59;
+                      min_green--;
+                    } else {
+                      $(_this)
+                        .find('.countdown #sec_' + val.id_admision)
+                        .html('0');
+                    }
+                  }
+                }, 1000);
+                break;
+            }
         });
     },
   });
