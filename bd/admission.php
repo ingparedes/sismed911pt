@@ -342,6 +342,10 @@ switch ($option) {
         }
         echo $result;
         break;
+    case 'updateFechaInicioClasificacion':
+        $sql = "UPDATE sala_admission SET fecha_inicio_clasificacion = '" . date('d-m-Y H:i:s') . "' WHERE id_admision = $dataAdmission";
+        echo $connection->execute($connect, $sql);
+        break;
     case 'updateMedicalAttention':
         $sql = "UPDATE sala_atencionmedica SET " . $field . "='" . $setField . "' WHERE id_atencionmedica=" . $id_medicalAttention;
         echo $connection->execute($connect, $sql);
