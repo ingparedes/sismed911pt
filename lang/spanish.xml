@@ -1095,16 +1095,16 @@
       <phrase id="menutext" value="Control" />
     </menu>
     <menu id="965">
-      <phrase id="menutext" value="Admision" />
+      <phrase id="menutext" value="Admisión" />
     </menu>
     <menu id="966">
-      <phrase id="menutext" value="clasificacion" />
+      <phrase id="menutext" value="Clasificación" />
     </menu>
     <menu id="967">
-      <phrase id="menutext" value="urgencias" />
+      <phrase id="menutext" value="Urgencias" />
     </menu>
     <menu id="968">
-      <phrase id="menutext" value="emergencias" />
+      <phrase id="menutext" value="Emergencias" />
     </menu>
     <menu id="969">
       <phrase id="menutext" value="despacho" />
@@ -2088,7 +2088,7 @@
         <phrase id="fldcaption" value="Genero " />
       </field>
       <field id="clasificacion">
-        <phrase id="fldcaption" value="clasificacion" />
+        <phrase id="fldcaption" value="clasificación" />
       </field>
       <field id="cod">
         <phrase id="fldcaption" value="cod" />
@@ -3938,7 +3938,7 @@
         <phrase id="fldcaption" value="tipo urgencia" />
       </field>
       <field id="clasificacion">
-        <phrase id="fldcaption" value="clasificacion" />
+        <phrase id="fldcaption" value="clasificación" />
       </field>
       <field id="motivo_consulta">
         <phrase id="fldcaption" value="motivo consulta" />
@@ -3989,7 +3989,7 @@
         <phrase id="fldcaption" value="tipo ingreso" />
       </field>
       <field id="hora_clasificacion">
-        <phrase id="fldcaption" value="hora clasificacion" />
+        <phrase id="fldcaption" value="hora clasificación" />
       </field>
       <field id="descripcion_signos">
         <phrase id="fldcaption" value="descripcion signos" />
@@ -4452,19 +4452,19 @@
       <phrase id="tblcaption" value="Control" />
     </table>
     <table id="admisionhs">
-      <phrase id="tblcaption" value="Admision" />
+      <phrase id="tblcaption" value="Admisión" />
     </table>
     <table id="clasificacionh">
-      <phrase id="tblcaption" value="clasificacion" />
+      <phrase id="tblcaption" value="Clasificación" />
     </table>
     <table id="urgencias">
-      <phrase id="tblcaption" value="urgencias" />
+      <phrase id="tblcaption" value="Urgencias" />
     </table>
     <table id="emergencias">
-      <phrase id="tblcaption" value="emergencias" />
+      <phrase id="tblcaption" value="Emergencias" />
     </table>
     <table id="despachoambpreh">
-      <phrase id="tblcaption" value="despacho" />
+      <phrase id="tblcaption" value="Despacho" />
     </table>
     <table id="report">
       <phrase id="tblcaption" value="Reportes" />
