@@ -58,7 +58,7 @@ $(function () {
   tableServiceAmbulance.on("select", function (e, dt, type, indexes) {
     if (type === "row") {
       dataSelect = tableServiceAmbulance.rows(indexes).data()[0];
-      id_maestro = dataSelect.cod_casopreh;
+      id_maestro = dataSelect.casopreh;
       cod_ambulance = dataSelect.cod_ambulancia;
 
       $("span.case").text(" - Caso: " + id_maestro);
