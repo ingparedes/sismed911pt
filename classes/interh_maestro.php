@@ -1790,7 +1790,9 @@ class interh_maestro extends DbTable
 		//echo "Row Inserted"
 		//	Execute("INSERT INTO pacientegeneral (cod_casointerh) values (".$rsnew['cod_casointerh'].");");
 
-		Execute("INSERT INTO pacientegeneral (cod_casointerh) values (".$rsnew['cod_casointerh'].")");
+		$paciente = Execute("INSERT INTO pacientegeneral (cod_casointerh) values (".$rsnew['cod_casointerh'].") RETURNING id_paciente");
+		$id_paciente = pg_fetch_all($paciente)[0];
+		Execute("INSERT INTO interh_evaluacionclinica (cod_casointerh, cod_paciente) values (".$rsnew['cod_casointerh'].", '$id_paciente')");
 	}
 
 	// Row Updating event

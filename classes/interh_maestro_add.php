@@ -800,7 +800,8 @@ class interh_maestro_add extends interh_maestro
 				if ($this->addRow($this->OldRecordset)) { // Add successful
 					if ($this->getSuccessMessage() == "")
 						$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up success message
-					$returnUrl = "interh_maestrolist.php";
+					//$returnUrl = "interh_maestrolist.php";
+					$returnUrl = "Controlintemaster.php";
 					if (GetPageName($returnUrl) == "interh_maestrolist.php")
 						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
 					elseif (GetPageName($returnUrl) == "interh_maestroview.php")

@@ -1793,14 +1793,18 @@ class preh_maestro extends DbTable
 	function Row_Inserted($rsold, &$rsnew) {
 
 		//echo "Row Inserted"
-		if($rsnew['accion'] =='1'){
-		$depacho = ("UPDATE preh_maestro SET estado = '1' WHERE cod_casopreh =".$rsnew['cod_casopreh'].";");
-		$dpt=Execute($depacho);
+		Execute("UPDATE preh_maestro SET estado=1 WHERE cod_casopreh=".$rsnew['cod_casopreh']);
+		if($rsnew['accion'] == '1') {
+			Execute("UPDATE preh_maestro SET accion=2 WHERE cod_casopreh=".$rsnew['cod_casopreh']);
+			Execute("INSERT INTO preh_servicio_ambulancia (cod_casopreh) values (".$rsnew['cod_casopreh'].");");
+		}else {
+			Execute("UPDATE preh_maestro SET accion=1 WHERE cod_casopreh=".$rsnew['cod_casopreh']);
 		}
-			Execute("INSERT INTO pacientegeneral (cod_casointerh, prehospitalario) values (".$rsnew['cod_casopreh'].",1);");
+		$paciente = Execute("INSERT INTO pacientegeneral (cod_casointerh, prehospitalario) values (".$rsnew['cod_casopreh'].",1) RETURNING id_paciente;");
+		$id_paciente = pg_fetch_all($paciente)[0];
+		Execute("INSERT INTO preh_evaluacionclinica (cod_casopreh, cod_paciente) values (".$rsnew['cod_casopreh'].", '$id_paciente')");
 
-	//	Execute("INSERT INTO preh_evaluacionclinica (cod_maestrointerh) values (".$rsnew['cod_casopreh'].");");
-	//	Execute("INSERT INTO preh_servicio_ambulancia (id_maestrointerh) values (".$rsnew['cod_casopreh'].");");
+	//	Execute("INSERT INTO preh_evaluacionclinica (cod_maestrointerh) values (".$rsnew['cod_casopreh'].");");		
 	//	Execute("INSERT INTO preh_destino (cod_maestrointerh) values (".$rsnew['cod_casopreh'].");");
 	//	Execute("INSERT INTO preh_seguimiento (cod_maestrointerh) values (".$rsnew['cod_casopreh'].");");	
 	//	 WHERE `YourPrimaryField` = " . $rsnew["YourPrimaryField"]; 
