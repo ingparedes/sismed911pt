@@ -44,7 +44,7 @@ $idiomas = CurrentLanguageID();
 
 
 if ($idiomas == 'es') {?>
-	 		<p class="card-text" align="center" > <img src="images/sismed911_logo.png"  width="642" height="153" class="img-responsive" /></p>
+	 		<p class="card-text" align="center" > <img src="images/SISMED911_logo.png"  width="642" height="153" class="img-responsive" /></p>
 	 <p class="card-text" align="center" ><img src="images/paho_es.png" width="583" height="120" class="img-responsive"/></p>
 
 <?php } if ($idiomas == 'en') {?>
