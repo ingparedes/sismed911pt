@@ -28,7 +28,7 @@ switch ($option) {
         LEFT JOIN tipo_edad ON pacientegeneral.cod_edad = tipo_edad.id_edad
         LEFT JOIN cie10 ON preh_evaluacionclinica.cod_diag_cie = cie10.codigo_cie
         LEFT JOIN triage ON preh_evaluacionclinica.triage = triage.id_triage
-        WHERE pacientegeneral.prehospitalario = '1' AND preh_maestro.estado!=0
+        WHERE pacientegeneral.prehospitalario = '1' AND preh_maestro.estado != 0
         ORDER BY preh_maestro.cod_casopreh";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
@@ -65,10 +65,13 @@ switch ($option) {
         print json_encode($data, JSON_UNESCAPED_UNICODE);
         break;
     case 'selectPrehServiceAmbulance':
-        $sql = "SELECT *, preh_maestro.cod_casopreh AS casopreh, preh_servicio_ambulancia.observaciones as observacion_ambulancia FROM preh_maestro
+        $sql = "SELECT *, preh_maestro.cod_casopreh AS casopreh, preh_servicio_ambulancia.observaciones as observacion_ambulancia
+        FROM preh_maestro
+        INNER JOIN pacientegeneral ON preh_maestro.cod_casopreh = pacientegeneral.cod_casointerh
+        INNER JOIN preh_evaluacionclinica ON preh_maestro.cod_casopreh = preh_evaluacionclinica.cod_casopreh
         LEFT JOIN preh_servicio_ambulancia ON preh_maestro.cod_casopreh = preh_servicio_ambulancia.cod_casopreh
-        INNER JOIN ambulancias ON preh_servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
-        WHERE preh_maestro.accion=2 AND preh_maestro.estado!=0
+        LEFT JOIN ambulancias ON preh_servicio_ambulancia.cod_ambulancia = ambulancias.cod_ambulancias
+        WHERE preh_maestro.accion = 2 AND preh_maestro.estado != 0 AND pacientegeneral.prehospitalario = '1'
         ORDER BY preh_maestro.cod_casopreh";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
@@ -119,7 +122,12 @@ switch ($option) {
         break;
     case 'updatePrehM':
         $sql = "UPDATE preh_maestro SET " . $field . "='" . $setField . "' WHERE cod_casopreh=" . $id_maestro;
-        echo $connection->execute($connect, $sql);
+        $res = $connection->execute($connect, $sql);
+        if($field === 'accion') {
+            $sql = "INSERT INTO preh_servicio_ambulancia (cod_casopreh) values ($id_maestro)";
+            $res = $connection->execute($connect, $sql);
+        }
+        echo $res;
         break;
     case 'updateInterhM':
         $sql = "UPDATE interh_maestro SET " . $field . "='" . $setField . "' WHERE cod_casointerh=" . $id_maestro;
