@@ -49,6 +49,7 @@ global $Language;
 					<th><?php echo $Language->Phrase("dt_case"); ?></th>
 					<th><?php echo $Language->Phrase("dt_date"); ?></th>
 					<th><?php echo $Language->Phrase("dt_time"); ?></th>
+					<th>Tipo de solicitud</th>
 					<th><?php echo $Language->Phrase("dt_patient"); ?></th>
 					<th><?php echo $Language->Phrase("dt_address"); ?></th>
 					<th><?php echo $Language->Phrase("dt_incident"); ?></th>
