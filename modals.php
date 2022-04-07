@@ -367,18 +367,18 @@
 </div>
 <!-- end modal egreso -->
 
-<!-- Modal CIE10DX-->
-<div class="modal fade" id="CIE10DX" tabindex="-1" aria-labelledby="CIEDX" aria-hidden="true">
+<!-- Modal ayudaDX-->
+<div class="modal fade" id="ayudaDX" tabindex="-1" aria-labelledby="ayuda" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="CIEDX">Por favor, seleccione el tipo de estudio</h5>
+                <h5 class="modal-title" id="ayuda">Por favor, seleccione el tipo de estudio</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <table id="tableCIE10DX" class="table table-striped table-bordered" style="width: 100%">
+                <table id="tableAyudaDX" class="table table-striped table-bordered" style="width: 100%">
                     <thead>
                         <tr>
                             <th>Código</th>
@@ -389,11 +389,66 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary not-allowed btnCIE10DX" data-dismiss="modal" disabled>
+                <button type="button" class="btn btn-primary not-allowed btnayuda" data-dismiss="modal" disabled>
                     <?php echo $Language->Phrase('accept'); ?>
                 </button>
             </div>
         </div>
     </div>
 </div>
-<!-- end modal CIE10-->
+<!-- end modal ayudaDX-->
+
+<!-- Modal barrio-->
+<div class="modal fade" id="modal-barrio" tabindex="-1" aria-labelledby="bar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bar">Por favor, seleccione el barrio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="tableBarrio" class="table table-striped table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Barrio</th>
+                            <th>Centro</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary not-allowed btnbarrio" data-dismiss="modal" disabled>
+                    <?php echo $Language->Phrase('accept'); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal barrio-->
+
+<!-- Modal info incidente-->
+<div class="modal fade" id="modal-info-incidente" tabindex="-1" aria-labelledby="info" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="info">Incidente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal info incidente-->

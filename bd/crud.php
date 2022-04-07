@@ -79,9 +79,17 @@ switch ($option) {
         $sql = "SELECT * FROM cie10 ORDER BY codigo_cie";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
-    case 'selectCIE10DX':
-        $sql = "SELECT * FROM cie10dx ORDER BY codcie10";
+    case 'selectAyudaDX':
+        $sql = "SELECT * FROM ayudasdxni ORDER BY id_ayudadx";
         print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
+        break;
+    case 'selectBarrio':
+        $sql = "SELECT * FROM barrio_nic ORDER BY id_barrio";
+        print json_encode(pg_fetch_all($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
+        break;
+    case 'selectIncidente':
+        $sql = "SELECT incidente_es FROM incidentes WHERE id_incidente = $field";
+        print json_encode(pg_fetch_object($connection->execute($connect, $sql)), JSON_UNESCAPED_UNICODE);
         break;
     case 'selectHosp':
         $sql = "SELECT * FROM hospitalesgeneral ORDER BY id_hospital";

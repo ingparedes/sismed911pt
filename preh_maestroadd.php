@@ -275,8 +275,7 @@ include_once "header.php";
 $preh_maestro_add->showPageHeader();
 $preh_maestro_add->showMessage();
 
-$incidentes = ExecuteRows('SELECT id_incidente, nombre_es FROM incidentes');
-$distritos = ExecuteRows('SELECT cod_dpto, nombre_distrito FROM distrito');
+$incidentes = ExecuteRows('SELECT id_incidente, incidente_es, nombre_es FROM incidentes ORDER BY nombre_es');
 ?>
 
 <div class="card-header mb-3">
@@ -457,7 +456,7 @@ $distritos = ExecuteRows('SELECT cod_dpto, nombre_distrito FROM distrito');
 										<input type="text" class="form-control w-100" id="estudio" placeholder="-- Por favor, seleccione --" disabled />
 										<div class="input-group-append">
 											<!-- Button trigger modal -->
-											<button type="button" class="btn btn-outline-secondary estudio_search" data-toggle="modal" data-target="#CIE10DX" disabled>
+											<button type="button" class="btn btn-outline-secondary estudio_search" data-toggle="modal" data-target="#ayudaDX" disabled>
 												<i class="fa fa-search" aria-hidden="true"></i>
 											</button>
 										</div>
@@ -468,7 +467,7 @@ $distritos = ExecuteRows('SELECT cod_dpto, nombre_distrito FROM distrito');
 							<div class="form-row">
 								<div class="form-group col-xs-3">
 									<label for="programado">Programado:</label>
-									<input type="date" class="form-control" id="programado" disabled />
+									<input type="datetime-local" class="form-control" id="programado" disabled />
 								</div>
 							</div>
 						</div>
@@ -525,15 +524,16 @@ $distritos = ExecuteRows('SELECT cod_dpto, nombre_distrito FROM distrito');
 			</div>
 
 			<div class="form-row">
-				<div class="form-group col mb-3">
-					<label for="incidente">Barrio:</label>
-					<div class="input-group">
-						<select class="custom-select ew-custom-select" id="incidente">
-							<option value="0">-- Seleccione por favor --</option>
-							<?php foreach ($distritos as $distrito) { ?>
-								<option value="<?= $distrito['cod_dpto'] ?>"><?= $distrito['nombre_distrito'] ?></option>
-							<?php } ?>
-						</select>
+				<div class="form-group col-xs-12 col-md-6">
+					<label for="barrio">Barrio:</label>
+					<div class="input-group flex-nowrap">
+						<input type="text" class="form-control w-100" id="barrio" placeholder="-- Por favor, seleccione --" disabled />
+						<div class="input-group-append">
+							<!-- Button trigger modal -->
+							<button type="button" class="btn btn-outline-secondary barrio_search" data-toggle="modal" data-target="#modal-barrio">
+								<i class="fa fa-search" aria-hidden="true"></i>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -756,7 +756,7 @@ if (Config("DEBUG"))
 			$('#patient').modal();
 		});
 
-		const tableCIE10DX = $('#tableCIE10DX').DataTable({
+		const tableAyudaDX = $('#tableAyudaDX').DataTable({
 			select: 'single',
 			language: {
 				url: 'lang/es.json',
@@ -765,22 +765,90 @@ if (Config("DEBUG"))
 				url: 'bd/crud.php',
 				method: 'POST',
 				data: {
-					option: 'selectCIE10DX',
+					option: 'selectAyudaDX',
 				},
 				dataSrc: '',
 			},
 			deferRender: true,
 			columns: [{
-					data: 'codcie10'
+					data: 'id_ayudadx'
 				},
 				{
-					data: 'dx_es'
+					data: 'nombre_ayudadx'
 				},
 			]
 		});
 
+		tableAyudaDX.on('select', function(e, dt, type, indexes) {
+			$('.btnayuda').prop('disabled', false);
+		});
+
+		tableAyudaDX.on('deselect', function(e, dt, type, indexes) {
+			$('.btnayuda').prop('disabled', true);
+		});
+
+		$('.btnayuda').on('click', function() {
+			$('#estudio').val(tableAyudaDX.rows('.selected').data()[0].nombre_ayudadx);
+		});
+
 		$('#retorno').change(function() {
 			$('.paci_search').prop('disabled', !this.checked);
+		});
+
+		const tableBarrio = $('#tableBarrio').DataTable({
+			select: 'single',
+			language: {
+				url: 'lang/es.json',
+			},
+			ajax: {
+				url: 'bd/crud.php',
+				method: 'POST',
+				data: {
+					option: 'selectBarrio',
+				},
+				dataSrc: '',
+			},
+			deferRender: true,
+			columns: [{
+					data: 'id_barrio'
+				},
+				{
+					data: 'barrio'
+				},
+				{
+					data: 'centro'
+				},
+			]
+		});
+
+		tableBarrio.on('select', function(e, dt, type, indexes) {
+			$('.btnbarrio').prop('disabled', false);
+		});
+
+		tableBarrio.on('deselect', function(e, dt, type, indexes) {
+			$('.btnbarrio').prop('disabled', true);
+		});
+
+		$('.btnbarrio').on('click', function() {
+			$('#barrio').val(tableBarrio.rows('.selected').data()[0].barrio);
+		});
+
+		$('#incidente').change(function() {
+			$.ajax({
+				url: 'bd/crud.php',
+				method: 'POST',
+				dataType: 'json',
+				data: {
+					option: 'selectIncidente',
+					field: this.value
+				},
+			}).done((response) => {
+				console.log(response);
+				$('#modal-info-incidente .modal-body').html(response.incidente_es);
+				$('#modal-info-incidente').modal();
+			}).fail((error) => {
+				console.log(error);
+			});
 		});
 	});
 </script>
